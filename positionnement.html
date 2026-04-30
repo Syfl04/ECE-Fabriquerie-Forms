@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Positionnement Personnel — ECE Fabriquerie</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #fff;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #00d4ff, #7b2cbf);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #888;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #7b2cbf;
+            font-weight: 500;
+        }
+
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: #fff;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="text"]:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #7b2cbf;
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .hint {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .time-section {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        .time-section h3 {
+            color: #7b2cbf;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .submit-btn {
+            background: linear-gradient(90deg, #00d4ff, #7b2cbf);
+            border: none;
+            padding: 15px 40px;
+            border-radius: 30px;
+            color: #fff;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: block;
+            margin: 40px auto 0;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(123, 44, 191, 0.4);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .message {
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            text-align: center;
+            display: none;
+        }
+
+        .message.success {
+            background: rgba(0, 212, 255, 0.2);
+            border: 1px solid #00d4ff;
+            color: #00d4ff;
+        }
+
+        .message.error {
+            background: rgba(255, 107, 107, 0.2);
+            border: 1px solid #ff6b6b;
+            color: #ff6b6b;
+        }
+
+        .nav {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .nav a {
+            color: #888;
+            text-decoration: none;
+            margin: 0 15px;
+            padding: 8px 15px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .nav a:hover,
+        .nav a.active {
+            color: #7b2cbf;
+            background: rgba(123, 44, 191, 0.1);
+        }
+
+        @media (max-width: 600px) {
+            h1 { font-size: 1.5rem; }
+            .container { padding: 0 10px; }
+            .time-section { padding: 15px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav class="nav">
+            <a href="index.html">Accueil</a>
+            <a href="competences.html">Compétences</a>
+            <a href="strategie.html">Stratégie</a>
+            <a href="positionnement.html" class="active">Positionnement</a>
+        </nav>
+
+        <h1>Positionnement Personnel</h1>
+        <p class="subtitle">Réunion ECE — Fabriquerie | Actuel / Souhaité / Horizons</p>
+
+        <form id="form-positionnement">
+            <div class="form-group">
+                <label for="nom">Nom du participant *</label>
+                <input type="text" id="nom" name="nom_participant" required placeholder="Votre nom">
+            </div>
+
+            <div class="time-section">
+                <h3>🎯 Actuel</h3>
+                <div class="form-group">
+                    <label for="actuel">Positionnement actuel</label>
+                    <textarea id="actuel" name="positionnement_actuel" placeholder="Où êtes-vous maintenant ? Votre situation actuelle..."></textarea>
+                </div>
+            </div>
+
+            <div class="time-section">
+                <h3>🚀 Souhaité</h3>
+                <div class="form-group">
+                    <label for="souhaite">Positionnement souhaité</label>
+                    <textarea id="souhaite" name="positionnement_souhaite" placeholder="Où voulez-vous aller ? Votre aspiration..."></textarea>
+                </div>
+            </div>
+
+            <div class="time-section">
+                <h3>📅 Horizons de temps</h3>
+                
+                <div class="form-group">
+                    <label for="court">Court terme (6-12 mois)</label>
+                    <textarea id="court" name="vision_court_terme" placeholder="Quels objectifs pour les 6-12 prochains mois ?"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="moyen">Moyen terme (1-2 ans)</label>
+                    <textarea id="moyen" name="vision_moyen_terme" placeholder="Où vous voyez-vous dans 1-2 ans ?"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="long">Long terme (3-5 ans)</label>
+                    <textarea id="long" name="vision_long_terme" placeholder="Quelle vision à 3-5 ans ?"></textarea>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="besoins">Besoins de soutien</label>
+                <textarea id="besoins" name="besoins_soutien" placeholder="Quelle aide avez-vous besoin pour avancer ?"></textarea>
+                <p class="hint">Ressources, compétences, accompagnement...</p>
+            </div>
+
+            <button type="submit" class="submit-btn">Envoyer</button>
+            <div id="message" class="message"></div>
+        </form>
+    </div>
+
+    <script src="assets/nocodb-client.js"></script>
+    <script>
+        document.getElementById('form-positionnement').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const submitBtn = e.target.querySelector('.submit-btn');
+            const messageDiv = document.getElementById('message');
+            
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Envoi en cours...';
+            messageDiv.style.display = 'none';
+            
+            try {
+                const formData = new FormData(e.target);
+                const data = Object.fromEntries(formData);
+                
+                Object.keys(data).forEach(key => {
+                    if (data[key] === '') delete data[key];
+                });
+                
+                await nocoClient.create('positionnement', data);
+                
+                messageDiv.className = 'message success';
+                messageDiv.textContent = '✓ Enregistré avec succès !';
+                messageDiv.style.display = 'block';
+                
+                e.target.reset();
+                
+            } catch (error) {
+                messageDiv.className = 'message error';
+                messageDiv.textContent = '✗ Erreur : ' + error.message;
+                messageDiv.style.display = 'block';
+                console.error('Erreur NocoDB:', error);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Envoyer';
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ECE-Fabriquerie — Accès Mobile</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+            color: #fff;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #00d4ff, #feca57);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #888;
+            margin-bottom: 10px;
+        }
+
+        .url-display {
+            text-align: center;
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 40px;
+            word-break: break-all;
+        }
+
+        .qr-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .qr-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .qr-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .qr-card.competences {
+            border-top: 4px solid #00d4ff;
+        }
+
+        .qr-card.strategie {
+            border-top: 4px solid #feca57;
+        }
+
+        .qr-card.positionnement {
+            border-top: 4px solid #7b2cbf;
+        }
+
+        .qr-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .qr-card h2 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+        }
+
+        .qr-card.competences h2 {
+            color: #00d4ff;
+        }
+
+        .qr-card.strategie h2 {
+            color: #feca57;
+        }
+
+        .qr-card.positionnement h2 {
+            color: #7b2cbf;
+        }
+
+        .qr-desc {
+            color: #888;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+        }
+
+        .qr-code {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 20px;
+            background: #fff;
+            padding: 10px;
+            border-radius: 10px;
+        }
+
+        .qr-code img, .qr-code canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        .btn {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 12px 25px;
+            border-radius: 25px;
+            color: #fff;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .section {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .section h3 {
+            color: #feca57;
+            margin-bottom: 15px;
+        }
+
+        .section p {
+            color: #888;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        .links-list {
+            list-style: none;
+            margin-top: 15px;
+        }
+
+        .links-list li {
+            margin-bottom: 10px;
+        }
+
+        .links-list a {
+            color: #00d4ff;
+            text-decoration: none;
+            word-break: break-all;
+        }
+
+        .links-list a:hover {
+            text-decoration: underline;
+        }
+
+        .footer {
+            text-align: center;
+            color: #555;
+            font-size: 0.8rem;
+            margin-top: 40px;
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 1.5rem;
+            }
+            
+            .qr-code {
+                width: 150px;
+                height: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎯 ECE — Fabriquerie</h1>
+        <p class="subtitle">Questionnaires de co-construction</p>
+        <p class="url-display" id="current-url">Chargement...</p>
+
+        <div class="qr-grid">
+            <!-- Compétences -->
+            <div class="qr-card competences">
+                <div class="qr-icon">💪</div>
+                <h2>Compétences</h2>
+                <p class="qr-desc">Vue par soi vs. vue par les autres</p>
+                <div class="qr-code" id="qrcode-competences"></div>
+                <a href="#" class="btn" id="link-competences">Ouvrir le formulaire</a>
+            </div>
+
+            <!-- Stratégie -->
+            <div class="qr-card strategie">
+                <div class="qr-icon">🗺️</div>
+                <h2>Stratégie</h2>
+                <p class="qr-desc">Vision, valeurs, objectifs</p>
+                <div class="qr-code" id="qrcode-strategie"></div>
+                <a href="#" class="btn" id="link-strategie">Ouvrir le formulaire</a>
+            </div>
+
+            <!-- Positionnement -->
+            <div class="qr-card positionnement">
+                <div class="qr-icon">🧭</div>
+                <h2>Positionnement</h2>
+                <p class="qr-desc">Actuel / Souhaité / Horizons</p>
+                <div class="qr-code" id="qrcode-positionnement"></div>
+                <a href="#" class="btn" id="link-positionnement">Ouvrir le formulaire</a>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>📋 Instructions</h3>
+            <p><strong>Pour les participants :</strong></p>
+            <ul style="color: #888; margin-left: 20px; margin-top: 10px;">
+                <li>Scannez le QR code avec votre téléphone</li>
+                <li>Remplissez le formulaire (tous les champs ne sont pas obligatoires)</li>
+                <li>Cliquez sur "Envoyer"</li>
+                <li>Vos réponses sont enregistrées automatiquement</li>
+            </ul>
+            <p style="margin-top: 15px;"><strong>Conseil :</strong> Vous pouvez remplir les 3 formulaires ou seulement ceux qui vous intéressent.</p>
+        </div>
+
+        <div class="section">
+            <h3>🔗 Liens directs</h3>
+            <p>Si les QR codes ne fonctionnent pas, utilisez ces liens :</p>
+            <ul class="links-list">
+                <li>💪 <strong>Compétences :</strong> <a href="#" id="direct-competences">competences.html</a></li>
+                <li>🗺️ <strong>Stratégie :</strong> <a href="#" id="direct-strategie">strategie.html</a></li>
+                <li>🧭 <strong>Positionnement :</strong> <a href="#" id="direct-positionnement">positionnement.html</a></li>
+            </ul>
+        </div>
+
+        <div class="footer">
+            <p>Réunion ECE — Fabriquerie | 20 avril 2026</p>
+            <p>Données stockées sur NocoDB — Accès sécurisé</p>
+        </div>
+    </div>
+
+    <script>
+        // Configuration URLs
+        const BASE_URL = window.location.href.replace('mobile.html', '');
+        
+        const URLS = {
+            competences: BASE_URL + 'competences.html',
+            strategie: BASE_URL + 'strategie.html',
+            positionnement: BASE_URL + 'positionnement.html'
+        };
+
+        // Afficher l'URL actuelle
+        document.getElementById('current-url').textContent = window.location.href;
+
+        // Mettre à jour les liens
+        document.getElementById('link-competences').href = URLS.competences;
+        document.getElementById('link-strategie').href = URLS.strategie;
+        document.getElementById('link-positionnement').href = URLS.positionnement;
+        document.getElementById('direct-competences').href = URLS.competences;
+        document.getElementById('direct-competences').textContent = URLS.competences;
+        document.getElementById('direct-strategie').href = URLS.strategie;
+        document.getElementById('direct-strategie').textContent = URLS.strategie;
+        document.getElementById('direct-positionnement').href = URLS.positionnement;
+        document.getElementById('direct-positionnement').textContent = URLS.positionnement;
+
+        // Générer les QR codes
+        new QRCode(document.getElementById("qrcode-competences"), {
+            text: URLS.competences,
+            width: 180,
+            height: 180,
+            colorDark : "#00d4ff",
+            colorLight : "#ffffff",
+            correctLevel : QRCode.CorrectLevel.H
+        });
+
+        new QRCode(document.getElementById("qrcode-strategie"), {
+            text: URLS.strategie,
+            width: 180,
+            height: 180,
+            colorDark : "#feca57",
+            colorLight : "#ffffff",
+            correctLevel : QRCode.CorrectLevel.H
+        });
+
+        new QRCode(document.getElementById("qrcode-positionnement"), {
+            text: URLS.positionnement,
+            width: 180,
+            height: 180,
+            colorDark : "#7b2cbf",
+            colorLight : "#ffffff",
+            correctLevel : QRCode.CorrectLevel.H
+        });
+    </script>
+</body>
+</html>
