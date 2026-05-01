@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Formations — ECE Tiers Lieu</title>
+  <link rel="stylesheet" href="css/ece-warm.css">
+  <style>
+    .formations-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+      margin-top: 40px;
+    }
+    .formation-card {
+      background: white;
+      border-radius: var(--r-lg);
+      padding: 28px 28px 24px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: transform 0.25s, box-shadow 0.25s;
+      position: relative;
+      overflow: hidden;
+    }
+    .formation-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--grad-terra);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    .formation-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+    .formation-card:hover::before { opacity: 1; }
+    .formation-card.featured { background: var(--brown-deep); color: var(--ivory); }
+    .formation-card.featured::before { opacity: 1; }
+    .formation-card h3 { font-family: var(--font-display); font-size: 21px; font-weight: 500; }
+    .formation-card.featured h3 { color: var(--ivory); }
+    .formation-card p { font-size: 15px; color: var(--brown-light); line-height: 1.7; }
+    .formation-card.featured p { color: oklch(96% 0.015 75 / 0.6); }
+    .formation-card ul { padding-left: 18px; font-size: 14px; color: var(--brown-light); }
+    .formation-card.featured ul { color: oklch(96% 0.015 75 / 0.55); }
+    .formation-card ul li { margin-bottom: 4px; }
+    .badge-new {
+      position: absolute;
+      top: 16px; right: 16px;
+      background: var(--terracotta);
+      color: white;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 3px 10px;
+      border-radius: var(--r-full);
+    }
+    .modalites-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-top: 32px;
+    }
+    .modalite {
+      background: white;
+      border-radius: var(--r-md);
+      padding: 22px;
+      box-shadow: var(--shadow-sm);
+    }
+    .modalite h4 { font-size: 14px; font-weight: 700; color: var(--terracotta); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .modalite p { font-size: 14px; color: var(--brown-light); line-height: 1.7; }
+  </style>
+</head>
+<body>
+  <nav class="site-nav scrolled" id="site-nav">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <img src="images/logo-ece-dark.svg" alt="ECE Tiers Lieu" style="height:40px; width:auto;">
+      </a>
+      <button class="nav-toggle" onclick="document.getElementById('nav-links').classList.toggle('open')">☰</button>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="index.html#about">L'ECE</a></li>
+        <li><a href="formations.html" class="active">Formations</a></li>
+        <li><a href="index.html#fabriquerie">Fabriquerie</a></li>
+        <li><a href="jess.html">Jess</a></li>
+        <li><a href="accompagnement.html">Accompagnement</a></li>
+        <li><a href="contact.html" class="nav-cta">Nous contacter</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="page-hero">
+    <div class="page-hero-inner">
+      <div class="breadcrumb"><a href="index.html">Accueil</a><span>›</span><span>Formations</span></div>
+      <h1>Formations Professionnelles</h1>
+      <p class="page-hero-sub">Acquérir de nouvelles compétences, développer votre projet professionnel</p>
+    </div>
+  </div>
+
+  <section class="section">
+    <div class="section-inner">
+      <p class="lead reveal">L'ECE Tiers Lieu propose des modules de formation professionnalisants pour acquérir de nouvelles compétences et développer votre projet professionnel.</p>
+
+      <div class="formations-grid">
+        <div class="formation-card reveal">
+          <div class="card-icon">💬</div>
+          <h3>Communication Digitale</h3>
+          <p>Maîtrisez les réseaux sociaux, créez du contenu engageant et développez votre présence en ligne.</p>
+          <ul><li>Stratégie social media</li><li>Création de contenus</li><li>Community management</li><li>Analyse de performance</li></ul>
+          <a href="contact.html" class="btn btn-terra btn-sm" style="margin-top:auto; align-self:flex-start;">S'inscrire</a>
+        </div>
+
+        <div class="formation-card reveal reveal-delay-1">
+          <div class="card-icon">🖥️</div>
+          <h3>Outils Numériques</h3>
+          <p>Maîtrisez les outils essentiels du quotidien professionnel et devenez autonome dans le numérique.</p>
+          <ul><li>Navigation sécurisée</li><li>Gestion des emails</li><li>Outils collaboratifs</li><li>Stockage cloud</li></ul>
+          <a href="contact.html" class="btn btn-terra btn-sm" style="margin-top:auto; align-self:flex-start;">S'inscrire</a>
+        </div>
+
+        <div class="formation-card reveal reveal-delay-2">
+          <div class="card-icon">📊</div>
+          <h3>Bureautique</h3>
+          <p>Perfectionnez vos compétences avec les logiciels Office et alternatives libres.</p>
+          <ul><li>Traitement de texte avancé</li><li>Tableur et calculs</li><li>Présentations professionnelles</li><li>Gestion de données</li></ul>
+          <a href="contact.html" class="btn btn-terra btn-sm" style="margin-top:auto; align-self:flex-start;">S'inscrire</a>
+        </div>
+
+        <div class="formation-card featured reveal">
+          <span class="badge-new">Nouveau</span>
+          <div class="card-icon" style="background:oklch(96% 0.015 75 / 0.1);">🤖</div>
+          <h3>Intelligence Artificielle</h3>
+          <p>Découvrez comment l'IA peut vous aider au quotidien et apprenez à utiliser les outils génératifs.</p>
+          <ul><li>Introduction à l'IA</li><li>Prompt engineering</li><li>ChatGPT et alternatives</li><li>Applications pratiques</li></ul>
+          <a href="contact.html" class="btn btn-terra btn-sm" style="margin-top:auto; align-self:flex-start;">S'inscrire</a>
+        </div>
+
+        <div class="formation-card reveal reveal-delay-1">
+          <div class="card-icon">📷</div>
+          <h3>Photographie</h3>
+          <p>Initiez-vous à la photographie numérique et apprenez à retoucher vos images comme un pro.</p>
+          <ul><li>Bases de la photo</li><li>Composition et lumière</li><li>Retouche photo</li><li>Gestion de galerie</li></ul>
+          <a href="contact.html" class="btn btn-terra btn-sm" style="margin-top:auto; align-self:flex-start;">S'inscrire</a>
+        </div>
+
+        <div class="formation-card reveal reveal-delay-2">
+          <div class="card-icon">🧘</div>
+          <h3>Gestion du Stress</h3>
+          <p>Techniques pour mieux gérer votre stress au travail et améliorer votre bien-être.</p>
+          <ul><li>Techniques de respiration</li><li>Méditation guidée</li><li>Gestion du temps</li><li>Prévention du burn-out</li></ul>
+          <a href="contact.html" class="btn btn-terra btn-sm" style="margin-top:auto; align-self:flex-start;">S'inscrire</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-cream">
+    <div class="section-inner">
+      <div class="reveal">
+        <p class="eyebrow">Informations pratiques</p>
+        <h2 class="h2">Modalités des formations</h2>
+        <div class="divider"></div>
+      </div>
+      <div class="modalites-grid">
+        <div class="modalite reveal"><h4>Publics concernés</h4><p>Demandeurs d'emploi, entrepreneurs, associations, salariés en reconversion et tous les curieux d'apprendre.</p></div>
+        <div class="modalite reveal reveal-delay-1"><h4>Durée</h4><p>De 2 heures à 3 jours selon les modules. Possibilité de formations sur mesure.</p></div>
+        <div class="modalite reveal reveal-delay-2"><h4>Tarifs</h4><p>Formations accessibles, tarifs préférentiels pour les adhérents. Éligibles CPF, OPCO…</p></div>
+        <div class="modalite reveal reveal-delay-3"><h4>Lieu</h4><p>ECE Tiers Lieu — 65 rue des Micocouliers, 04350 Malijai</p></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="cta-strip">
+    <div class="cta-strip-inner reveal">
+      <h2>Un projet de formation spécifique ?</h2>
+      <p>Contactez-nous pour concevoir une formation sur mesure adaptée à vos besoins.</p>
+      <a href="contact.html" class="btn btn-terra">Nous contacter</a>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div class="footer-brand"><img src="images/logo-ece-warm.svg" alt="ECE" style="height:40px; margin-bottom:8px;"><p>65 rue des Micocouliers, 04350 MALIJAI</p></div>
+        <div class="footer-col"><h4>Navigation</h4><a href="index.html">Accueil</a><a href="formations.html">Formations</a><a href="accompagnement.html">Accompagnement</a><a href="contact.html">Contact</a></div>
+        <div class="footer-col"><h4>Contact</h4><p>09 88 36 62 63</p><a href="mailto:contact@ece04.org">contact@ece04.org</a></div>
+        <div class="footer-col"><h4>Réseaux</h4><a href="https://facebook.com/espacecollaboratifequitable" target="_blank">Facebook</a><a href="https://instagram.com/ece_tiers_lieu" target="_blank">Instagram</a><a href="https://linkedin.com/company/ece04" target="_blank">LinkedIn</a></div>
+      </div>
+      <div class="footer-bottom"><p>© 2026 ECE Tiers Lieu</p><p><a href="#">Mentions légales</a></p></div>
+    </div>
+  </footer>
+
+  <script>
+    const nav = document.getElementById('site-nav');
+    window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 60));
+    document.querySelectorAll('.reveal').forEach(el =>
+      new IntersectionObserver(([e]) => e.isIntersecting && el.classList.add('visible'), {threshold:0.12}).observe(el)
+    );
+  </script>
+</body>
+</html>

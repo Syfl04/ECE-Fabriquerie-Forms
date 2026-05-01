@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ateliers & Conseil Numérique — ECE Tiers Lieu</title>
+  <link rel="stylesheet" href="css/ece-warm.css">
+  <style>
+    .atelier-card {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 0;
+      border-radius: var(--r-lg);
+      overflow: hidden;
+      background: white;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+    .atelier-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+    .atelier-card.reverse { grid-template-columns: 1fr 280px; }
+    .atelier-card.reverse .a-img { order: 2; }
+    .atelier-card.reverse .a-body { order: 1; }
+    .a-img {
+      position: relative;
+      min-height: 220px;
+      background: var(--brown);
+      overflow: hidden;
+    }
+    .a-img img { width: 100%; height: 100%; object-fit: cover; }
+    .a-img-ph {
+      width: 100%; height: 100%; min-height: 220px;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 10px; font-size: 48px;
+      background: linear-gradient(160deg, var(--brown) 0%, var(--brown-light) 100%);
+      color: rgba(255,255,255,0.2);
+      font-family: monospace; font-size: 11px;
+      letter-spacing: 0.08em; text-transform: uppercase;
+    }
+    .a-img-ph span { font-size: 48px; opacity: 0.3; }
+    .a-body { padding: 32px; display: flex; flex-direction: column; gap: 10px; }
+    .a-body h3 { font-family: var(--font-display); font-size: 22px; font-weight: 500; }
+    .a-body p { font-size: 15px; color: var(--brown-light); line-height: 1.7; }
+    .a-body ul { padding-left: 18px; font-size: 14px; color: var(--brown-light); }
+    .a-body ul li { margin-bottom: 5px; }
+    .a-body .btn { margin-top: auto; align-self: flex-start; }
+    .ateliers-stack { display: flex; flex-direction: column; gap: 24px; }
+    @media (max-width: 700px) {
+      .atelier-card, .atelier-card.reverse { grid-template-columns: 1fr; }
+      .a-img-ph { min-height: 160px; }
+      .atelier-card.reverse .a-img { order: 0; }
+      .atelier-card.reverse .a-body { order: 1; }
+    }
+    .num-service {
+      background: white; border-radius: var(--r-lg); padding: 28px;
+      box-shadow: var(--shadow-sm); display: flex; flex-direction: column; gap: 10px;
+    }
+    .num-service h3 { font-family: var(--font-display); font-size: 20px; font-weight: 500; }
+    .num-service p { font-size: 15px; color: var(--brown-light); }
+    .num-service ul { padding-left: 18px; font-size: 14px; color: var(--brown-light); }
+    .num-service ul li { margin-bottom: 4px; }
+    .france-services {
+      display: flex; gap: 40px; align-items: flex-start; flex-wrap: wrap;
+      background: oklch(55% 0.08 155 / 0.06);
+      border: 1px solid oklch(55% 0.08 155 / 0.2);
+      border-radius: var(--r-lg); padding: 36px;
+    }
+    .france-services img { width: 100px; flex-shrink: 0; opacity: 0.75; }
+    .france-services .fs-text { flex: 1; min-width: 260px; }
+    .france-services h3 { font-family: var(--font-display); font-size: 24px; margin-bottom: 10px; }
+    .france-services p { font-size: 15px; color: var(--brown-light); line-height: 1.75; }
+  </style>
+</head>
+<body>
+
+  <nav class="site-nav scrolled" id="site-nav">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <img src="images/logo-ece-dark.svg" alt="ECE Tiers Lieu" style="height:40px; width:auto;">
+      </a>
+      <button class="nav-toggle" onclick="document.getElementById('nav-links').classList.toggle('open')">☰</button>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="index.html#about">L'ECE</a></li>
+        <li><a href="formations.html">Formations</a></li>
+        <li><a href="ateliers.html" class="active">Ateliers</a></li>
+        <li><a href="jess.html">Jess</a></li>
+        <li><a href="accompagnement.html">Accompagnement</a></li>
+        <li><a href="contact.html" class="nav-cta">Nous contacter</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="page-hero">
+    <div class="page-hero-inner">
+      <div class="breadcrumb"><a href="index.html">Accueil</a><span>›</span><span>Ateliers & Conseil Numérique</span></div>
+      <h1>Ateliers & Conseil Numérique</h1>
+      <p class="page-hero-sub">Des espaces pour créer, apprendre et devenir autonome</p>
+    </div>
+  </div>
+
+  <!-- Ateliers -->
+  <section class="section">
+    <div class="section-inner">
+      <div class="reveal">
+        <p class="eyebrow">Espaces actifs</p>
+        <h2 class="h2">Les ateliers de l'ECE</h2>
+        <div class="divider"></div>
+        <p class="lead">L'ECE Tiers Lieu propose tout au long de l'année des ateliers variés pour découvrir, apprendre et pratiquer dans un environnement collaboratif.</p>
+      </div>
+      <div class="ateliers-stack" style="margin-top:48px;">
+
+        <div class="atelier-card reveal">
+          <div class="a-img">
+            <img src="https://images.unsplash.com/photo-1581092918056-0c4c3acd3780?w=600&q=80" alt="La Fabriquerie">
+          </div>
+          <div class="a-body">
+            <span class="badge">Fablab</span>
+            <h3>La Fabriquerie</h3>
+            <p>Un Fablab ouvert à tous pour créer, fabriquer et expérimenter.</p>
+            <ul>
+              <li><strong>Impression 3D</strong> : imprimantes de différentes capacités</li>
+              <li><strong>Découpe laser</strong> : gravure sur divers matériaux</li>
+              <li><strong>Postes CAO</strong> : Fusion 360 et logiciels dédiés</li>
+              <li><strong>Ateliers</strong> : bois, métal, robotique, électronique</li>
+            </ul>
+            <a href="contact.html" class="btn btn-terra btn-sm">Découvrir la Fabriquerie</a>
+          </div>
+        </div>
+
+        <div class="atelier-card reverse reveal">
+          <div class="a-body">
+            <h3>Espace Numérique</h3>
+            <p>Un espace dédié à l'accès et à l'apprentissage des outils numériques.</p>
+            <ul>
+              <li><strong>Accès libre accompagné</strong> : ordinateurs avec médiateur numérique</li>
+              <li><strong>Ateliers numériques</strong> : initiation, perfectionnement</li>
+              <li><strong>Démarches en ligne</strong> : aide administrative personnalisée</li>
+            </ul>
+            <a href="#conseil" class="btn btn-outline-dark btn-sm">Conseil numérique →</a>
+          </div>
+          <div class="a-img">
+            <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600&q=80" alt="Espace Numérique">
+          </div>
+        </div>
+
+        <div class="atelier-card reveal">
+          <div class="a-img">
+            <img src="https://images.unsplash.com/photo-1590602847861-f357a9332bbc?w=600&q=80" alt="Espace Médias">
+          </div>
+          <div class="a-body">
+            <h3>Espace Médias</h3>
+            <p>Studio pour produire du contenu et communiquer.</p>
+            <ul>
+              <li><strong>Web radio</strong> : studio d'enregistrement et podcasts</li>
+              <li><strong>Studio photo/vidéo</strong> : équipement de production</li>
+              <li><strong>Montage</strong> : logiciels audio et vidéo</li>
+            </ul>
+            <a href="contact.html" class="btn btn-terra btn-sm">Proposer un podcast</a>
+          </div>
+        </div>
+
+        <div class="atelier-card reverse reveal">
+          <div class="a-body">
+            <h3>Salles d'Activités</h3>
+            <p>Des espaces modulables pour vos événements et ateliers.</p>
+            <ul>
+              <li><strong>Salle de réunion</strong> : équipement professionnel</li>
+              <li><strong>Salle de formation</strong> : configuration classe</li>
+              <li><strong>Espaces créatifs</strong> : couture, danse, théâtre, photo</li>
+              <li><strong>Réservation</strong> : journée, demi-journée, longue durée</li>
+            </ul>
+            <a href="contact.html" class="btn btn-terra btn-sm">Réserver un espace</a>
+          </div>
+          <div class="a-img">
+            <img src="https://images.unsplash.com/photo-1515187029135-18ee286d815b?w=600&q=80" alt="Salles">
+          </div>
+        </div>
+
+      </div>
+
+      <div style="margin-top:32px;" class="reveal">
+        <p class="eyebrow" style="margin-bottom:12px;">Thématiques</p>
+        <div class="tag-list">
+          <span class="tag">Numérique</span>
+          <span class="tag">Fabrication</span>
+          <span class="tag">Médias</span>
+          <span class="tag">Créatif</span>
+          <span class="tag">Bien-être</span>
+          <span class="tag">Robotique</span>
+          <span class="tag">Photo</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Conseil numérique -->
+  <section class="section section-cream" id="conseil">
+    <div class="section-inner">
+      <div class="reveal">
+        <p class="eyebrow">Inclusion numérique</p>
+        <h2 class="h2">Conseil Numérique</h2>
+        <div class="divider"></div>
+        <p class="lead">Vous rencontrez des difficultés avec les outils numériques ? Nous vous proposons un accompagnement personnalisé, bienveillant et sans jugement.</p>
+      </div>
+
+      <div class="grid-3" style="margin-top:40px;">
+        <div class="num-service reveal">
+          <div class="card-icon">📱</div>
+          <h3>Démarches en ligne</h3>
+          <p>Accompagnement dans vos démarches administratives :</p>
+          <ul><li>CAF, Pôle Emploi, impôts</li><li>Renouvellement de documents</li><li>Inscriptions diverses</li><li>Création de comptes</li></ul>
+        </div>
+        <div class="num-service reveal reveal-delay-2">
+          <div class="card-icon">💻</div>
+          <h3>Utilisation des outils</h3>
+          <p>Apprenez à utiliser votre ordinateur, smartphone ou tablette :</p>
+          <ul><li>Envoi de mails</li><li>Navigation sécurisée</li><li>Gestion des photos</li><li>Applications essentielles</li></ul>
+        </div>
+        <div class="num-service reveal reveal-delay-3">
+          <div class="card-icon">🔒</div>
+          <h3>Sécurité numérique</h3>
+          <p>Protégez-vous des dangers du web :</p>
+          <ul><li>Mots de passe sécurisés</li><li>Reconnaître les arnaques</li><li>Protection des données</li><li>Confidentialité</li></ul>
+        </div>
+      </div>
+
+      <div style="margin-top:40px;" class="reveal">
+        <div class="france-services">
+          <img src="https://www.francenum.gouv.fr/sites/default/files/2020-11/Logo%20France%20services%20bleu%20vertical.png" alt="France Services">
+          <div class="fs-text">
+            <h3>Relais France Services</h3>
+            <p>L'ECE Tiers Lieu est un <strong>relais France Services</strong>. Nous vous accompagnons dans l'accès aux services publics en ligne et vous orientons vers les bons interlocuteurs — sans vous déplacer en préfecture.</p>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:48px;" class="reveal">
+        <p class="eyebrow">Comment ça marche ?</p>
+        <div class="steps" style="margin-top:24px;">
+          <div class="step"><div class="step-num">01</div><h4>Prenez rendez-vous</h4><p>Par téléphone ou par mail pour fixer un créneau</p></div>
+          <div class="step"><div class="step-num">02</div><h4>Venez avec vos questions</h4><p>Apportez vos appareils et identifiants si nécessaire</p></div>
+          <div class="step"><div class="step-num">03</div><h4>Apprenez à votre rythme</h4><p>Accompagnement individualisé et adapté</p></div>
+        </div>
+        <div class="info-box" style="margin-top:28px;">
+          <h4>Accès libre accompagné</h4>
+          <p>L'Espace Numérique est ouvert en accès libre. Un médiateur numérique est présent du lundi au vendredi, 9h – 17h.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="cta-strip">
+    <div class="cta-strip-inner reveal">
+      <h2>Besoin d'aide avec le numérique ?</h2>
+      <p>Nous sommes là pour vous accompagner sans jugement.</p>
+      <div style="display:flex; gap:16px; justify-content:center; flex-wrap:wrap;">
+        <a href="tel:0768077661" class="btn btn-terra">Appeler le 07 68 07 76 61</a>
+        <a href="mailto:contact@ece04.org" class="btn btn-outline-light">Envoyer un email</a>
+      </div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div class="footer-brand"><img src="images/logo-ece-warm.svg" alt="ECE" style="height:40px; margin-bottom:8px;"><p>65 rue des Micocouliers, 04350 MALIJAI</p></div>
+        <div class="footer-col"><h4>Navigation</h4><a href="index.html">Accueil</a><a href="formations.html">Formations</a><a href="ateliers.html">Ateliers</a><a href="contact.html">Contact</a></div>
+        <div class="footer-col"><h4>Contact</h4><p>09 88 36 62 63</p><a href="mailto:contact@ece04.org">contact@ece04.org</a></div>
+        <div class="footer-col"><h4>Réseaux</h4><a href="https://facebook.com/espacecollaboratifequitable" target="_blank">Facebook</a><a href="https://instagram.com/ece_tiers_lieu" target="_blank">Instagram</a><a href="https://linkedin.com/company/ece04" target="_blank">LinkedIn</a></div>
+      </div>
+      <div class="footer-bottom"><p>© 2026 ECE Tiers Lieu</p><p><a href="#">Mentions légales</a></p></div>
+    </div>
+  </footer>
+
+  <script>
+    const nav = document.getElementById('site-nav');
+    window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 60));
+    document.querySelectorAll('.reveal').forEach(el =>
+      new IntersectionObserver(([e]) => e.isIntersecting && el.classList.add('visible'), {threshold:0.12}).observe(el)
+    );
+  </script>
+</body>
+</html>

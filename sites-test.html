@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ECE Malijai — Sites Test</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem 1rem;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: white;
+        }
+        
+        .header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .header p {
+            opacity: 0.9;
+            font-size: 1rem;
+        }
+        
+        .sites-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            width: 100%;
+            max-width: 500px;
+        }
+        
+        @media (min-width: 768px) {
+            .sites-container {
+                grid-template-columns: 1fr 1fr;
+                max-width: 900px;
+            }
+        }
+        
+        .site-card {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+        
+        .site-card h2 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+        
+        .site-card.nouveau h2 {
+            color: #c75b39;
+        }
+        
+        .site-card.pourpre h2 {
+            color: #6b4c9a;
+        }
+        
+        .qr-container {
+            display: flex;
+            justify-content: center;
+            margin: 1rem 0;
+        }
+        
+        .qr-container img {
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .url-display {
+            background: #f5f5f5;
+            padding: 0.75rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-family: monospace;
+            color: #666;
+            margin: 1rem 0;
+            word-break: break-all;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        
+        .btn-nouveau {
+            background: #c75b39;
+            color: white;
+        }
+        
+        .btn-pourpre {
+            background: #6b4c9a;
+            color: white;
+        }
+        
+        .footer {
+            margin-top: 2rem;
+            color: white;
+            opacity: 0.7;
+            font-size: 0.85rem;
+        }
+        
+        .date-info {
+            background: rgba(255,255,255,0.15);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            margin-bottom: 1.5rem;
+            color: white;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="date-info">🗓️ Déployé le 1 mai 2026</div>
+    
+    <div class="header">
+        <h1>🌐 ECE Malijai</h1>
+        <p>Deux versions du site — scanne ou clique pour tester</p>
+    </div>
+    
+    <div class="sites-container">
+        <!-- Site Nouveau Design -->
+        <div class="site-card nouveau">
+            <h2>🔥 Nouveau Design</h2>
+            <p style="color: #666; margin-bottom: 1rem; font-size: 0.9rem;">Ton chaud — couleurs chaleureuses</p>
+            <div class="qr-container" id="qr-nouveau"></div>
+            <div class="url-display" id="url-nouveau">https://syfl04.github.io/ECE-Fabriquerie-Forms/site-nouveau-design/</div>
+            <a href="https://syfl04.github.io/ECE-Fabriquerie-Forms/site-nouveau-design/" class="btn btn-nouveau" target="_blank">Ouvrir le site</a>
+        </div>
+        
+        <!-- Site Pourpre -->
+        <div class="site-card pourpre">
+            <h2>💜 Design Pourpre</h2>
+            <p style="color: #666; margin-bottom: 1rem; font-size: 0.9rem;">Élégant — tons violets</p>
+            <div class="qr-container" id="qr-pourpre"></div>
+            <div class="url-display" id="url-pourpre">https://syfl04.github.io/ECE-Fabriquerie-Forms/site-pourpre/</div>
+            <a href="https://syfl04.github.io/ECE-Fabriquerie-Forms/site-pourpre/" class="btn btn-pourpre" target="_blank">Ouvrir le site</a>
+        </div>
+    </div>
+    
+    <div class="footer">
+        Déployé via GitHub Pages — Repo public ECE-Fabriquerie-Forms
+    </div>
+    
+    <script>
+        // Générer QR codes
+        const urlNouveau = 'https://syfl04.github.io/ECE-Fabriquerie-Forms/site-nouveau-design/';
+        const urlPourpre = 'https://syfl04.github.io/ECE-Fabriquerie-Forms/site-pourpre/';
+        
+        new QRCode(document.getElementById('qr-nouveau'), {
+            text: urlNouveau,
+            width: 180,
+            height: 180,
+            colorDark: '#c75b39',
+            colorLight: '#ffffff',
+            correctLevel: QRCode.CorrectLevel.M
+        });
+        
+        new QRCode(document.getElementById('qr-pourpre'), {
+            text: urlPourpre,
+            width: 180,
+            height: 180,
+            colorDark: '#6b4c9a',
+            colorLight: '#ffffff',
+            correctLevel: QRCode.CorrectLevel.M
+        });
+    </script>
+</body>
+</html>

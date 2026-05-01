@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Conseil Numérique — ECE Tiers Lieu</title>
+  <link rel="stylesheet" href="css/ece-purple.css">
+  <style>
+    .service-num-card {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .service-num-card h3 {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 600;
+    }
+    .service-num-card p { font-size: 15px; color: var(--white-80); }
+    .service-num-card ul {
+      padding-left: 18px;
+      color: var(--white-80);
+      font-size: 14px;
+    }
+    .service-num-card ul li { margin-bottom: 4px; }
+    .service-icon-large {
+      font-size: 36px;
+      margin-bottom: 6px;
+    }
+    .france-services-block {
+      display: flex;
+      gap: 40px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+    .france-services-block img {
+      width: 120px;
+      flex-shrink: 0;
+      filter: brightness(1.2) saturate(0.4);
+    }
+    .france-services-block .text { flex: 1; min-width: 260px; }
+    .france-services-block h2 {
+      font-family: var(--font-display);
+      font-size: 26px;
+      margin-bottom: 10px;
+    }
+    .france-services-block p {
+      font-size: 15px;
+      color: var(--white-80);
+      margin-bottom: 10px;
+    }
+    .cta-buttons { display: flex; gap: 16px; flex-wrap: wrap; }
+  </style>
+</head>
+<body>
+
+  <!-- Top Bar -->
+  <div class="top-bar">
+    <div class="top-bar-container">
+      <div class="top-contact">
+        <a href="tel:+33768077661">07 68 07 76 61</a>
+        <a href="mailto:contact@ece04.org">contact@ece04.org</a>
+      </div>
+      <div class="top-social">
+        <a href="https://facebook.com/espacecollaboratifequitable" target="_blank">Facebook</a>
+        <a href="https://instagram.com/ece_tiers_lieu" target="_blank">Instagram</a>
+        <a href="https://linkedin.com/company/ece04" target="_blank">LinkedIn</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="header-container">
+      <div class="logo">
+        <a href="index.html">
+          <img src="images/logo-ece.svg" alt="ECE Tiers Lieu" style="height:44px;width:auto;">
+        </a>
+      </div>
+      <button class="nav-toggle" onclick="this.closest('header').querySelector('.main-nav').classList.toggle('open')">☰</button>
+      <nav class="main-nav">
+        <ul>
+          <li><a href="index.html">Accueil</a></li>
+          <li><a href="formations.html">Formations</a></li>
+          <li><a href="accompagnement.html">Accompagnement</a></li>
+          <li><a href="conseil-numerique.html" class="active">Conseil Numérique</a></li>
+          <li><a href="ateliers.html">Ateliers</a></li>
+          <li><a href="jess.html">Jess</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Page Hero -->
+  <div class="page-hero">
+    <div class="page-hero-inner">
+      <div class="breadcrumb">
+        <a href="index.html">Accueil</a>
+        <span class="breadcrumb-sep">›</span>
+        <span>Conseil Numérique</span>
+      </div>
+      <h1>Conseil Numérique</h1>
+      <p class="page-hero-subtitle">Un accompagnement bienveillant pour devenir autonome dans le monde digital</p>
+    </div>
+  </div>
+
+  <main class="main-content">
+
+    <section class="content-section">
+      <p class="lead">Vous rencontrez des difficultés avec les outils numériques ? L'ECE Tiers Lieu vous propose un accompagnement personnalisé pour vous aider à devenir autonome dans le monde digital.</p>
+
+      <div class="grid-3" style="margin-top:40px;">
+
+        <div class="card service-num-card">
+          <div class="service-icon-large">📱</div>
+          <h3>Démarches en ligne</h3>
+          <p>Nous vous accompagnons dans vos démarches administratives sur internet :</p>
+          <ul>
+            <li>CAF, Pôle Emploi, impôts</li>
+            <li>Renouvellement de documents</li>
+            <li>Inscriptions diverses</li>
+            <li>Création de comptes</li>
+          </ul>
+        </div>
+
+        <div class="card service-num-card">
+          <div class="service-icon-large">💻</div>
+          <h3>Utilisation des outils</h3>
+          <p>Apprenez à utiliser votre ordinateur, smartphone ou tablette :</p>
+          <ul>
+            <li>Envoi de mails</li>
+            <li>Navigation internet sécurisée</li>
+            <li>Gestion des photos</li>
+            <li>Applications essentielles</li>
+          </ul>
+        </div>
+
+        <div class="card service-num-card">
+          <div class="service-icon-large">🔒</div>
+          <h3>Sécurité numérique</h3>
+          <p>Protégez-vous des dangers du web :</p>
+          <ul>
+            <li>Mots de passe sécurisés</li>
+            <li>Reconnaître les arnaques</li>
+            <li>Protection des données</li>
+            <li>Configuration de la confidentialité</li>
+          </ul>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- France Services -->
+    <div class="band">
+      <div class="band-inner">
+        <div class="france-services-block">
+          <img src="https://www.francenum.gouv.fr/sites/default/files/2020-11/Logo%20France%20services%20bleu%20vertical.png" alt="France Services">
+          <div class="text">
+            <h2>Relais France Services</h2>
+            <p>L'ECE Tiers Lieu est un <strong>relais France Services</strong>. Cela signifie que nous pouvons vous accompagner dans l'accès aux services publics en ligne et vous orienter vers les bons interlocuteurs.</p>
+            <p>Les France Services sont des guichets uniques qui permettent d'accéder aux services publics et à leurs partenaires, sans se déplacer en préfecture.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Comment ça marche -->
+    <section class="content-section" style="margin-top:64px;">
+      <h2 class="section-title">Comment ça marche ?</h2>
+      <div class="section-divider"></div>
+      <div class="steps" style="margin-top:32px;">
+        <div class="step-item">
+          <div class="step-number">1</div>
+          <h4>Prenez rendez-vous</h4>
+          <p>Contactez-nous par téléphone ou par mail pour fixer un créneau</p>
+        </div>
+        <div class="step-item">
+          <div class="step-number">2</div>
+          <h4>Venez avec vos questions</h4>
+          <p>Apportez vos appareils et vos identifiants si nécessaire</p>
+        </div>
+        <div class="step-item">
+          <div class="step-number">3</div>
+          <h4>Apprenez à votre rythme</h4>
+          <p>L'accompagnement est individualisé et adapté à vos besoins</p>
+        </div>
+      </div>
+
+      <div class="info-box">
+        <h4>Accès libre accompagné</h4>
+        <p>L'Espace Numérique de l'ECE est ouvert en accès libre. Un médiateur numérique est présent pour vous guider dans l'utilisation des ordinateurs et répondre à vos questions.</p>
+        <p style="margin-top:8px;"><strong>Horaires :</strong> Du lundi au vendredi, 9h – 17h</p>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <div class="cta-box">
+      <h2>Besoin d'aide avec le numérique ?</h2>
+      <p>N'hésitez pas à nous contacter, nous sommes là pour vous accompagner sans jugement.</p>
+      <div class="cta-buttons" style="justify-content:center;">
+        <a href="tel:0768077661" class="btn btn-gold">Appeler le 07 68 07 76 61</a>
+        <a href="mailto:contact@ece04.org" class="btn btn-outline">Envoyer un email</a>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h4>Coordonnées</h4>
+          <p>65 rue des Micocouliers<br>04350 MALIJAI — FRANCE</p>
+          <p>Tél : 09 88 36 62 63<br>Portable : 07 68 07 76 61</p>
+        </div>
+        <div class="footer-col">
+          <h4>Horaires</h4>
+          <p>Lun – Ven : 9h00 – 17h00</p>
+          <p>Sam – Dim : Fermé</p>
+        </div>
+        <div class="footer-col">
+          <h4>Suivez-nous</h4>
+          <div class="social-links-footer">
+            <a href="https://facebook.com/espacecollaboratifequitable" target="_blank">Facebook</a>
+            <a href="https://instagram.com/ece_tiers_lieu" target="_blank">Instagram</a>
+            <a href="https://linkedin.com/company/ece04" target="_blank">LinkedIn</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 ECE Tiers Lieu — Tous droits réservés</p>
+        <p><a href="#">Mentions légales</a></p>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

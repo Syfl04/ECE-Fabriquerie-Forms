@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact — ECE Tiers Lieu</title>
+  <link rel="stylesheet" href="css/ece-purple.css">
+  <style>
+    .contact-layout {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 48px;
+      align-items: start;
+    }
+    @media (max-width: 900px) {
+      .contact-layout { grid-template-columns: 1fr; }
+    }
+    .contact-form-section h2,
+    .contact-info-section h2 {
+      font-family: var(--font-display);
+      font-size: 26px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .form-divider {
+      width: 40px;
+      height: 3px;
+      background: var(--grad-accent);
+      border-radius: 2px;
+      margin-bottom: 28px;
+    }
+    .submit-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 36px;
+      border-radius: 100px;
+      background: var(--grad-accent);
+      color: var(--purple-deep);
+      font-family: var(--font-body);
+      font-size: 15px;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .submit-btn:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+    .form-note {
+      display: none;
+      margin-top: 16px;
+      padding: 14px 20px;
+      background: oklch(55% 0.22 280 / 0.15);
+      border: 1px solid oklch(55% 0.22 280 / 0.4);
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      color: var(--gold);
+    }
+    .contact-info-section {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .contact-block {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      padding: 20px 0;
+      border-bottom: 1px solid var(--white-10);
+    }
+    .contact-block:first-of-type { padding-top: 0; }
+    .contact-block-icon {
+      width: 40px;
+      height: 40px;
+      background: var(--white-10);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .contact-block-text h4 {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 4px;
+    }
+    .contact-block-text p, .contact-block-text a {
+      font-size: 15px;
+      color: var(--white-80);
+      line-height: 1.7;
+    }
+    .contact-block-text a:hover { color: var(--gold); }
+    .map-placeholder {
+      margin-top: 24px;
+      background: var(--white-10);
+      border: 1px solid var(--white-20);
+      border-radius: var(--radius-md);
+      padding: 28px;
+      text-align: center;
+    }
+    .map-placeholder p { font-size: 14px; color: var(--white-80); margin-top: 8px; }
+    /* Accès grid */
+    .acces-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-top: 28px;
+    }
+    .acces-item {
+      background: var(--white-10);
+      border: 1px solid var(--white-20);
+      border-radius: var(--radius-md);
+      padding: 20px 22px;
+    }
+    .acces-item h4 {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .acces-item p { font-size: 14px; color: var(--white-80); }
+  </style>
+</head>
+<body>
+
+  <!-- Top Bar -->
+  <div class="top-bar">
+    <div class="top-bar-container">
+      <div class="top-contact">
+        <a href="tel:+33768077661">07 68 07 76 61</a>
+        <a href="mailto:contact@ece04.org">contact@ece04.org</a>
+      </div>
+      <div class="top-social">
+        <a href="https://facebook.com/espacecollaboratifequitable" target="_blank">Facebook</a>
+        <a href="https://instagram.com/ece_tiers_lieu" target="_blank">Instagram</a>
+        <a href="https://linkedin.com/company/ece04" target="_blank">LinkedIn</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="header-container">
+      <div class="logo">
+        <a href="index.html">
+          <img src="images/logo-ece.svg" alt="ECE Tiers Lieu" style="height:44px;width:auto;">
+        </a>
+      </div>
+      <button class="nav-toggle" onclick="this.closest('header').querySelector('.main-nav').classList.toggle('open')">☰</button>
+      <nav class="main-nav">
+        <ul>
+          <li><a href="index.html">Accueil</a></li>
+          <li><a href="formations.html">Formations</a></li>
+          <li><a href="accompagnement.html">Accompagnement</a></li>
+          <li><a href="conseil-numerique.html">Conseil Numérique</a></li>
+          <li><a href="ateliers.html">Ateliers</a></li>
+          <li><a href="jess.html">Jess</a></li>
+          <li><a href="contact.html" class="active">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Page Hero -->
+  <div class="page-hero">
+    <div class="page-hero-inner">
+      <div class="breadcrumb">
+        <a href="index.html">Accueil</a>
+        <span class="breadcrumb-sep">›</span>
+        <span>Contact</span>
+      </div>
+      <h1>Nous contacter</h1>
+      <p class="page-hero-subtitle">Notre équipe est disponible du lundi au vendredi, 9h – 17h</p>
+    </div>
+  </div>
+
+  <main class="main-content">
+
+    <div class="contact-layout">
+
+      <!-- Formulaire -->
+      <section class="contact-form-section">
+        <h2>Envoyez-nous un message</h2>
+        <div class="form-divider"></div>
+        <form class="contact-form" onsubmit="handleSubmit(event)">
+          <div class="form-group">
+            <label for="nom">Nom *</label>
+            <input type="text" id="nom" name="nom" placeholder="Votre nom complet" required>
+          </div>
+          <div class="form-group">
+            <label for="email">Email *</label>
+            <input type="email" id="email" name="email" placeholder="votre@email.fr" required>
+          </div>
+          <div class="form-group">
+            <label for="telephone">Téléphone</label>
+            <input type="tel" id="telephone" name="telephone" placeholder="06 xx xx xx xx">
+          </div>
+          <div class="form-group">
+            <label for="sujet">Sujet</label>
+            <select id="sujet" name="sujet">
+              <option value="">— Sélectionnez —</option>
+              <option value="renseignement">Renseignement général</option>
+              <option value="formation">Formation</option>
+              <option value="accompagnement">Accompagnement</option>
+              <option value="conseil-numerique">Conseil numérique</option>
+              <option value="atelier">Atelier</option>
+              <option value="jess">Jess / Presse</option>
+              <option value="reservation">Réservation d'espace</option>
+              <option value="autre">Autre</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="message">Message *</label>
+            <textarea id="message" name="message" rows="6" placeholder="Votre message…" required></textarea>
+          </div>
+          <button type="submit" class="submit-btn">Envoyer le message →</button>
+          <div class="form-note" id="form-success">
+            ✓ Merci pour votre message ! Nous reviendrons vers vous dès que possible.
+          </div>
+        </form>
+      </section>
+
+      <!-- Coordonnées -->
+      <section class="contact-info-section">
+        <h2>Coordonnées</h2>
+        <div class="form-divider"></div>
+
+        <div class="contact-block">
+          <div class="contact-block-icon">📍</div>
+          <div class="contact-block-text">
+            <h4>Adresse</h4>
+            <p>ECE Tiers Lieu<br>65 rue des Micocouliers<br>04350 MALIJAI — FRANCE</p>
+          </div>
+        </div>
+
+        <div class="contact-block">
+          <div class="contact-block-icon">📞</div>
+          <div class="contact-block-text">
+            <h4>Téléphone</h4>
+            <p>Fixe : <a href="tel:+33988366263">09 88 36 62 63</a><br>Portable : <a href="tel:+33768077661">07 68 07 76 61</a></p>
+          </div>
+        </div>
+
+        <div class="contact-block">
+          <div class="contact-block-icon">✉️</div>
+          <div class="contact-block-text">
+            <h4>Email</h4>
+            <p><a href="mailto:contact@ece04.org">contact@ece04.org</a></p>
+          </div>
+        </div>
+
+        <div class="contact-block">
+          <div class="contact-block-icon">🕐</div>
+          <div class="contact-block-text">
+            <h4>Horaires d'ouverture</h4>
+            <p>Lundi – Vendredi : 9h00 – 17h00<br>Samedi – Dimanche : Fermé</p>
+          </div>
+        </div>
+
+        <div class="map-placeholder">
+          <div style="font-size:36px; margin-bottom:8px;">🗺️</div>
+          <p>Malijai se situe sur la confluence Bléone-Durance, à proximité de l'autoroute A51.</p>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- Comment venir -->
+    <section class="content-section" style="margin-top:64px;">
+      <h2 class="section-title">Comment venir ?</h2>
+      <div class="section-divider"></div>
+      <div class="acces-grid">
+        <div class="acces-item">
+          <h4>🚗 En voiture</h4>
+          <p>Sortie autoroute A51, direction Malijai centre. Parking disponible devant l'ECE.</p>
+        </div>
+        <div class="acces-item">
+          <h4>🚌 En bus</h4>
+          <p>Ligne de bus régulière depuis Digne-les-Bains et Manosque. Arrêt Malijai centre.</p>
+        </div>
+        <div class="acces-item">
+          <h4>🚲 Autres modes</h4>
+          <p>Accessibilité piétonne et cyclable. Stationnement vélos disponible.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Newsletter -->
+    <div class="cta-box">
+      <h2>Restez informé</h2>
+      <p>Abonnez-vous à notre newsletter pour recevoir l'actualité de l'ECE et les infos sur les prochains ateliers.</p>
+      <a href="#" class="btn btn-gold">S'abonner à la newsletter</a>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h4>Coordonnées</h4>
+          <p>65 rue des Micocouliers<br>04350 MALIJAI — FRANCE</p>
+          <p>Tél : 09 88 36 62 63<br>Portable : 07 68 07 76 61</p>
+        </div>
+        <div class="footer-col">
+          <h4>Horaires</h4>
+          <p>Lun – Ven : 9h00 – 17h00</p>
+          <p>Sam – Dim : Fermé</p>
+        </div>
+        <div class="footer-col">
+          <h4>Suivez-nous</h4>
+          <div class="social-links-footer">
+            <a href="https://facebook.com/espacecollaboratifequitable" target="_blank">Facebook</a>
+            <a href="https://instagram.com/ece_tiers_lieu" target="_blank">Instagram</a>
+            <a href="https://linkedin.com/company/ece04" target="_blank">LinkedIn</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 ECE Tiers Lieu — Tous droits réservés</p>
+        <p><a href="#">Mentions légales</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    function handleSubmit(e) {
+      e.preventDefault();
+      document.getElementById('form-success').style.display = 'block';
+      e.target.reset();
+    }
+  </script>
+
+</body>
+</html>

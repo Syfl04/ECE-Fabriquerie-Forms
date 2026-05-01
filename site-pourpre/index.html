@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Accueil — ECE Tiers Lieu</title>
+  <link rel="stylesheet" href="css/ece-purple.css">
+  <style>
+    /* ---- Intro logo block ---- */
+    .intro-block {
+      display: flex;
+      align-items: flex-start;
+      gap: 48px;
+      flex-wrap: wrap;
+    }
+    .intro-logo {
+      flex-shrink: 0;
+      width: 200px;
+    }
+    .intro-logo img {
+      width: 100%;
+      border-radius: var(--radius-md);
+      filter: brightness(1.1) saturate(0.7);
+    }
+    .intro-text { flex: 1; min-width: 280px; }
+    .intro-text p { margin-bottom: 16px; }
+    .note-text {
+      font-size: 14px;
+      color: var(--white-50);
+      font-style: italic;
+      border-left: 2px solid var(--white-20);
+      padding-left: 14px;
+      margin-top: 20px;
+    }
+    .mission-pill {
+      display: inline-block;
+      background: var(--grad-accent);
+      color: var(--purple-deep);
+      padding: 10px 24px;
+      border-radius: 100px;
+      font-weight: 700;
+      font-size: 15px;
+      margin-top: 16px;
+    }
+    /* ---- Services grid ---- */
+    .services-section { margin-bottom: 64px; }
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+      margin-top: 40px;
+    }
+    .service-card { display: flex; flex-direction: column; gap: 12px; }
+    .service-card .card-icon { font-size: 26px; }
+    .service-card p { color: var(--white-80); font-size: 14px; line-height: 1.7; }
+    .service-card ul { color: var(--white-80); font-size: 14px; padding-left: 16px; }
+    .service-card ul li { margin-bottom: 4px; }
+    .service-card .btn { margin-top: auto; align-self: flex-start; }
+    /* ---- Membership band ---- */
+    .membership-band {
+      background: var(--white-10);
+      border: 1px solid var(--white-20);
+      border-radius: var(--radius-xl);
+      padding: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 32px;
+      flex-wrap: wrap;
+    }
+    .membership-band h3 {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 600;
+      max-width: 540px;
+    }
+    @media (max-width: 700px) {
+      .intro-logo { width: 140px; }
+      .membership-band { flex-direction: column; text-align: center; padding: 32px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Bar -->
+  <div class="top-bar">
+    <div class="top-bar-container">
+      <div class="top-contact">
+        <a href="tel:+33768077661">07 68 07 76 61</a>
+        <a href="mailto:contact@ece04.org">contact@ece04.org</a>
+      </div>
+      <div class="top-social">
+        <a href="https://facebook.com/espacecollaboratifequitable" target="_blank">Facebook</a>
+        <a href="https://instagram.com/ece_tiers_lieu" target="_blank">Instagram</a>
+        <a href="https://linkedin.com/company/ece04" target="_blank">LinkedIn</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="header-container">
+      <div class="logo">
+        <a href="index.html">
+          <img src="images/logo-ece.svg" alt="ECE Tiers Lieu" style="height:44px;width:auto;">
+        </a>
+      </div>
+      <button class="nav-toggle" onclick="this.closest('header').querySelector('.main-nav').classList.toggle('open')">☰</button>
+      <nav class="main-nav">
+        <ul>
+          <li><a href="index.html" class="active">Accueil</a></li>
+          <li><a href="formations.html">Formations</a></li>
+          <li><a href="accompagnement.html">Accompagnement</a></li>
+          <li><a href="conseil-numerique.html">Conseil Numérique</a></li>
+          <li><a href="ateliers.html">Ateliers</a></li>
+          <li><a href="jess.html">Jess</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero-section">
+    <div class="hero-content">
+      <h1>Espace Collaboratif Équitable</h1>
+      <p class="hero-tagline">Partager et faire sens</p>
+      <div class="hero-notice">
+        <strong>Site en cours de restructuration</strong> — consultez notre page d'actualités ou <a href="contact.html" style="color:var(--gold);text-decoration:underline;">contactez-nous</a> pour tout renseignement.
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Content -->
+  <main class="main-content">
+
+    <!-- Présentation -->
+    <section class="content-section">
+      <div class="intro-block">
+        <div class="intro-logo">
+          <img src="images/logo-ece.svg" alt="ECE Tiers Lieu" style="height:44px;width:auto;">
+        </div>
+        <div class="intro-text">
+          <h2 class="section-title">Bienvenue à l'ECE</h2>
+          <div class="section-divider"></div>
+          <p class="lead"><strong>L'Espace Collaboratif Équitable (ECE Tiers Lieu)</strong> est installé à Malijai au cœur des Alpes de Haute Provence, sur la confluence Bléone-Durance.</p>
+          <p class="lead">Labellisé <a href="#" class="link-gold">Fabrique de Territoire</a>, l'ECE dispose d'un <a href="conseil-numerique.html" class="link-gold">espace numérique</a> dédié au grand public et d'un service d'accompagnement pour les porteurs de projets, microentreprises et associations. L'ECE développe également une offre de formations professionnelles.</p>
+          <p class="lead"><a href="#" class="link-gold">Plusieurs structures</a> associatives y ont élu domicile, un Espace Maker, une radio locale et un journal.</p>
+          <p class="note-text">*Pourquoi Équitable ? Parce que nous donnons la même valeur à chacun des projets que nous mettons en œuvre. L'ECE c'est une multitude d'espaces qui collaborent, se croisent, se rencontrent, s'enrichissent.</p>
+          <span class="mission-pill">Un lieu d'inclusion accessible et ouvert à toutes et à tous</span>
+          <div style="margin-top:28px;">
+            <a href="https://cdn.website-editor.net/s/b231c7d441c44265a7818f934673b9da/files/uploaded/ECE-TIERS-LIEU_Presentation.pdf" class="btn btn-gold" target="_blank">Télécharger notre plaquette</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Services -->
+    <section class="services-section">
+      <h2 class="section-title">Les services de l'ECE</h2>
+      <div class="section-divider"></div>
+      <div class="services-grid">
+
+        <div class="card service-card">
+          <div class="card-icon">🏢</div>
+          <h3>Espaces Partagés — Coworking</h3>
+          <p>ECE Tiers-Lieu accueille des associations locales en résidence permanente (danse, photographie, couture, théâtre…). Salles d'activités, de réunion et de formation disponibles à la réservation.</p>
+          <a href="contact.html" class="btn btn-ghost btn-sm">Réserver un espace</a>
+        </div>
+
+        <div class="card service-card">
+          <div class="card-icon">🤝</div>
+          <h3>Accompagnements</h3>
+          <p><strong>Emploi · Entreprises · Associations</strong></p>
+          <p>Publics en insertion, porteurs de projets, microentreprises et associations : accompagnement au projet professionnel, ateliers de préqualification, gestion associative, transition numérique…</p>
+          <a href="accompagnement.html" class="btn btn-ghost btn-sm">En savoir plus</a>
+        </div>
+
+        <div class="card service-card">
+          <div class="card-icon">📚</div>
+          <h3>Formations</h3>
+          <ul>
+            <li>Communication digitale</li>
+            <li>Outils numériques</li>
+            <li>Bureautique</li>
+            <li>Intelligence Artificielle</li>
+            <li>Photographie</li>
+            <li>Gestion du stress</li>
+          </ul>
+          <a href="formations.html" class="btn btn-ghost btn-sm">Voir les formations</a>
+        </div>
+
+        <div class="card card-highlight service-card">
+          <div class="card-icon">🛠️</div>
+          <h3>Ateliers & Fabriquerie</h3>
+          <p><strong>Espace Numérique</strong> : accès accompagné, ateliers d'initiation et démarches en ligne.</p>
+          <p><strong>La Fabriquerie</strong> : Fablab ouvert à tous — imprimantes 3D, découpe laser, conception assistée.</p>
+          <p><strong>Espace Médias</strong> : web radio et podcasts.</p>
+          <a href="ateliers.html" class="btn btn-ghost btn-sm">Découvrir les ateliers</a>
+        </div>
+
+        <div class="card service-card">
+          <div class="card-icon">📰</div>
+          <h3>Jess</h3>
+          <p>Un journal dédié à l'actualité de l'ESS (Économie Sociale et Solidaire) dans les Alpes-de-Haute-Provence.</p>
+          <a href="jess.html" class="btn btn-ghost btn-sm">Lire Jess</a>
+        </div>
+
+        <div class="card service-card">
+          <div class="card-icon">💻</div>
+          <h3>Conseil Numérique</h3>
+          <p>Accompagnement personnalisé pour vos démarches en ligne, aide à l'utilisation des outils numériques, soutien pour devenir autonome avec le digital.</p>
+          <a href="conseil-numerique.html" class="btn btn-ghost btn-sm">Prendre rendez-vous</a>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Adhésion -->
+    <div class="membership-band">
+      <h3>Pour nous soutenir, vous pouvez adhérer à l'association</h3>
+      <a href="https://ecemalijai.s2.yapla.com/fr/espace-membres/adhesion/" class="btn btn-gold" target="_blank">Adhésions 2026</a>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h4>Coordonnées</h4>
+          <p>65 rue des Micocouliers<br>04350 MALIJAI — FRANCE</p>
+          <p>Tél : 09 88 36 62 63<br>Portable : 07 68 07 76 61</p>
+          <p><a href="mailto:contact@ece04.org">contact@ece04.org</a></p>
+        </div>
+        <div class="footer-col">
+          <h4>Horaires</h4>
+          <p>Lun – Ven : 9h00 – 17h00</p>
+          <p>Sam – Dim : Fermé</p>
+        </div>
+        <div class="footer-col">
+          <h4>Navigation</h4>
+          <p><a href="formations.html">Formations</a></p>
+          <p><a href="accompagnement.html">Accompagnement</a></p>
+          <p><a href="conseil-numerique.html">Conseil Numérique</a></p>
+          <p><a href="ateliers.html">Ateliers</a></p>
+          <p><a href="jess.html">Jess</a></p>
+        </div>
+        <div class="footer-col">
+          <h4>Suivez-nous</h4>
+          <div class="social-links-footer">
+            <a href="https://facebook.com/espacecollaboratifequitable" target="_blank">Facebook</a>
+            <a href="https://instagram.com/ece_tiers_lieu" target="_blank">Instagram</a>
+            <a href="https://linkedin.com/company/ece04" target="_blank">LinkedIn</a>
+            <a href="https://twitter.com/ECE_Tiers_Lieu" target="_blank">Twitter</a>
+          </div>
+        </div>
+      </div>
+      <div class="partners-section">
+        <p>Avec le soutien de</p>
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='700' height='80' viewBox='0 0 700 80'%3E%3Cdefs%3E%3Cpattern id='s' width='12' height='12' patternUnits='userSpaceOnUse'%3E%3Crect width='12' height='12' fill='%23ffffff08'/%3E%3Crect x='0' y='0' width='6' height='12' fill='%23ffffff04'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='700' height='80' rx='4' fill='%23ffffff0a'/%3E%3Crect width='700' height='80' rx='4' fill='url(%23s)'/%3E%3Ctext x='350' y='35' text-anchor='middle' font-family='Georgia%2C serif' font-size='12' fill='%23e8d5b760'%3ELogos soutiens%3C/text%3E%3Ctext x='350' y='54' text-anchor='middle' font-family='Georgia%2C serif' font-size='10' fill='%23e8d5b740'%3E%E2%86%91 Image %C3%A0 remplacer%3C/text%3E%3C/svg%3E" alt="Soutiens" class="partners-img">
+        <p>Partenaires</p>
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='700' height='80' viewBox='0 0 700 80'%3E%3Cdefs%3E%3Cpattern id='p' width='12' height='12' patternUnits='userSpaceOnUse'%3E%3Crect width='12' height='12' fill='%23ffffff08'/%3E%3Crect x='0' y='0' width='6' height='12' fill='%23ffffff04'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='700' height='80' rx='4' fill='%23ffffff0a'/%3E%3Crect width='700' height='80' rx='4' fill='url(%23p)'/%3E%3Ctext x='350' y='35' text-anchor='middle' font-family='Georgia%2C serif' font-size='12' fill='%23e8d5b760'%3ELogos partenaires%3C/text%3E%3Ctext x='350' y='54' text-anchor='middle' font-family='Georgia%2C serif' font-size='10' fill='%23e8d5b740'%3E%E2%86%91 Image %C3%A0 remplacer%3C/text%3E%3C/svg%3E" alt="Partenaires" class="partners-img">
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 ECE Tiers Lieu — Tous droits réservés</p>
+        <p><a href="#">Mentions légales</a></p>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

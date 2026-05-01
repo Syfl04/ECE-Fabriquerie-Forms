@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ECE Tiers Lieu — Espace Collaboratif Équitable, Malijai</title>
+  <link rel="stylesheet" href="css/ece-warm.css">
+  <style>
+    /* ---- Hero particles canvas ---- */
+    #hero-canvas { position:absolute; inset:0; width:100%; height:100%; }
+
+    /* ---- About section ---- */
+    .about-img-block {
+      position: relative;
+      border-radius: var(--r-xl);
+      overflow: hidden;
+      background: var(--brown);
+      min-height: 420px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .about-img-block svg { width: 80%; opacity: 0.12; }
+    .about-img-label {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      color: oklch(96% 0.015 75 / 0.4);
+      font-family: var(--font-body);
+      font-size: 13px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .about-img-label span { font-size: 48px; opacity: 0.3; }
+    .about-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 32px;
+    }
+    .stat-item {
+      background: var(--cream);
+      border-radius: var(--r-md);
+      padding: 20px;
+    }
+    .stat-item .stat-num {
+      font-family: var(--font-display);
+      font-size: 36px;
+      font-weight: 300;
+      color: var(--terracotta);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .stat-item .stat-label { font-size: 13px; color: var(--brown-light); }
+
+    /* ---- Services ---- */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: auto auto;
+      gap: 20px;
+      margin-top: 48px;
+    }
+    .services-grid .card:first-child {
+      grid-column: 1 / 2;
+      grid-row: 1 / 3;
+    }
+    @media (max-width: 900px) {
+      .services-grid { grid-template-columns: 1fr; }
+      .services-grid .card:first-child { grid-column: auto; grid-row: auto; }
+    }
+    .service-large-icon {
+      font-size: 48px;
+      margin-bottom: 8px;
+    }
+
+    /* ---- Fablab highlight ---- */
+    .fablab-band {
+      background: var(--brown-deep);
+      padding: 80px 40px;
+      position: relative;
+      overflow: hidden;
+    }
+    .fablab-band::before {
+      content: 'FABRIQUERIE';
+      position: absolute;
+      right: -40px;
+      top: 50%;
+      transform: translateY(-50%) rotate(-90deg);
+      font-family: var(--font-display);
+      font-size: 120px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.03);
+      letter-spacing: 0.1em;
+      white-space: nowrap;
+      pointer-events: none;
+    }
+    .fablab-inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+    @media (max-width: 800px) { .fablab-inner { grid-template-columns: 1fr; gap: 40px; } }
+    .fablab-tools {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .tool-card {
+      background: oklch(35% 0.07 50);
+      border-radius: var(--r-md);
+      padding: 20px;
+      border: 1px solid oklch(96% 0.015 75 / 0.06);
+      transition: background 0.2s;
+    }
+    .tool-card:hover { background: oklch(40% 0.08 48); }
+    .tool-card .tool-icon { font-size: 28px; margin-bottom: 8px; }
+    .tool-card h4 { font-size: 14px; font-weight: 600; color: var(--ivory); margin-bottom: 4px; }
+    .tool-card p { font-size: 13px; color: oklch(96% 0.015 75 / 0.45); }
+
+    /* ---- Jess band ---- */
+    .jess-band {
+      background: var(--terracotta);
+      padding: 80px 40px;
+      position: relative;
+      overflow: hidden;
+    }
+    .jess-band::before {
+      content: 'JESS';
+      position: absolute;
+      left: -20px;
+      bottom: -20px;
+      font-family: var(--font-display);
+      font-size: 200px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.06);
+      line-height: 1;
+      pointer-events: none;
+    }
+    .jess-inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 60px;
+      flex-wrap: wrap;
+      position: relative;
+    }
+    .jess-text { max-width: 520px; }
+    .jess-issues { display: flex; gap: 12px; flex-wrap: wrap; }
+    .issue-pill {
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: var(--r-md);
+      padding: 14px 20px;
+      min-width: 160px;
+      backdrop-filter: blur(4px);
+      transition: background 0.2s;
+    }
+    .issue-pill:hover { background: rgba(255,255,255,0.22); }
+    .issue-pill .issue-num { font-size: 11px; color: rgba(255,255,255,0.6); letter-spacing: 0.08em; margin-bottom: 4px; }
+    .issue-pill .issue-title { font-family: var(--font-display); font-size: 15px; color: white; font-weight: 500; }
+
+    /* ---- Membership ---- */
+    .membership-strip {
+      background: oklch(91% 0.02 72);
+      padding: 64px 40px;
+      border-top: 1px solid var(--sand);
+    }
+    .membership-inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 32px;
+      flex-wrap: wrap;
+    }
+    .membership-inner h3 {
+      font-family: var(--font-display);
+      font-size: clamp(20px, 3vw, 30px);
+      font-weight: 400;
+      color: var(--brown-deep);
+      max-width: 540px;
+    }
+
+    /* ---- Partenaires img placeholders ---- */
+    .partners-row {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 32px;
+    }
+    .partner-ph {
+      width: 160px;
+      height: 56px;
+      background: oklch(85% 0.04 75);
+      border-radius: var(--r-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      color: var(--sand-dark);
+      letter-spacing: 0.05em;
+      font-family: monospace;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Navigation ── -->
+  <nav class="site-nav" id="site-nav">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <img src="images/logo-ece-warm.svg" alt="ECE Tiers Lieu">
+      </a>
+      <button class="nav-toggle" onclick="document.getElementById('nav-links').classList.toggle('open')">☰</button>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="#about">L'ECE</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#fabriquerie">Fabriquerie</a></li>
+        <li><a href="#jess">Jess</a></li>
+        <li><a href="#accompagnement">Accompagnement</a></li>
+        <li><a href="contact.html" class="nav-cta">Nous contacter</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ── Hero ── -->
+  <section class="hero" id="hero">
+    <canvas id="hero-canvas"></canvas>
+    <div class="hero-content">
+      <div class="hero-logo-large">
+        <img src="images/logo-ece-warm.svg" alt="ECE Tiers Lieu" style="height:72px;">
+      </div>
+      <p class="hero-eyebrow">Malijai · Alpes de Haute-Provence</p>
+      <h1 class="hero-title">Un lieu pour<br><em>partager et faire sens</em></h1>
+      <p class="hero-subtitle">Espace de coworking, de formation, de fabrication numérique et d'accompagnement — ouvert à toutes et à tous.</p>
+      <div class="hero-actions">
+        <a href="#services" class="btn btn-terra">Découvrir l'ECE</a>
+        <a href="contact.html" class="btn btn-outline-light">Nous contacter</a>
+      </div>
+    </div>
+    <div class="hero-scroll">
+      <div class="hero-scroll-line"></div>
+      <span>Défiler</span>
+    </div>
+  </section>
+
+  <!-- ── À propos ── -->
+  <section class="section" id="about">
+    <div class="section-inner">
+      <div class="two-col">
+        <div class="reveal">
+          <p class="eyebrow">Qui sommes-nous</p>
+          <h2 class="h2">L'Espace Collaboratif <em style="font-style:italic; color:var(--terracotta)">Équitable</em></h2>
+          <div class="divider"></div>
+          <p class="lead">Labellisé <strong>Fabrique de Territoire</strong>, l'ECE est installé à Malijai, au cœur des Alpes de Haute-Provence, sur la confluence Bléone-Durance.</p>
+          <p style="margin-top:16px; font-size:15px; color:var(--brown-light); line-height:1.8;">Nous donnons la même valeur à chacun des projets que nous mettons en œuvre. L'ECE c'est une multitude d'espaces qui collaborent, se croisent, se rencontrent, s'enrichissent.</p>
+          <p style="margin-top:12px; font-size:15px; color:var(--brown-light); line-height:1.8;">Plusieurs structures associatives y ont élu domicile — danse, photographie, couture, théâtre — ainsi qu'un Espace Maker, une radio locale et le journal Jess.</p>
+          <div style="margin-top:32px; display:flex; gap:12px; flex-wrap:wrap;">
+            <a href="https://cdn.website-editor.net/s/b231c7d441c44265a7818f934673b9da/files/uploaded/ECE-TIERS-LIEU_Presentation.pdf" class="btn btn-terra btn-sm" target="_blank">Notre plaquette</a>
+            <a href="https://ecemalijai.s2.yapla.com/fr/espace-membres/adhesion/" class="btn btn-outline-dark btn-sm" target="_blank">Adhérer 2026</a>
+          </div>
+          <div class="about-stats">
+            <div class="stat-item reveal reveal-delay-1">
+              <div class="stat-num">2016</div>
+              <div class="stat-label">Année de création</div>
+            </div>
+            <div class="stat-item reveal reveal-delay-2">
+              <div class="stat-num">6+</div>
+              <div class="stat-label">Espaces & services</div>
+            </div>
+            <div class="stat-item reveal reveal-delay-3">
+              <div class="stat-num">04</div>
+              <div class="stat-label">Alpes de Haute-Provence</div>
+            </div>
+            <div class="stat-item reveal reveal-delay-4">
+              <div class="stat-num">∞</div>
+              <div class="stat-label">Projets accompagnés</div>
+            </div>
+          </div>
+        </div>
+        <div class="reveal reveal-delay-2">
+          <div class="about-img-block">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+              <rect x="20" y="20" width="160" height="160" rx="8" fill="none" stroke="white" stroke-width="1"/>
+              <rect x="40" y="40" width="50" height="50" rx="4" fill="none" stroke="white" stroke-width="0.8"/>
+              <rect x="110" y="40" width="50" height="50" rx="4" fill="none" stroke="white" stroke-width="0.8"/>
+              <rect x="40" y="110" width="50" height="50" rx="4" fill="none" stroke="white" stroke-width="0.8"/>
+              <rect x="110" y="110" width="50" height="50" rx="4" fill="none" stroke="white" stroke-width="0.8"/>
+              <circle cx="100" cy="100" r="12" fill="none" stroke="white" stroke-width="0.8"/>
+              <line x1="20" y1="100" x2="88" y2="100" stroke="white" stroke-width="0.5"/>
+              <line x1="112" y1="100" x2="180" y2="100" stroke="white" stroke-width="0.5"/>
+              <line x1="100" y1="20" x2="100" y2="88" stroke="white" stroke-width="0.5"/>
+              <line x1="100" y1="112" x2="100" y2="180" stroke="white" stroke-width="0.5"/>
+            </svg>
+            <div class="about-img-label">
+              <span>🏡</span>
+              Photo du lieu
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Services ── -->
+  <section class="section section-cream" id="services">
+    <div class="section-inner">
+      <div class="reveal">
+        <p class="eyebrow">Ce que nous proposons</p>
+        <h2 class="h2">Les services de l'ECE</h2>
+        <div class="divider"></div>
+      </div>
+      <div class="services-grid">
+
+        <div class="card reveal">
+          <div class="service-large-icon">💻</div>
+          <h3>Conseil Numérique</h3>
+          <p>Accompagnement personnalisé pour vos démarches en ligne, aide à l'utilisation des outils numériques et soutien pour devenir autonome avec le digital.</p>
+          <ul>
+            <li>Démarches administratives en ligne</li>
+            <li>CAF, Pôle Emploi, impôts</li>
+            <li>Sécurité numérique</li>
+            <li>Accès libre accompagné</li>
+          </ul>
+          <p style="margin-top:8px; font-size:13px; color:var(--sage); font-weight:600;">Relais France Services</p>
+          <a href="conseil-numerique-warm.html" class="btn btn-outline-dark btn-sm" style="margin-top:auto;">En savoir plus →</a>
+        </div>
+
+        <div class="card reveal reveal-delay-1">
+          <div class="card-icon">📚</div>
+          <h3>Formations</h3>
+          <p>Modules professionnalisants en communication digitale, IA, bureautique, photographie et gestion du stress.</p>
+          <a href="formations.html" class="btn btn-outline-dark btn-sm" style="margin-top:auto;">Voir les formations →</a>
+        </div>
+
+        <div class="card reveal reveal-delay-2">
+          <div class="card-icon">🤝</div>
+          <h3>Accompagnement</h3>
+          <p>Soutien pour les publics en insertion, microentreprises et associations dans leur développement.</p>
+          <a href="accompagnement.html" class="btn btn-outline-dark btn-sm" style="margin-top:auto;">Découvrir →</a>
+        </div>
+
+        <div class="card reveal reveal-delay-1">
+          <div class="card-icon">🏢</div>
+          <h3>Espaces Partagés</h3>
+          <p>Salles de réunion, de formation et espaces créatifs disponibles à la réservation — journée, demi-journée ou longue durée.</p>
+          <a href="contact.html" class="btn btn-outline-dark btn-sm" style="margin-top:auto;">Réserver →</a>
+        </div>
+
+        <div class="card reveal reveal-delay-2">
+          <div class="card-icon">📻</div>
+          <h3>Espace Médias</h3>
+          <p>Studio radio, podcasts, équipement photo/vidéo et logiciels de montage audio/vidéo.</p>
+          <a href="ateliers.html" class="btn btn-outline-dark btn-sm" style="margin-top:auto;">Explorer →</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Fabriquerie ── -->
+  <div class="fablab-band" id="fabriquerie">
+    <div class="fablab-inner">
+      <div class="reveal">
+        <p class="eyebrow" style="color:var(--terra-light);">Espace Maker</p>
+        <h2 class="h2" style="color:var(--ivory);">La Fabriquerie</h2>
+        <div class="divider" style="background:var(--terracotta);"></div>
+        <p class="lead" style="color:oklch(96% 0.015 75 / 0.65);">Un Fablab ouvert à tous pour créer, fabriquer et expérimenter. Imprimez en 3D, gravez au laser, prototypez vos idées.</p>
+        <div style="margin-top:32px;">
+          <a href="ateliers.html" class="btn btn-terra">Découvrir la Fabriquerie</a>
+        </div>
+      </div>
+      <div class="fablab-tools reveal reveal-delay-2">
+        <div class="tool-card">
+          <div class="tool-icon">🖨️</div>
+          <h4>Impression 3D</h4>
+          <p>Imprimantes de différentes capacités</p>
+        </div>
+        <div class="tool-card">
+          <div class="tool-icon">✂️</div>
+          <h4>Découpe Laser</h4>
+          <p>Gravure sur divers matériaux</p>
+        </div>
+        <div class="tool-card">
+          <div class="tool-icon">🖥️</div>
+          <h4>Postes CAO</h4>
+          <p>Fusion 360 et logiciels dédiés</p>
+        </div>
+        <div class="tool-card">
+          <div class="tool-icon">🔧</div>
+          <h4>Ateliers Thématiques</h4>
+          <p>Bois, métal, robotique, électronique</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Accompagnement ── -->
+  <section class="section" id="accompagnement">
+    <div class="section-inner">
+      <div class="reveal" style="text-align:center; max-width:580px; margin:0 auto 56px;">
+        <p class="eyebrow">Pour votre projet</p>
+        <h2 class="h2">Un accompagnement sur mesure</h2>
+        <div class="divider" style="margin:18px auto 28px;"></div>
+        <p class="lead" style="margin:0 auto;">Emploi, entreprises, associations — l'ECE vous accompagne à chaque étape de votre parcours.</p>
+      </div>
+      <div class="grid-3">
+        <div class="card reveal">
+          <div class="card-icon">👔</div>
+          <h3>Emploi & Insertion</h3>
+          <p>Accompagnement au projet professionnel, ateliers de préqualification, orientation et montée en compétences.</p>
+          <a href="accompagnement.html" class="btn btn-outline-dark btn-sm" style="margin-top:auto; align-self:flex-start;">En savoir plus</a>
+        </div>
+        <div class="card reveal reveal-delay-2">
+          <div class="card-icon">🚀</div>
+          <h3>Entreprises</h3>
+          <p>De la création au développement : étude de marché, business plan, stratégie, transition numérique et mise en réseau.</p>
+          <a href="accompagnement.html" class="btn btn-outline-dark btn-sm" style="margin-top:auto; align-self:flex-start;">En savoir plus</a>
+        </div>
+        <div class="card reveal reveal-delay-3">
+          <div class="card-icon">🤝</div>
+          <h3>Associations</h3>
+          <p>Gestion administrative, financière et juridique. Outils numériques, vie associative et recherche de financements.</p>
+          <a href="accompagnement.html" class="btn btn-outline-dark btn-sm" style="margin-top:auto; align-self:flex-start;">En savoir plus</a>
+        </div>
+      </div>
+
+      <!-- Méthodo -->
+      <div style="margin-top:64px;" class="reveal">
+        <p class="eyebrow" style="text-align:center;">Notre approche</p>
+        <div class="steps" style="margin-top:32px;">
+          <div class="step">
+            <div class="step-num">01</div>
+            <h4>Rencontre initiale</h4>
+            <p>Diagnostic de votre situation et identification de vos besoins</p>
+          </div>
+          <div class="step">
+            <div class="step-num">02</div>
+            <h4>Plan d'action</h4>
+            <p>Définition des objectifs et des étapes de l'accompagnement</p>
+          </div>
+          <div class="step">
+            <div class="step-num">03</div>
+            <h4>Suivi personnalisé</h4>
+            <p>Rendez-vous réguliers pour avancer sereinement</p>
+          </div>
+          <div class="step">
+            <div class="step-num">04</div>
+            <h4>Évaluation</h4>
+            <p>Bilan des acquis et définition des perspectives</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Témoignages -->
+      <div class="grid-2" style="margin-top:56px;">
+        <blockquote class="reveal">
+          <p>« L'accompagnement à l'ECE m'a permis de structurer mon projet entrepreneurial et de gagner en confiance. Un grand merci à l'équipe ! »</p>
+          <cite>— Marie L., créatrice d'entreprise</cite>
+        </blockquote>
+        <blockquote class="reveal reveal-delay-2">
+          <p>« Grâce aux ateliers de préqualification, j'ai retrouvé un emploi dans mon domaine après 6 mois de recherche. »</p>
+          <cite>— Jean D., demandeur d'emploi</cite>
+        </blockquote>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Jess ── -->
+  <div class="jess-band" id="jess">
+    <div class="jess-inner">
+      <div class="jess-text reveal">
+        <p class="eyebrow" style="color:rgba(255,255,255,0.6);">Journal ESS</p>
+        <h2 class="h2" style="color:white; font-size:clamp(36px,5vw,64px);">Jess</h2>
+        <p style="font-size:17px; color:rgba(255,255,255,0.75); margin:12px 0 28px; line-height:1.75;">Le Journal de l'Économie Sociale et Solidaire des Alpes-de-Haute-Provence. Informer, valoriser, connecter les acteurs du territoire.</p>
+        <a href="jess.html" class="btn btn-outline-light">Lire Jess →</a>
+      </div>
+      <div class="jess-issues reveal reveal-delay-2">
+        <a href="#" class="issue-pill">
+          <div class="issue-num">N°12 · Hiver 2025</div>
+          <div class="issue-title">Les coopératives dans les Alpes</div>
+        </a>
+        <a href="#" class="issue-pill">
+          <div class="issue-num">N°11 · Automne 2024</div>
+          <div class="issue-title">Insertion par l'activité économique</div>
+        </a>
+        <a href="#" class="issue-pill">
+          <div class="issue-num">N°10 · Été 2024</div>
+          <div class="issue-title">Initiatives rurales</div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Adhésion ── -->
+  <div class="membership-strip">
+    <div class="membership-inner">
+      <h3 class="reveal">Pour nous soutenir, vous pouvez adhérer à l'association ECE Tiers Lieu</h3>
+      <a href="https://ecemalijai.s2.yapla.com/fr/espace-membres/adhesion/" class="btn btn-terra reveal" target="_blank">Adhésions 2026</a>
+    </div>
+  </div>
+
+  <!-- ── Partenaires ── -->
+  <section class="section section-cream">
+    <div class="section-inner" style="text-align:center;">
+      <p class="eyebrow reveal">Avec le soutien de</p>
+      <div class="partners-row reveal">
+        <div class="partner-ph">logo soutien</div>
+        <div class="partner-ph">logo soutien</div>
+        <div class="partner-ph">logo soutien</div>
+        <div class="partner-ph">logo soutien</div>
+      </div>
+      <p class="eyebrow reveal" style="margin-top:40px;">Partenaires</p>
+      <div class="partners-row reveal">
+        <div class="partner-ph">partenaire</div>
+        <div class="partner-ph">partenaire</div>
+        <div class="partner-ph">partenaire</div>
+        <div class="partner-ph">partenaire</div>
+        <div class="partner-ph">partenaire</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Footer ── -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <img src="images/logo-ece-warm.svg" alt="ECE Tiers Lieu" style="height:40px; margin-bottom:8px;">
+          <p>Espace Collaboratif Équitable — Tiers lieu labellisé Fabrique de Territoire, installé à Malijai au cœur des Alpes de Haute-Provence.</p>
+          <p style="margin-top:10px;">65 rue des Micocouliers<br>04350 MALIJAI — FRANCE</p>
+        </div>
+        <div class="footer-col">
+          <h4>Navigation</h4>
+          <a href="#about">L'ECE</a>
+          <a href="#services">Services</a>
+          <a href="#fabriquerie">Fabriquerie</a>
+          <a href="jess.html">Jess</a>
+          <a href="#accompagnement">Accompagnement</a>
+        </div>
+        <div class="footer-col">
+          <h4>Contact</h4>
+          <p>09 88 36 62 63</p>
+          <p>07 68 07 76 61</p>
+          <a href="mailto:contact@ece04.org">contact@ece04.org</a>
+          <p style="margin-top:8px;">Lun–Ven : 9h–17h</p>
+        </div>
+        <div class="footer-col">
+          <h4>Suivez-nous</h4>
+          <a href="https://facebook.com/espacecollaboratifequitable" target="_blank">Facebook</a>
+          <a href="https://instagram.com/ece_tiers_lieu" target="_blank">Instagram</a>
+          <a href="https://linkedin.com/company/ece04" target="_blank">LinkedIn</a>
+          <a href="https://twitter.com/ECE_Tiers_Lieu" target="_blank">Twitter</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 ECE Tiers Lieu — Tous droits réservés</p>
+        <p><a href="#">Mentions légales</a> · <a href="#">Newsletter</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // ---- Nav scroll behaviour ----
+    const nav = document.getElementById('site-nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 60);
+    });
+
+    // ---- Scroll reveal ----
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+    }, { threshold: 0.12 });
+    reveals.forEach(el => observer.observe(el));
+
+    // ---- Hero canvas particles ----
+    (function() {
+      const canvas = document.getElementById('hero-canvas');
+      const ctx = canvas.getContext('2d');
+      let W, H, particles = [];
+
+      function resize() {
+        W = canvas.width  = canvas.offsetWidth;
+        H = canvas.height = canvas.offsetHeight;
+      }
+
+      function Particle() {
+        this.reset();
+      }
+      Particle.prototype.reset = function() {
+        this.x  = Math.random() * W;
+        this.y  = Math.random() * H;
+        this.r  = Math.random() * 1.8 + 0.4;
+        this.vx = (Math.random() - 0.5) * 0.3;
+        this.vy = (Math.random() - 0.5) * 0.3;
+        this.a  = Math.random() * 0.35 + 0.05;
+      };
+      Particle.prototype.draw = function() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(224,138,90,' + this.a + ')';
+        ctx.fill();
+      };
+      Particle.prototype.update = function() {
+        this.x += this.vx;
+        this.y += this.vy;
+        if (this.x < 0 || this.x > W || this.y < 0 || this.y > H) this.reset();
+      };
+
+      resize();
+      for (let i = 0; i < 80; i++) particles.push(new Particle());
+
+      // Draw connections
+      function drawLines() {
+        for (let i = 0; i < particles.length; i++) {
+          for (let j = i + 1; j < particles.length; j++) {
+            const dx = particles[i].x - particles[j].x;
+            const dy = particles[i].y - particles[j].y;
+            const dist = Math.sqrt(dx*dx + dy*dy);
+            if (dist < 120) {
+              ctx.beginPath();
+              ctx.moveTo(particles[i].x, particles[i].y);
+              ctx.lineTo(particles[j].x, particles[j].y);
+              ctx.strokeStyle = 'rgba(193,96,46,' + (0.08 * (1 - dist/120)) + ')';
+              ctx.lineWidth = 0.5;
+              ctx.stroke();
+            }
+          }
+        }
+      }
+
+      function loop() {
+        ctx.clearRect(0, 0, W, H);
+        particles.forEach(p => { p.update(); p.draw(); });
+        drawLines();
+        requestAnimationFrame(loop);
+      }
+
+      window.addEventListener('resize', resize);
+      loop();
+    })();
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact — ECE Tiers Lieu</title>
+  <link rel="stylesheet" href="css/ece-warm.css">
+  <style>
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 64px;
+      align-items: start;
+    }
+    @media (max-width: 900px) { .contact-grid { grid-template-columns: 1fr; } }
+    .contact-info-stack { display: flex; flex-direction: column; gap: 0; }
+    .contact-block {
+      display: flex; gap: 16px; align-items: flex-start;
+      padding: 20px 0; border-bottom: 1px solid var(--sand);
+    }
+    .contact-block:first-child { padding-top: 0; }
+    .c-icon {
+      width: 40px; height: 40px; background: oklch(58% 0.14 40 / 0.1);
+      border-radius: var(--r-sm); display: flex; align-items: center;
+      justify-content: center; font-size: 18px; flex-shrink: 0;
+    }
+    .c-text h4 { font-size: 11px; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--terracotta); margin-bottom: 4px; }
+    .c-text p, .c-text a { font-size: 15px; color: var(--brown-light); line-height: 1.75; }
+    .c-text a:hover { color: var(--terracotta); }
+    .map-ph {
+      margin-top: 24px; background: var(--sand); border-radius: var(--r-md);
+      padding: 32px; text-align: center;
+    }
+    .map-ph p { font-size: 14px; color: var(--brown-light); margin-top: 8px; }
+    .acces-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap: 16px; margin-top: 28px;
+    }
+    .acces-item {
+      background: var(--cream); border-radius: var(--r-md); padding: 20px 22px;
+    }
+    .acces-item h4 { font-size: 15px; font-weight: 600; margin-bottom: 8px; }
+    .acces-item p { font-size: 14px; color: var(--brown-light); }
+    .submit-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 14px 36px; border-radius: var(--r-full);
+      background: var(--grad-terra); color: white;
+      font-family: var(--font-body); font-size: 15px; font-weight: 600;
+      border: none; cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .submit-btn:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+    .form-success {
+      display: none; margin-top: 16px; padding: 14px 20px;
+      background: oklch(55% 0.08 155 / 0.1);
+      border: 1px solid oklch(55% 0.08 155 / 0.3);
+      border-radius: var(--r-sm); font-size: 14px; color: var(--sage);
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="site-nav scrolled" id="site-nav">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <img src="images/logo-ece-dark.svg" alt="ECE Tiers Lieu" style="height:40px; width:auto;">
+      </a>
+      <button class="nav-toggle" onclick="document.getElementById('nav-links').classList.toggle('open')">☰</button>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="index.html#about">L'ECE</a></li>
+        <li><a href="index.html#services">Services</a></li>
+        <li><a href="index.html#fabriquerie">Fabriquerie</a></li>
+        <li><a href="jess.html">Jess</a></li>
+        <li><a href="index.html#accompagnement">Accompagnement</a></li>
+        <li><a href="contact.html" class="nav-cta active">Nous contacter</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="page-hero">
+    <div class="page-hero-inner">
+      <div class="breadcrumb"><a href="index.html">Accueil</a><span>›</span><span>Contact</span></div>
+      <h1>Nous contacter</h1>
+      <p class="page-hero-sub">Notre équipe vous répond du lundi au vendredi, 9h – 17h</p>
+    </div>
+  </div>
+
+  <section class="section">
+    <div class="section-inner">
+      <div class="contact-grid">
+
+        <div class="reveal">
+          <p class="eyebrow">Envoyez-nous un message</p>
+          <h2 class="h2" style="font-size:32px;">Parlons de votre projet</h2>
+          <div class="divider"></div>
+          <form onsubmit="handleSubmit(event)">
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+              <div class="form-group">
+                <label for="nom">Nom *</label>
+                <input type="text" id="nom" placeholder="Votre nom" required>
+              </div>
+              <div class="form-group">
+                <label for="email">Email *</label>
+                <input type="email" id="email" placeholder="votre@email.fr" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="telephone">Téléphone</label>
+              <input type="tel" id="telephone" placeholder="06 xx xx xx xx">
+            </div>
+            <div class="form-group">
+              <label for="sujet">Sujet</label>
+              <select id="sujet">
+                <option value="">— Sélectionnez —</option>
+                <option>Renseignement général</option>
+                <option>Formation</option>
+                <option>Accompagnement</option>
+                <option>Conseil numérique</option>
+                <option>Atelier / Fabriquerie</option>
+                <option>Jess / Presse</option>
+                <option>Réservation d'espace</option>
+                <option>Autre</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="message">Message *</label>
+              <textarea id="message" rows="6" placeholder="Votre message…" required></textarea>
+            </div>
+            <button type="submit" class="submit-btn">Envoyer →</button>
+            <div class="form-success" id="form-ok">✓ Message envoyé — nous vous répondrons dès que possible.</div>
+          </form>
+        </div>
+
+        <div class="contact-info-stack reveal reveal-delay-2">
+          <p class="eyebrow">Coordonnées</p>
+          <h3 class="h3" style="font-size:22px; margin-bottom:24px;">ECE Tiers Lieu</h3>
+          <div class="contact-block">
+            <div class="c-icon">📍</div>
+            <div class="c-text"><h4>Adresse</h4><p>65 rue des Micocouliers<br>04350 MALIJAI — FRANCE</p></div>
+          </div>
+          <div class="contact-block">
+            <div class="c-icon">📞</div>
+            <div class="c-text"><h4>Téléphone</h4>
+              <p>Fixe : <a href="tel:+33988366263">09 88 36 62 63</a><br>
+              Portable : <a href="tel:+33768077661">07 68 07 76 61</a></p>
+            </div>
+          </div>
+          <div class="contact-block">
+            <div class="c-icon">✉️</div>
+            <div class="c-text"><h4>Email</h4><p><a href="mailto:contact@ece04.org">contact@ece04.org</a></p></div>
+          </div>
+          <div class="contact-block">
+            <div class="c-icon">🕐</div>
+            <div class="c-text"><h4>Horaires</h4><p>Lun–Ven : 9h00 – 17h00<br>Sam–Dim : Fermé</p></div>
+          </div>
+          <div class="map-ph">
+            <div style="font-size:36px;">🗺️</div>
+            <p>À Malijai, confluence Bléone-Durance, à proximité de l'autoroute A51.</p>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:72px;" class="reveal">
+        <p class="eyebrow">Comment venir ?</p>
+        <div class="acces-grid">
+          <div class="acces-item">
+            <h4>🚗 En voiture</h4>
+            <p>Sortie A51, direction Malijai centre. Parking disponible devant l'ECE.</p>
+          </div>
+          <div class="acces-item">
+            <h4>🚌 En bus</h4>
+            <p>Ligne régulière depuis Digne-les-Bains et Manosque. Arrêt Malijai centre.</p>
+          </div>
+          <div class="acces-item">
+            <h4>🚲 Autres modes</h4>
+            <p>Accessibilité piétonne et cyclable. Stationnement vélos disponible.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="cta-strip">
+    <div class="cta-strip-inner reveal">
+      <h2>Abonnez-vous à notre newsletter</h2>
+      <p>Actualité de l'ECE, prochains ateliers et formations — directement dans votre boîte.</p>
+      <a href="#" class="btn btn-terra">S'abonner</a>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <img src="images/logo-ece-warm.svg" alt="ECE Tiers Lieu" style="height:40px; margin-bottom:8px;">
+          <p>65 rue des Micocouliers, 04350 MALIJAI</p>
+          <p style="margin-top:6px;">contact@ece04.org</p>
+        </div>
+        <div class="footer-col">
+          <h4>Navigation</h4>
+          <a href="index.html#about">L'ECE</a>
+          <a href="index.html#services">Services</a>
+          <a href="index.html#fabriquerie">Fabriquerie</a>
+          <a href="jess.html">Jess</a>
+        </div>
+        <div class="footer-col">
+          <h4>Contact</h4>
+          <p>09 88 36 62 63</p>
+          <a href="mailto:contact@ece04.org">contact@ece04.org</a>
+          <p>Lun–Ven : 9h–17h</p>
+        </div>
+        <div class="footer-col">
+          <h4>Réseaux</h4>
+          <a href="https://facebook.com/espacecollaboratifequitable" target="_blank">Facebook</a>
+          <a href="https://instagram.com/ece_tiers_lieu" target="_blank">Instagram</a>
+          <a href="https://linkedin.com/company/ece04" target="_blank">LinkedIn</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 ECE Tiers Lieu — Tous droits réservés</p>
+        <p><a href="#">Mentions légales</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    function handleSubmit(e) {
+      e.preventDefault();
+      document.getElementById('form-ok').style.display = 'block';
+      e.target.reset();
+    }
+    const nav = document.getElementById('site-nav');
+    window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 60));
+    document.querySelectorAll('.reveal').forEach(el =>
+      new IntersectionObserver(([e]) => e.isIntersecting && el.classList.add('visible'), {threshold:0.12}).observe(el)
+    );
+  </script>
+</body>
+</html>
