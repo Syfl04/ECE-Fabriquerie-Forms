@@ -238,14 +238,14 @@
     </div>
 
     <script>
-        // Données initiales de la réunion du 3 mai 2026
+        // Données initiales de la réunion du 3 mai 2026 (données réelles des 6 participants)
         const initialMeetingData = [
-            { participant: "Sylvain", surface: "100+ ha", budget: "250 000€+", type: "Mixte (forêt + agricole + bâti)", loc: "Castellane / Forcalquier", batiments: "Maison + hangar/atelier", contraintes: "Cours d'eau obligatoire, pas trop isolé", priorites: "1. Eau 2. Accès 3. Surface boisée" },
-            { participant: "Marie", surface: "50-100 ha", budget: "250 000€", type: "Forêt + espaces ouverts", loc: "Sisteronais / Entrepierres", batiments: "Maison habitable", contraintes: "Budget limité, besoin d'électricité", priorites: "1. Coût/ha raisonnable 2. Forêt mature 3. Potentiel agricole" },
-            { participant: "Thomas", surface: "20-50 ha", budget: "50 000€", type: "Ferme à rénover", loc: "Niozelles / Forcalquier", batiments: "Ferme avec bâtis", contraintes: "Budget serré, besoin boulot électricien", priorites: "1. Prix accessible 2. Proche village 3. Bâti existant" },
-            { participant: "Claire", surface: "100+ ha", budget: "250 000€+", type: "Hameau abandonné", loc: "Castellane / Mariaud", batiments: "Plusieurs maisons à rénover", contraintes: "Projets collectif, pas en solo", priorites: "1. Communauté 2. Hameau/caractère 3. Accès hameau" },
-            { participant: "Lucas", surface: "50-100 ha", budget: "250 000€", type: "Mixte (forêt + agricole + bâti)", loc: "Zone Castellane", batiments: "Maison + espace commun", contraintes: "Doit permettre Fab Lab + agriculture", priorites: "1. Espace atelier 2. Terres agricoles 3. Connexion internet" },
-            { participant: "Emma", surface: "10-20 ha", budget: "25 000€", type: "Terrain constructible", loc: "Bras-d'Asses / Verdon", batiments: "Construction neuve", contraintes: "Budget très limité, financement créatif", priorites: "1. Viabilisé ou autonome possible 2. Petit prix 3. Soleil" }
+            { participant: "dominique", surface: "5ha", budget: "25 000€", type: "forêt", loc: "04 05 26", batiments: "oui pas d'usine", contraintes: "pas de ligne haute tension", priorites: "eau calme pas de cloture" },
+            { participant: "marjorie", surface: "15ha", budget: "40 000-150 000€", type: "forêt eau isolé vue", loc: "04 05 Drôme 48", batiments: "pas d'industriel avec ou sans bâti pas d'importance", contraintes: "pas de ligne haute tension, pas d'antenne 5g, pas de terrain nu", priorites: "face sud vue calme" },
+            { participant: "michel", surface: "50ha", budget: "25 000€", type: "forêt champs", loc: "04 05 48 26", batiments: "hangars", contraintes: "voie d'accès carrossable", priorites: "eau" },
+            { participant: "sylvain", surface: "100ha (80ha forêt + 5ha habitat + 15ha exploitation)", budget: "40 000€", type: "forêt", loc: "04 05 83 26 48", batiments: "mettre de l'habitat légalement", contraintes: "humain personnes impliquées vision globale commune", priorites: "face sud moins de 1200m altitude accessible" },
+            { participant: "gilles", surface: "50ha", budget: "10 000€", type: "forêt essences mélangées", loc: "04 nord 05 26", batiments: "ruine cadastrée", contraintes: "pas de zones protégées, humain impliqué", priorites: "face sud et nord pour la biodiversité, 1200m altitude max, moyenne montagne" },
+            { participant: "mirelle", surface: "30-100ha", budget: "120 000€", type: "forêt", loc: "04 05 sud Drôme 30", batiments: "ferme à retaper ou non habitat léger possible maison passive", contraintes: "essence différente partie plane accessible, pas de ligne haute tension, pas d'antenne 5g, pas de terrain nu, pas éolienne, pas de route passante à proximité, facteur humain vision et valeurs partagées, personne ayant une capacité de travail sur soi", priorites: "600-1000m altitude, eau, calme" }
         ];
 
         // Charger les données du localStorage ou utiliser données réunion par défaut
