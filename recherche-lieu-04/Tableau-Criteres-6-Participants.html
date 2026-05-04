@@ -569,13 +569,30 @@
         function loadData() {
             const saved = localStorage.getItem('reunion6_criteres_data');
             const savedSummary = localStorage.getItem('reunion6_criteres_summary');
+            const dataVersion = localStorage.getItem('reunion6_data_version');
             
             if (savedSummary) {
                 document.getElementById('meetingSummary').value = savedSummary;
             }
             
+            // Forcer la mise à jour avec données réunion si version différente ou pas de données
+            if (dataVersion !== '2026-05-04-reunion') {
+                console.log('🔄 Mise à jour : chargement des données réunion 3 mai 2026');
+                localStorage.setItem('reunion6_data_version', '2026-05-04-reunion');
+                localStorage.setItem('reunion6_criteres_data', JSON.stringify(initialData));
+                return initialData;
+            }
+            
             if (saved) {
-                return JSON.parse(saved);
+                const parsed = JSON.parse(saved);
+                // Vérifier si les données sont vides (aucune surface de remplie)
+                const hasData = parsed.some(row => row.surface || row.budget || row.type);
+                if (!hasData) {
+                    console.log('🔄 Données vides détectées, chargement données réunion');
+                    localStorage.setItem('reunion6_criteres_data', JSON.stringify(initialData));
+                    return initialData;
+                }
+                return parsed;
             }
             return initialData;
         }
