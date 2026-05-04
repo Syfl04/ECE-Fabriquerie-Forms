@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recherche Lieu 04 - Analyse des Critères (Dashboard)</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@2.1.0/dist/chartjs-plugin-annotation.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
@@ -402,9 +403,27 @@
             return { avgSurface, avgBudget, dominantType };
         }
 
-        // Créer les graphiques
+        // Créer les graphiques améliorés
         function createCharts(data) {
-            // Graphique des surfaces
+            // Calculer statistiques pour annotations
+            const surfaceValues = data.map(d => {
+                const match = d.surface.match(/(\d+)/);
+                return match ? parseInt(match[1]) : 0;
+            }).filter(s => s > 0);
+            const avgSurface = surfaceValues.length > 0 
+                ? Math.round(surfaceValues.reduce((a,b) => a+b, 0) / surfaceValues.length) 
+                : 0;
+            
+            const budgetValues = data.map(d => {
+                const match = d.budget.match(/(\d+[\s\d]*)/);
+                return match ? parseInt(match[1].replace(/\s/g, '')) : 0;
+            }).filter(b => b > 0);
+            const avgBudget = budgetValues.length > 0
+                ? Math.round(budgetValues.reduce((a,b) => a+b, 0) / budgetValues.length)
+                : 0;
+            const maxBudget = budgetValues.length > 0 ? Math.max(...budgetValues) : 0;
+            
+            // Graphique des surfaces avec ligne de moyenne
             const surfaceCtx = document.getElementById('surfaceChart').getContext('2d');
             new Chart(surfaceCtx, {
                 type: 'bar',
@@ -431,11 +450,33 @@
                                 text: 'Hectares'
                             }
                         }
+                    },
+                    plugins: {
+                        annotation: {
+                            annotations: {
+                                line1: {
+                                    type: 'line',
+                                    yMin: avgSurface,
+                                    yMax: avgSurface,
+                                    borderColor: 'rgba(255, 99, 132, 0.8)',
+                                    borderWidth: 3,
+                                    borderDash: [6, 6],
+                                    label: {
+                                        content: 'Moyenne: ' + avgSurface + ' ha',
+                                        enabled: true,
+                                        position: 'end',
+                                        backgroundColor: 'rgba(255, 99, 132, 0.8)',
+                                        color: 'white',
+                                        font: { size: 12, weight: 'bold' }
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             });
 
-            // Graphique des budgets
+            // Graphique des budgets avec moyenne et max
             const budgetCtx = document.getElementById('budgetChart').getContext('2d');
             new Chart(budgetCtx, {
                 type: 'bar',
@@ -462,63 +503,139 @@
                                 text: 'Euros'
                             }
                         }
+                    },
+                    plugins: {
+                        annotation: {
+                            annotations: {
+                                line1: {
+                                    type: 'line',
+                                    yMin: avgBudget,
+                                    yMax: avgBudget,
+                                    borderColor: 'rgba(255, 159, 64, 0.8)',
+                                    borderWidth: 3,
+                                    borderDash: [6, 6],
+                                    label: {
+                                        content: 'Moyenne: ' + avgBudget.toLocaleString() + '€',
+                                        enabled: true,
+                                        position: 'center',
+                                        backgroundColor: 'rgba(255, 159, 64, 0.8)',
+                                        color: 'white',
+                                        font: { size: 12, weight: 'bold' }
+                                    }
+                                },
+                                line2: {
+                                    type: 'line',
+                                    yMin: maxBudget,
+                                    yMax: maxBudget,
+                                    borderColor: 'rgba(255, 99, 132, 0.8)',
+                                    borderWidth: 2,
+                                    borderDash: [2, 2],
+                                    label: {
+                                        content: 'Max: ' + maxBudget.toLocaleString() + '€',
+                                        enabled: true,
+                                        position: 'end',
+                                        backgroundColor: 'rgba(255, 99, 132, 0.8)',
+                                        color: 'white',
+                                        font: { size: 11 }
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             });
 
-            // Graphique des types (pie)
+            // Graphique des types - couleurs selon convergence/divergence
             const types = {};
             data.forEach(d => {
                 if (d.type) types[d.type] = (types[d.type] || 0) + 1;
+            });
+            
+            const typeLabels = Object.keys(types);
+            const typeValues = Object.values(types);
+            
+            // Couleurs: vert pour convergence (≥2), orange pour divergence (1)
+            const typeColors = typeValues.map(count => {
+                if (count >= 3) return '#28a745'; // Vert foncé: forte convergence
+                if (count === 2) return '#6bcf7f'; // Vert clair: convergence modérée
+                return '#fd7e14'; // Orange: divergence
             });
             
             const typeCtx = document.getElementById('typeChart').getContext('2d');
             new Chart(typeCtx, {
                 type: 'doughnut',
                 data: {
-                    labels: Object.keys(types),
+                    labels: typeLabels.map((label, i) => `${label} (${typeValues[i]} pers.)`),
                     datasets: [{
-                        data: Object.values(types),
-                        backgroundColor: [
-                            '#667eea', '#764ba2', '#f093fb', '#f5576c',
-                            '#4facfe', '#00f2fe', '#43e97b', '#38f9d7'
-                        ]
+                        data: typeValues,
+                        backgroundColor: typeColors,
+                        borderColor: typeColors.map(c => c === '#fd7e14' ? '#dc3545' : '#1e7e34'),
+                        borderWidth: 2
                     }]
                 },
                 options: {
                     responsive: true,
                     plugins: {
                         legend: {
-                            position: 'bottom'
+                            position: 'bottom',
+                            labels: {
+                                font: { size: 11 },
+                                padding: 15
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: '🟢 Convergence | 🟠 Divergence',
+                            font: { size: 14, weight: 'bold' },
+                            padding: { bottom: 10 }
                         }
                     }
                 }
             });
 
-            // Graphique des localisations (pie)
+            // Graphique des localisations - couleurs selon convergence/divergence
             const locs = {};
             data.forEach(d => {
                 if (d.loc) locs[d.loc] = (locs[d.loc] || 0) + 1;
+            });
+            
+            const locLabels = Object.keys(locs);
+            const locValues = Object.values(locs);
+            
+            // Couleurs: bleu pour convergence (≥2), rouge pour divergence (1)
+            const locColors = locValues.map(count => {
+                if (count >= 3) return '#0066cc'; // Bleu foncé: forte convergence
+                if (count === 2) return '#4d94ff'; // Bleu clair: convergence modérée
+                return '#dc3545'; // Rouge: divergence
             });
             
             const locCtx = document.getElementById('locChart').getContext('2d');
             new Chart(locCtx, {
                 type: 'pie',
                 data: {
-                    labels: Object.keys(locs),
+                    labels: locLabels.map((label, i) => `${label} (${locValues[i]} pers.)`),
                     datasets: [{
-                        data: Object.values(locs),
-                        backgroundColor: [
-                            '#ffecd2', '#fcb69f', '#ff9a9e', '#fecfef',
-                            '#a8edea', '#fed6e3', '#d299c2', '#fef9d7'
-                        ]
+                        data: locValues,
+                        backgroundColor: locColors,
+                        borderColor: locColors.map(c => c === '#dc3545' ? '#8b0000' : '#004080'),
+                        borderWidth: 2
                     }]
                 },
                 options: {
                     responsive: true,
                     plugins: {
                         legend: {
-                            position: 'bottom'
+                            position: 'bottom',
+                            labels: {
+                                font: { size: 11 },
+                                padding: 15
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: '🔵 Convergence | 🔴 Divergence',
+                            font: { size: 14, weight: 'bold' },
+                            padding: { bottom: 10 }
                         }
                     }
                 }
