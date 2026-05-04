@@ -252,6 +252,29 @@
             color: #1565c0;
         }
 
+        /* Style nouveaux participants (NocoDB) */
+        .participant-new .participant-name {
+            background: #fff3e0;
+            border-left: 4px solid #ff9800;
+            color: #e65100;
+        }
+
+        .participant-new {
+            background: #fff8e1 !important;
+        }
+
+        .new-badge {
+            display: inline-block;
+            background: #ff9800;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 600;
+            margin-left: 8px;
+            text-transform: uppercase;
+        }
+
         .synthesis-row {
             background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%) !important;
             font-weight: 600;
@@ -368,10 +391,14 @@
             <button class="btn btn-secondary" onclick="exportCSV()">
                 <span>💾</span> Export CSV
             </button>
-            <button class="btn btn-secondary" onclick="exportHTML()">
-                <span>📄</span> Sauvegarder
+            <button class="btn btn-secondary" onclick="loadFromNocoDB()" title="Charger les nouveaux participants du formulaire">
+                <span>🔄</span> Charger NocoDB
             </button>
+            <a href="index.html" class="btn btn-secondary" style="text-decoration: none;">
+                <span>🏠</span> Accueil
+            </a>
             <div class="status" id="saveStatus">💡 Cliquez sur une cellule pour éditer</div>
+            <div class="version-info" id="versionInfo" style="margin-left: auto; font-size: 12px; color: #6c757d;"></div>
         </div>
 
         <!-- Section Synthèse -->
@@ -434,10 +461,70 @@
     </div>
 
     <script>
-        // Données initiales avec 6 participants vides
+        // Données initiales avec 6 participants (réunion 3 mai) + 4 vides pour nouveaux
         const initialData = [
             {
-                participant: "Participant 1",
+                participant: "Sylvain",
+                surface: "100+ ha",
+                budget: "250 000€+",
+                type: "Mixte (forêt + agricole + bâti)",
+                loc: "Castellane / Forcalquier",
+                batiments: "Maison + hangar/atelier",
+                contraintes: "Cours d'eau obligatoire, pas trop isolé",
+                priorites: "1. Eau 2. Accès 3. Surface boisée"
+            },
+            {
+                participant: "Marie",
+                surface: "50-100 ha",
+                budget: "250 000€",
+                type: "Forêt + espaces ouverts",
+                loc: "Sisteronais / Entrepierres",
+                batiments: "Maison habitable",
+                contraintes: "Budget limité, besoin d'électricité",
+                priorites: "1. Coût/ha raisonnable 2. Forêt mature 3. Potentiel agricole"
+            },
+            {
+                participant: "Thomas",
+                surface: "20-50 ha",
+                budget: "50 000€",
+                type: "Ferme à rénover",
+                loc: "Niozelles / Forcalquier",
+                batiments: "Ferme avec bâtis",
+                contraintes: "Budget serré, besoin boulot électricien",
+                priorites: "1. Prix accessible 2. Proche village 3. Bâti existant"
+            },
+            {
+                participant: "Claire",
+                surface: "100+ ha",
+                budget: "250 000€+",
+                type: "Hameau abandonné",
+                loc: "Castellane / Mariaud",
+                batiments: "Plusieurs maisons à rénover",
+                contraintes: "Projets collectif, pas en solo",
+                priorites: "1. Communauté 2. Hameau/caractère 3. Accès hameau"
+            },
+            {
+                participant: "Lucas",
+                surface: "50-100 ha",
+                budget: "250 000€",
+                type: "Mixte (forêt + agricole + bâti)",
+                loc: "Zone Castellane",
+                batiments: "Maison + espace commun",
+                contraintes: "Doit permettre Fab Lab + agriculture",
+                priorites: "1. Espace atelier 2. Terres agricoles 3. Connexion internet"
+            },
+            {
+                participant: "Emma",
+                surface: "10-20 ha",
+                budget: "25 000€",
+                type: "Terrain constructible",
+                loc: "Bras-d'Asses / Verdon",
+                batiments: "Construction neuve",
+                contraintes: "Budget très limité, financement créatif",
+                priorites: "1. Viabilisé ou autonome possible 2. Petit prix 3. Soleil"
+            },
+            {
+                participant: "Participant 7",
                 surface: "",
                 budget: "",
                 type: "",
@@ -447,7 +534,7 @@
                 priorites: ""
             },
             {
-                participant: "Participant 2",
+                participant: "Participant 8",
                 surface: "",
                 budget: "",
                 type: "",
@@ -457,7 +544,7 @@
                 priorites: ""
             },
             {
-                participant: "Participant 3",
+                participant: "Participant 9",
                 surface: "",
                 budget: "",
                 type: "",
@@ -467,27 +554,7 @@
                 priorites: ""
             },
             {
-                participant: "Participant 4",
-                surface: "",
-                budget: "",
-                type: "",
-                loc: "",
-                batiments: "",
-                contraintes: "",
-                priorites: ""
-            },
-            {
-                participant: "Participant 5",
-                surface: "",
-                budget: "",
-                type: "",
-                loc: "",
-                batiments: "",
-                contraintes: "",
-                priorites: ""
-            },
-            {
-                participant: "Participant 6",
+                participant: "Participant 10",
                 surface: "",
                 budget: "",
                 type: "",
@@ -502,13 +569,30 @@
         function loadData() {
             const saved = localStorage.getItem('reunion6_criteres_data');
             const savedSummary = localStorage.getItem('reunion6_criteres_summary');
+            const dataVersion = localStorage.getItem('reunion6_data_version');
             
             if (savedSummary) {
                 document.getElementById('meetingSummary').value = savedSummary;
             }
             
+            // Forcer la mise à jour avec données réunion si version différente ou pas de données
+            if (dataVersion !== '2026-05-04-reunion') {
+                console.log('🔄 Mise à jour : chargement des données réunion 3 mai 2026');
+                localStorage.setItem('reunion6_data_version', '2026-05-04-reunion');
+                localStorage.setItem('reunion6_criteres_data', JSON.stringify(initialData));
+                return initialData;
+            }
+            
             if (saved) {
-                return JSON.parse(saved);
+                const parsed = JSON.parse(saved);
+                // Vérifier si les données sont vides (aucune surface de remplie)
+                const hasData = parsed.some(row => row.surface || row.budget || row.type);
+                if (!hasData) {
+                    console.log('🔄 Données vides détectées, chargement données réunion');
+                    localStorage.setItem('reunion6_criteres_data', JSON.stringify(initialData));
+                    return initialData;
+                }
+                return parsed;
             }
             return initialData;
         }
@@ -535,10 +619,46 @@
                 }
             });
             
+            // Sauvegarde principale
             localStorage.setItem('reunion6_criteres_data', JSON.stringify(rows));
             localStorage.setItem('reunion6_criteres_summary', document.getElementById('meetingSummary').value);
             
+            // Sauvegarde versionnée automatique (background backup)
+            const timestamp = new Date();
+            const versionKey = 'reunion6_backup_' + timestamp.toISOString().replace(/[:.]/g, '-');
+            const versionData = {
+                data: rows,
+                summary: document.getElementById('meetingSummary').value,
+                timestamp: timestamp.toISOString(),
+                version: versionKey
+            };
+            
+            // Garder les 20 dernières versions max
+            let versions = JSON.parse(localStorage.getItem('reunion6_versions') || '[]');
+            versions.unshift({
+                key: versionKey,
+                date: timestamp.toLocaleString('fr-FR'),
+                iso: timestamp.toISOString()
+            });
+            if (versions.length > 20) {
+                const removed = versions.pop();
+                localStorage.removeItem(removed.key);
+            }
+            localStorage.setItem('reunion6_versions', JSON.stringify(versions));
+            localStorage.setItem(versionKey, JSON.stringify(versionData));
+            
+            // Mettre à jour l'affichage de version
+            updateVersionInfo(timestamp);
+            
             showStatus('✅ Sauvegardé !', 'saved');
+        }
+        
+        function updateVersionInfo(timestamp) {
+            const versionInfo = document.getElementById('versionInfo');
+            if (versionInfo) {
+                const time = timestamp.toLocaleTimeString('fr-FR', {hour: '2-digit', minute:'2-digit', second:'2-digit'});
+                versionInfo.textContent = `v${time} · Auto-sauvegardé`;
+            }
         }
 
         function showStatus(msg, type) {
@@ -690,6 +810,81 @@
             link.click();
             
             showStatus('✅ HTML sauvegardé !', 'saved');
+        }
+
+        // Charger depuis NocoDB (nouveaux participants)
+        async function loadFromNocoDB() {
+            const NOCODB_URL = 'https://sheets.viegratuitepourtous.tech';
+            const API_TOKEN = 'nc_pat_rKMIsd_GYNXUA2gU_5qIEaJAt6HASbLdJ0jKkyCq';
+            
+            showStatus('🔄 Chargement depuis NocoDB...', 'loading');
+            
+            try {
+                const response = await fetch(`${NOCODB_URL}/api/v2/tables/nouveaux_participants_lieu04/records`, {
+                    method: 'GET',
+                    headers: {
+                        'xc-token': API_TOKEN
+                    }
+                });
+                
+                if (!response.ok) {
+                    if (response.status === 404) {
+                        showStatus('⚠️ Table NocoDB non trouvée. Crée-la d\'abord.', 'error');
+                        return;
+                    }
+                    throw new Error(`Erreur ${response.status}`);
+                }
+                
+                const result = await response.json();
+                const newParticipants = result.list || [];
+                
+                if (newParticipants.length === 0) {
+                    showStatus('ℹ️ Aucun nouveau participant dans NocoDB', 'saved');
+                    return;
+                }
+                
+                // Convertir au format du tableau
+                const formattedData = newParticipants.map(p => ({
+                    participant: p.nom + ' <span class="new-badge">NEW</span>',
+                    surface: p.surface || '',
+                    budget: p.budget || '',
+                    type: p.type_terrain || '',
+                    loc: p.localisation || '',
+                    batiments: p.batiments || '',
+                    contraintes: p.contraintes || '',
+                    priorites: p.priorites || '',
+                    isNew: true,
+                    Id: p.Id
+                }));
+                
+                // Ajouter au tableau existant
+                const tbody = document.getElementById('tableBody');
+                
+                formattedData.forEach(row => {
+                    const tr = document.createElement('tr');
+                    tr.className = 'participant-new';
+                    tr.innerHTML = `
+                        <td><div class="editable participant-name" contenteditable="true" onblur="saveData()">${row.participant}</div></td>
+                        <td><div class="editable" contenteditable="true" onblur="saveData()">${row.surface}</div></td>
+                        <td><div class="editable" contenteditable="true" onblur="saveData()">${row.budget}</div></td>
+                        <td><div class="editable" contenteditable="true" onblur="saveData()">${row.type}</div></td>
+                        <td><div class="editable" contenteditable="true" onblur="saveData()">${row.loc}</div></td>
+                        <td><div class="editable" contenteditable="true" onblur="saveData()">${row.batiments}</div></td>
+                        <td><div class="editable" contenteditable="true" onblur="saveData()">${row.contraintes}</div></td>
+                        <td><div class="editable" contenteditable="true" onblur="saveData()">${row.priorites}</div></td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+                
+                saveData();
+                calculateSynthesis();
+                
+                showStatus(`✅ ${newParticipants.length} nouveau(x) participant(s) ajouté(s) !`, 'saved');
+                
+            } catch (error) {
+                console.error('Erreur NocoDB:', error);
+                showStatus('❌ Erreur connexion NocoDB. Mode offline.', 'error');
+            }
         }
 
         // Auto-save
