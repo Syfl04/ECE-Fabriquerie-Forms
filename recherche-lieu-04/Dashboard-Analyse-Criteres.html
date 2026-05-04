@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recherche Lieu 04 - Analyse des Critères (Dashboard)</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .controls {
+            background: #f8f9fa;
+            padding: 20px 30px;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #5a67d8;
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background: #48bb78;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #38a169;
+        }
+
+        .dashboard {
+            padding: 30px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-left: 4px solid #667eea;
+        }
+
+        .stat-card h3 {
+            font-size: 12px;
+            text-transform: uppercase;
+            color: #6c757d;
+            margin-bottom: 10px;
+        }
+
+        .stat-card .value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2d3436;
+        }
+
+        .stat-card .label {
+            font-size: 13px;
+            color: #6c757d;
+            margin-top: 5px;
+        }
+
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .chart-container {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .chart-container h3 {
+            font-size: 16px;
+            margin-bottom: 20px;
+            color: #2d3436;
+            text-align: center;
+        }
+
+        .analysis-section {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 30px;
+        }
+
+        .analysis-section h2 {
+            color: #2d3436;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+
+        .consensus-box {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+        }
+
+        .consensus-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #48bb78;
+        }
+
+        .consensus-item h4 {
+            font-size: 12px;
+            text-transform: uppercase;
+            color: #6c757d;
+            margin-bottom: 8px;
+        }
+
+        .consensus-item p {
+            font-size: 15px;
+            font-weight: 600;
+            color: #2d3436;
+        }
+
+        .no-data {
+            text-align: center;
+            padding: 60px;
+            color: #6c757d;
+        }
+
+        .no-data h2 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .no-data p {
+            font-size: 1rem;
+        }
+
+        .alert-box {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 20px 30px;
+            color: #856404;
+        }
+
+        @media print {
+            body { background: white; padding: 0; }
+            .container { box-shadow: none; }
+            .controls { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 Dashboard d'Analyse</h1>
+            <p>Analyse des critères et préférences des 6 participants</p>
+        </div>
+
+        <div class="controls">
+            <button class="btn btn-primary" onclick="loadData()">
+                🔄 Charger les données
+            </button>
+            <button class="btn btn-success" onclick="exportAnalysis()">
+                💾 Exporter l'analyse
+            </button>
+        </div>
+
+        <div id="content">
+            <!-- Le contenu sera injecté par JavaScript -->
+        </div>
+    </div>
+
+    <script>
+        // Charger les données du localStorage
+        function loadData() {
+            const saved = localStorage.getItem('reunion6_criteres_data');
+            
+            if (!saved) {
+                showNoData();
+                return;
+            }
+            
+            const data = JSON.parse(saved);
+            const validData = data.filter(row => row.surface || row.budget || row.type);
+            
+            if (validData.length === 0) {
+                showNoData();
+                return;
+            }
+            
+            renderDashboard(validData);
+        }
+
+        // Afficher message si pas de données
+        function showNoData() {
+            document.getElementById('content').innerHTML = `
+                <div class="alert-box">
+                    ⚠️ Aucune donnée trouvée. Remplissez d'abord le tableau des critères (Tableau-Criteres-6-Participants.html), puis cliquez sur "Charger les données".
+                </div>
+                <div class="no-data">
+                    <h2>📭 Aucune donnée à analyser</h2>
+                    <p>Les participants n'ont pas encore rempli leurs critères.</p>
+                    <p style="margin-top: 20px; font-size: 14px;">
+                        💡 Astuce : Remplissez le tableau principal puis revenez ici pour voir l'analyse automatique.
+                    </p>
+                </div>
+            `;
+        }
+
+        // Rendre le dashboard
+        function renderDashboard(data) {
+            const stats = calculateStats(data);
+            
+            document.getElementById('content').innerHTML = `
+                <div class="dashboard">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <h3>Participants actifs</h3>
+                            <div class="value">${data.length}</div>
+                            <div class="label">sur 6 participants</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Surface moyenne souhaitée</h3>
+                            <div class="value">${stats.avgSurface}</div>
+                            <div class="label">hectares</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Budget moyen</h3>
+                            <div class="value">${stats.avgBudget}</div>
+                            <div class="label">€</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Type de terrain dominant</h3>
+                            <div class="value">${stats.dominantType}</div>
+                            <div class="label">préférence majoritaire</div>
+                        </div>
+                    </div>
+
+                    <div class="charts-grid">
+                        <div class="chart-container">
+                            <h3>📏 Surfaces souhaitées (ha)</h3>
+                            <canvas id="surfaceChart"></canvas>
+                        </div>
+                        <div class="chart-container">
+                            <h3>💰 Budgets maximum (€)</h3>
+                            <canvas id="budgetChart"></canvas>
+                        </div>
+                        <div class="chart-container">
+                            <h3>🌲 Types de terrain préférés</h3>
+                            <canvas id="typeChart"></canvas>
+                        </div>
+                        <div class="chart-container">
+                            <h3>📍 Localisations souhaitées</h3>
+                            <canvas id="locChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="analysis-section">
+                        <h2>🎯 Synthèse et points de convergence</h2>
+                        <div class="consensus-box" id="consensusBox">
+                            ${generateConsensus(data)}
+                        </div>
+                    </div>
+
+                    <div class="analysis-section" style="margin-top: 20px;">
+                        <h2>⚠️ Points de vigilance</h2>
+                        <div class="consensus-box" id="warningsBox">
+                            ${generateWarnings(data)}
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Créer les graphiques
+            createCharts(data);
+        }
+
+        // Calculer les statistiques
+        function calculateStats(data) {
+            // Extraire les surfaces numériques
+            const surfaces = data.map(d => {
+                const match = d.surface.match(/(\d+)/);
+                return match ? parseInt(match[1]) : 0;
+            }).filter(s => s > 0);
+            
+            const avgSurface = surfaces.length > 0 
+                ? Math.round(surfaces.reduce((a,b) => a+b, 0) / surfaces.length)
+                : '—';
+
+            // Extraire les budgets
+            const budgets = data.map(d => {
+                const match = d.budget.match(/(\d+[\s\d]*)/);
+                return match ? parseInt(match[1].replace(/\s/g, '')) : 0;
+            }).filter(b => b > 0);
+            
+            const avgBudget = budgets.length > 0
+                ? Math.round(budgets.reduce((a,b) => a+b, 0) / budgets.length).toLocaleString()
+                : '—';
+
+            // Type dominant
+            const types = {};
+            data.forEach(d => {
+                if (d.type) types[d.type] = (types[d.type] || 0) + 1;
+            });
+            const dominantType = Object.entries(types)
+                .sort((a,b) => b[1] - a[1])[0]?.[0] || '—';
+
+            return { avgSurface, avgBudget, dominantType };
+        }
+
+        // Créer les graphiques
+        function createCharts(data) {
+            // Graphique des surfaces
+            const surfaceCtx = document.getElementById('surfaceChart').getContext('2d');
+            new Chart(surfaceCtx, {
+                type: 'bar',
+                data: {
+                    labels: data.map(d => d.participant),
+                    datasets: [{
+                        label: 'Surface (ha)',
+                        data: data.map(d => {
+                            const match = d.surface.match(/(\d+)/);
+                            return match ? parseInt(match[1]) : 0;
+                        }),
+                        backgroundColor: 'rgba(102, 126, 234, 0.8)',
+                        borderColor: 'rgba(102, 126, 234, 1)',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Hectares'
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Graphique des budgets
+            const budgetCtx = document.getElementById('budgetChart').getContext('2d');
+            new Chart(budgetCtx, {
+                type: 'bar',
+                data: {
+                    labels: data.map(d => d.participant),
+                    datasets: [{
+                        label: 'Budget (€)',
+                        data: data.map(d => {
+                            const match = d.budget.match(/(\d+[\s\d]*)/);
+                            return match ? parseInt(match[1].replace(/\s/g, '')) : 0;
+                        }),
+                        backgroundColor: 'rgba(72, 187, 120, 0.8)',
+                        borderColor: 'rgba(72, 187, 120, 1)',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Euros'
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Graphique des types (pie)
+            const types = {};
+            data.forEach(d => {
+                if (d.type) types[d.type] = (types[d.type] || 0) + 1;
+            });
+            
+            const typeCtx = document.getElementById('typeChart').getContext('2d');
+            new Chart(typeCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(types),
+                    datasets: [{
+                        data: Object.values(types),
+                        backgroundColor: [
+                            '#667eea', '#764ba2', '#f093fb', '#f5576c',
+                            '#4facfe', '#00f2fe', '#43e97b', '#38f9d7'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+
+            // Graphique des localisations (pie)
+            const locs = {};
+            data.forEach(d => {
+                if (d.loc) locs[d.loc] = (locs[d.loc] || 0) + 1;
+            });
+            
+            const locCtx = document.getElementById('locChart').getContext('2d');
+            new Chart(locCtx, {
+                type: 'pie',
+                data: {
+                    labels: Object.keys(locs),
+                    datasets: [{
+                        data: Object.values(locs),
+                        backgroundColor: [
+                            '#ffecd2', '#fcb69f', '#ff9a9e', '#fecfef',
+                            '#a8edea', '#fed6e3', '#d299c2', '#fef9d7'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+        }
+
+        // Générer la synthèse
+        function generateConsensus(data) {
+            const items = [];
+            
+            // Surfaces
+            const surfaces = data.map(d => d.surface).filter(s => s);
+            if (surfaces.length > 0) {
+                items.push(`
+                    <div class="consensus-item">
+                        <h4>Surfaces demandées</h4>
+                        <p>${surfaces.join(' | ')}</p>
+                    </div>
+                `);
+            }
+            
+            // Budgets
+            const budgets = data.map(d => d.budget).filter(b => b);
+            if (budgets.length > 0) {
+                items.push(`
+                    <div class="consensus-item">
+                        <h4>Budgets</h4>
+                        <p>${budgets.join(' | ')}</p>
+                    </div>
+                `);
+            }
+            
+            // Types
+            const types = {};
+            data.forEach(d => { if (d.type) types[d.type] = (types[d.type] || 0) + 1; });
+            if (Object.keys(types).length > 0) {
+                const typeList = Object.entries(types).map(([t,c]) => `${t} (${c})`).join(' | ');
+                items.push(`
+                    <div class="consensus-item">
+                        <h4>Types de terrain (${data.length} préférences)</h4>
+                        <p>${typeList}</p>
+                    </div>
+                `);
+            }
+            
+            // Contraintes communes
+            const contraintes = data.map(d => d.contraintes).filter(c => c);
+            if (contraintes.length > 0) {
+                items.push(`
+                    <div class="consensus-item">
+                        <h4>Contraintes exprimées</h4>
+                        <p>${contraintes.join(' | ')}</p>
+                    </div>
+                `);
+            }
+            
+            return items.join('');
+        }
+
+        // Générer les alertes
+        function generateWarnings(data) {
+            const warnings = [];
+            
+            // Vérifier les écarts de budget
+            const budgets = data.map(d => {
+                const match = d.budget.match(/(\d+[\s\d]*)/);
+                return match ? parseInt(match[1].replace(/\s/g, '')) : 0;
+            }).filter(b => b > 0);
+            
+            if (budgets.length > 1) {
+                const min = Math.min(...budgets);
+                const max = Math.max(...budgets);
+                if (max > min * 2) {
+                    warnings.push(`
+                        <div class="consensus-item" style="border-left-color: #ff6b6b;">
+                            <h4 style="color: #ff6b6b;">⚠️ Écart de budget important</h4>
+                            <p>Budget min: ${min.toLocaleString()}€ | Max: ${max.toLocaleString()}€<br>
+                            Rapport: ${(max/min).toFixed(1)}x — Nécessite arbitrage</p>
+                        </div>
+                    `);
+                }
+            }
+            
+            // Vérifier les écarts de surface
+            const surfaces = data.map(d => {
+                const match = d.surface.match(/(\d+)/);
+                return match ? parseInt(match[1]) : 0;
+            }).filter(s => s > 0);
+            
+            if (surfaces.length > 1) {
+                const min = Math.min(...surfaces);
+                const max = Math.max(...surfaces);
+                if (max > min * 2) {
+                    warnings.push(`
+                        <div class="consensus-item" style="border-left-color: #ff6b6b;">
+                            <h4 style="color: #ff6b6b;">⚠️ Écart de surface important</h4>
+                            <p>Surface min: ${min}ha | Max: ${max}ha<br>
+                            Écart: ${max-min}ha — À discuter</p>
+                        </div>
+                    `);
+                }
+            }
+            
+            // Alerte si peu de données
+            const validData = data.filter(d => d.surface || d.budget);
+            if (validData.length < 3) {
+                warnings.push(`
+                    <div class="consensus-item" style="border-left-color: #ffc107;">
+                        <h4 style="color: #ffc107;">⚠️ Données partielles</h4>
+                        <p>Seulement ${validData.length} participant(s) ont rempli leurs critères.<br>
+                        Attendez les autres pour une analyse complète.</p>
+                    </div>
+                `);
+            }
+            
+            if (warnings.length === 0) {
+                warnings.push(`
+                    <div class="consensus-item" style="border-left-color: #48bb78;">
+                        <h4 style="color: #48bb78;">✅ Pas d'alerte majeure</h4>
+                        <p>Les critères semblent cohérents entre les participants.<br>
+                        Poursuivez la recherche sur cette base.</p>
+                    </div>
+                `);
+            }
+            
+            return warnings.join('');
+        }
+
+        // Exporter l'analyse
+        function exportAnalysis() {
+            const saved = localStorage.getItem('reunion6_criteres_data');
+            if (!saved) {
+                alert('Aucune donnée à exporter');
+                return;
+            }
+            
+            const data = JSON.parse(saved);
+            const validData = data.filter(row => row.surface || row.budget || row.type);
+            const stats = calculateStats(validData);
+            
+            let report = `ANALYSE DES CRITÈRES - RECHERCHE LIEU 04\n`;
+            report += `Date: ${new Date().toLocaleString()}\n`;
+            report += `Participants: ${validData.length}/6\n\n`;
+            report += `STATISTIQUES:\n`;
+            report += `- Surface moyenne: ${stats.avgSurface} ha\n`;
+            report += `- Budget moyen: ${stats.avgBudget} €\n`;
+            report += `- Type dominant: ${stats.dominantType}\n\n`;
+            report += `DÉTAIL PAR PARTICIPANT:\n`;
+            validData.forEach((d, i) => {
+                report += `\n${i+1}. ${d.participant}\n`;
+                report += `   Surface: ${d.surface || '—'}\n`;
+                report += `   Budget: ${d.budget || '—'}\n`;
+                report += `   Type: ${d.type || '—'}\n`;
+                report += `   Localisation: ${d.loc || '—'}\n`;
+                report += `   Bâtis: ${d.batiments || '—'}\n`;
+                report += `   Contraintes: ${d.contraintes || '—'}\n`;
+                report += `   Priorités: ${d.priorites || '—'}\n`;
+            });
+            
+            const blob = new Blob([report], { type: 'text/plain;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'Analyse_Criteres_Reunion_Lieu04_' + new Date().toISOString().split('T')[0] + '.txt';
+            link.click();
+        }
+
+        // Charger automatiquement au démarrage
+        document.addEventListener('DOMContentLoaded', loadData);
+    </script>
+</body>
+</html>

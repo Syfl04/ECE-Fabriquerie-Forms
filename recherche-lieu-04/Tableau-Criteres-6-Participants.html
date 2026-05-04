@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recherche Lieu 04 - Critères et Préférences (Réunion)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.95;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .controls {
+            background: #f8f9fa;
+            padding: 20px 30px;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: #11998e;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #0d8a7f;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(17,153,142,0.4);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #218838;
+        }
+
+        .status {
+            margin-left: auto;
+            padding: 8px 16px;
+            background: #d4edda;
+            border-radius: 20px;
+            font-size: 13px;
+            color: #155724;
+            font-weight: 500;
+        }
+
+        .synthesis-section {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            padding: 25px 30px;
+            border-bottom: 3px solid #ff6b6b;
+        }
+
+        .synthesis-section h2 {
+            color: #2d3436;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .consensus-box {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .consensus-item {
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #11998e;
+        }
+
+        .consensus-item h4 {
+            font-size: 12px;
+            text-transform: uppercase;
+            color: #6c757d;
+            margin-bottom: 5px;
+        }
+
+        .consensus-item p {
+            font-size: 16px;
+            font-weight: 600;
+            color: #2d3436;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            max-height: calc(100vh - 450px);
+            overflow-y: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        thead {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        th {
+            background: #2d3436;
+            color: white;
+            padding: 15px 10px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-right: 1px solid rgba(255,255,255,0.1);
+            white-space: nowrap;
+        }
+
+        th:last-child {
+            border-right: none;
+        }
+
+        td {
+            padding: 12px 10px;
+            border-bottom: 1px solid #e9ecef;
+            border-right: 1px solid #e9ecef;
+            vertical-align: top;
+        }
+
+        td:last-child {
+            border-right: none;
+        }
+
+        tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        tr:hover {
+            background: #e8f5e9 !important;
+        }
+
+        .editable {
+            background: transparent;
+            border: 2px solid transparent;
+            padding: 8px;
+            border-radius: 6px;
+            width: 100%;
+            min-height: 35px;
+            cursor: text;
+            transition: all 0.2s;
+            font-size: 14px;
+        }
+
+        .editable:hover {
+            background: rgba(17,153,142,0.1);
+            border-color: #11998e;
+        }
+
+        .editable:focus {
+            background: white;
+            border-color: #11998e;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(17,153,142,0.2);
+        }
+
+        /* Colonnes spécifiques */
+        .col-participant { min-width: 140px; font-weight: 600; }
+        .col-surface { min-width: 100px; }
+        .col-budget { min-width: 120px; }
+        .col-type { min-width: 130px; }
+        .col-loc { min-width: 150px; }
+        .col-batiments { min-width: 140px; }
+        .col-contraintes { min-width: 200px; }
+        .col-priorites { min-width: 200px; }
+
+        /* Style participant */
+        .participant-name {
+            background: #e3f2fd;
+            border-left: 4px solid #2196F3;
+            padding: 10px;
+            font-weight: 700;
+            color: #1565c0;
+        }
+
+        /* Style nouveaux participants (NocoDB) */
+        .participant-new .participant-name {
+            background: #fff3e0;
+            border-left: 4px solid #ff9800;
+            color: #e65100;
+        }
+
+        .participant-new {
+            background: #fff8e1 !important;
+        }
+
+        .new-badge {
+            display: inline-block;
+            background: #ff9800;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 600;
+            margin-left: 8px;
+            text-transform: uppercase;
+        }
+
+        .synthesis-row {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%) !important;
+            font-weight: 600;
+        }
+
+        .synthesis-row td {
+            border-top: 3px solid #ff6b6b;
+            border-bottom: 3px solid #ff6b6b;
+        }
+
+        /* Zone de synthèse textuelle */
+        .summary-section {
+            padding: 25px 30px;
+            background: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .summary-section h3 {
+            color: #2d3436;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        .summary-box {
+            width: 100%;
+            min-height: 120px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 14px;
+            resize: vertical;
+            background: white;
+        }
+
+        .summary-box:focus {
+            outline: none;
+            border-color: #11998e;
+            box-shadow: 0 0 0 3px rgba(17,153,142,0.2);
+        }
+
+        /* Badges */
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-right: 5px;
+            margin-bottom: 3px;
+        }
+
+        .badge-green {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .badge-blue {
+            background: #cce5ff;
+            color: #004085;
+        }
+
+        .badge-orange {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        /* Print styles */
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .container {
+                box-shadow: none;
+            }
+            .controls, .summary-section {
+                display: none;
+            }
+            .synthesis-section {
+                page-break-after: avoid;
+            }
+            .editable {
+                border: none;
+                background: transparent;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 1400px) {
+            .table-container {
+                font-size: 13px;
+            }
+            th, td {
+                padding: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 Expression des Critères et Préférences</h1>
+            <p>Chaque participant exprime ses critères pour le terrain idéal. Le tableau calcule automatiquement les points de convergence.</p>
+        </div>
+
+        <div class="controls">
+            <button class="btn btn-primary" onclick="addParticipant()">
+                <span>👤</span> Ajouter un participant
+            </button>
+            <button class="btn btn-success" onclick="calculateSynthesis()">
+                <span>🧮</span> Calculer la synthèse
+            </button>
+            <button class="btn btn-secondary" onclick="exportCSV()">
+                <span>💾</span> Export CSV
+            </button>
+            <button class="btn btn-secondary" onclick="exportHTML()">
+                <span>📄</span> Sauvegarder
+            </button>
+            <button class="btn btn-secondary" onclick="loadFromNocoDB()" title="Charger les nouveaux participants du formulaire">
+                <span>🔄</span> Charger NocoDB
+            </button>
+            <a href="index.html" class="btn btn-secondary" style="text-decoration: none;">
+                <span>🏠</span> Accueil
+            </a>
+            <div class="status" id="saveStatus">💡 Cliquez sur une cellule pour éditer</div>
+        </div>
+
+        <!-- Section Synthèse -->
+        <div class="synthesis-section">
+            <h2>📊 Synthèse automatique des critères</h2>
+            <div class="consensus-box" id="consensusBox">
+                <div class="consensus-item">
+                    <h4>Surface souhaitée</h4>
+                    <p id="consensusSurface">—</p>
+                </div>
+                <div class="consensus-item">
+                    <h4>Budget max</h4>
+                    <p id="consensusBudget">—</p>
+                </div>
+                <div class="consensus-item">
+                    <h4>Type de terrain</h4>
+                    <p id="consensusType">—</p>
+                </div>
+                <div class="consensus-item">
+                    <h4>Localisation privilégiée</h4>
+                    <p id="consensusLoc">—</p>
+                </div>
+                <div class="consensus-item">
+                    <h4>Bâtis souhaités</h4>
+                    <p id="consensusBatiments">—</p>
+                </div>
+                <div class="consensus-item">
+                    <h4>Contraintes communes</h4>
+                    <p id="consensusContraintes">—</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tableau des participants -->
+        <div class="table-container">
+            <table id="preferencesTable">
+                <thead>
+                    <tr>
+                        <th class="col-participant">👤 Participant</th>
+                        <th class="col-surface">📏 Surface min.</th>
+                        <th class="col-budget">💰 Budget max</th>
+                        <th class="col-type">🌲 Type terrain</th>
+                        <th class="col-loc">📍 Localisation</th>
+                        <th class="col-batiments">🏚️ Bâtis</th>
+                        <th class="col-contraintes">⚠️ Contraintes</th>
+                        <th class="col-priorites">⭐ Critères prioritaires</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <!-- Les lignes sont chargées par JavaScript -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Zone de synthèse manuelle -->
+        <div class="summary-section">
+            <h3>📝 Synthèse et décisions de la réunion</h3>
+            <textarea class="summary-box" id="meetingSummary" placeholder="Résumez ici les décisions prises :&#10;- Critères validés par tous&#10;- Points de désaccord à arbitrer&#10;- Prochaines étapes décidées&#10;- Qui fait quoi ?&#10;&#10;Ces notes seront sauvegardées automatiquement."></textarea>
+        </div>
+    </div>
+
+    <script>
+        // Données initiales avec 6 participants vides
+        const initialData = [
+            {
+                participant: "Participant 1",
+                surface: "",
+                budget: "",
+                type: "",
+                loc: "",
+                batiments: "",
+                contraintes: "",
+                priorites: ""
+            },
+            {
+                participant: "Participant 2",
+                surface: "",
+                budget: "",
+                type: "",
+                loc: "",
+                batiments: "",
+                contraintes: "",
+                priorites: ""
+            },
+            {
+                participant: "Participant 3",
+                surface: "",
+                budget: "",
+                type: "",
+                loc: "",
+                batiments: "",
+                contraintes: "",
+                priorites: ""
+            },
+            {
+                participant: "Participant 4",
+                surface: "",
+                budget: "",
+                type: "",
+                loc: "",
+                batiments: "",
+                contraintes: "",
+                priorites: ""
+            },
+            {
+                participant: "Participant 5",
+                surface: "",
+                budget: "",
+                type: "",
+                loc: "",
+                batiments: "",
+                contraintes: "",
+                priorites: ""
+            },
+            {
+                participant: "Participant 6",
+                surface: "",
+                budget: "",
+                type: "",
+                loc: "",
+                batiments: "",
+                contraintes: "",
+                priorites: ""
+            }
+        ];
+
+        // Charger les données
+        function loadData() {
+            const saved = localStorage.getItem('reunion6_criteres_data');
+            const savedSummary = localStorage.getItem('reunion6_criteres_summary');
+            
+            if (savedSummary) {
+                document.getElementById('meetingSummary').value = savedSummary;
+            }
+            
+            if (saved) {
+                return JSON.parse(saved);
+            }
+            return initialData;
+        }
+
+        // Sauvegarder
+        function saveData() {
+            const rows = [];
+            const tbody = document.getElementById('tableBody');
+            const trs = tbody.querySelectorAll('tr:not(.synthesis-row)');
+            
+            trs.forEach(tr => {
+                const tds = tr.querySelectorAll('td');
+                if (tds.length >= 7) {
+                    rows.push({
+                        participant: tds[0].textContent.trim(),
+                        surface: tds[1].textContent.trim(),
+                        budget: tds[2].textContent.trim(),
+                        type: tds[3].textContent.trim(),
+                        loc: tds[4].textContent.trim(),
+                        batiments: tds[5].textContent.trim(),
+                        contraintes: tds[6].textContent.trim(),
+                        priorites: tds[7].textContent.trim()
+                    });
+                }
+            });
+            
+            localStorage.setItem('reunion6_criteres_data', JSON.stringify(rows));
+            localStorage.setItem('reunion6_criteres_summary', document.getElementById('meetingSummary').value);
+            
+            showStatus('✅ Sauvegardé !', 'saved');
+        }
+
+        function showStatus(msg, type) {
+            const status = document.getElementById('saveStatus');
+            status.textContent = msg;
+            if (type === 'saved') {
+                status.style.background = '#d4edda';
+                status.style.color = '#155724';
+            }
+            setTimeout(() => {
+                status.textContent = '💡 Cliquez sur une cellule pour éditer';
+                status.style.background = '#d4edda';
+                status.style.color = '#155724';
+            }, 2000);
+        }
+
+        // Rendre le tableau
+        function renderTable(data) {
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = '';
+            
+            data.forEach((row, index) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><div class="editable participant-name" contenteditable="true" onblur="saveData()">${row.participant}</div></td>
+                    <td><div class="editable" contenteditable="true" onblur="saveData()">${row.surface}</div></td>
+                    <td><div class="editable" contenteditable="true" onblur="saveData()">${row.budget}</div></td>
+                    <td><div class="editable" contenteditable="true" onblur="saveData()">${row.type}</div></td>
+                    <td><div class="editable" contenteditable="true" onblur="saveData()">${row.loc}</div></td>
+                    <td><div class="editable" contenteditable="true" onblur="saveData()">${row.batiments}</div></td>
+                    <td><div class="editable" contenteditable="true" onblur="saveData()">${row.contraintes}</div></td>
+                    <td><div class="editable" contenteditable="true" onblur="saveData()">${row.priorites}</div></td>
+                `;
+                tbody.appendChild(tr);
+            });
+            
+            calculateSynthesis();
+        }
+
+        // Ajouter participant
+        function addParticipant() {
+            const tbody = document.getElementById('tableBody');
+            const tr = document.createElement('tr');
+            const num = tbody.querySelectorAll('tr:not(.synthesis-row)').length + 1;
+            
+            tr.innerHTML = `
+                <td><div class="editable participant-name" contenteditable="true" onblur="saveData()">Nouveau participant ${num}</div></td>
+                <td><div class="editable" contenteditable="true" onblur="saveData()">—</div></td>
+                <td><div class="editable" contenteditable="true" onblur="saveData()">—</div></td>
+                <td><div class="editable" contenteditable="true" onblur="saveData()">—</div></td>
+                <td><div class="editable" contenteditable="true" onblur="saveData()">—</div></td>
+                <td><div class="editable" contenteditable="true" onblur="saveData()">—</div></td>
+                <td><div class="editable" contenteditable="true" onblur="saveData()">—</div></td>
+                <td><div class="editable" contenteditable="true" onblur="saveData()">—</div></td>
+            `;
+            tbody.appendChild(tr);
+            tr.scrollIntoView({ behavior: 'smooth' });
+            saveData();
+        }
+
+        // Calculer synthèse automatique
+        function calculateSynthesis() {
+            const tbody = document.getElementById('tableBody');
+            const trs = tbody.querySelectorAll('tr:not(.synthesis-row)');
+            
+            let surfaces = [];
+            let budgets = [];
+            let types = {};
+            let locs = {};
+            let batiments = {};
+            let contraintes = {};
+            
+            trs.forEach(tr => {
+                const tds = tr.querySelectorAll('td');
+                if (tds.length >= 7) {
+                    // Surface
+                    const surf = tds[1].textContent.trim();
+                    if (surf && surf !== '—') surfaces.push(surf);
+                    
+                    // Budget
+                    const budg = tds[2].textContent.trim();
+                    if (budg && budg !== '—') budgets.push(budg);
+                    
+                    // Type
+                    const type = tds[3].textContent.trim();
+                    if (type && type !== '—') types[type] = (types[type] || 0) + 1;
+                    
+                    // Localisation
+                    const loc = tds[4].textContent.trim();
+                    if (loc && loc !== '—') locs[loc] = (locs[loc] || 0) + 1;
+                    
+                    // Bâtiments
+                    const bat = tds[5].textContent.trim();
+                    if (bat && bat !== '—') batiments[bat] = (batiments[bat] || 0) + 1;
+                    
+                    // Contraintes
+                    const contr = tds[6].textContent.trim();
+                    if (contr && contr !== '—') contraintes[contr] = (contraintes[contr] || 0) + 1;
+                }
+            });
+            
+            // Afficher synthèse
+            document.getElementById('consensusSurface').textContent = surfaces.length > 0 ? surfaces.join(' | ') : '—';
+            document.getElementById('consensusBudget').textContent = budgets.length > 0 ? budgets.join(' | ') : '—';
+            document.getElementById('consensusType').textContent = Object.keys(types).length > 0 ? Object.keys(types).join(' | ') : '—';
+            document.getElementById('consensusLoc').textContent = Object.keys(locs).length > 0 ? Object.keys(locs).join(' | ') : '—';
+            document.getElementById('consensusBatiments').textContent = Object.keys(batiments).length > 0 ? Object.keys(batiments).join(' | ') : '—';
+            document.getElementById('consensusContraintes').textContent = Object.keys(contraintes).length > 0 ? Object.keys(contraintes).join(' | ') : '—';
+            
+            showStatus('🧮 Synthèse recalculée', 'saved');
+        }
+
+        // Export CSV
+        function exportCSV() {
+            let csv = 'Participant;Surface min;Budget max;Type terrain;Localisation;Batiments;Contraintes;Priorites\n';
+            
+            const tbody = document.getElementById('tableBody');
+            const trs = tbody.querySelectorAll('tr:not(.synthesis-row)');
+            
+            trs.forEach(tr => {
+                const tds = tr.querySelectorAll('td');
+                if (tds.length >= 7) {
+                    const row = [];
+                    tds.forEach(td => {
+                        let text = td.textContent.trim().replace(/;/g, ',');
+                        if (text.includes(',')) text = '"' + text + '"';
+                        row.push(text);
+                    });
+                    csv += row.join(';') + '\n';
+                }
+            });
+            
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'Criteres_Reunion_Lieu04_' + new Date().toISOString().split('T')[0] + '.csv';
+            link.click();
+            
+            showStatus('✅ CSV exporté !', 'saved');
+        }
+
+        // Export HTML
+        function exportHTML() {
+            const htmlContent = document.documentElement.outerHTML;
+            const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'Criteres_Reunion_Lieu04_Sauvegarde_' + new Date().toISOString().split('T')[0] + '.html';
+            link.click();
+            
+            showStatus('✅ HTML sauvegardé !', 'saved');
+        }
+
+        // Charger depuis NocoDB (nouveaux participants)
+        async function loadFromNocoDB() {
+            const NOCODB_URL = 'https://sheets.viegratuitepourtous.tech';
+            const API_TOKEN = 'nc_pat_rKMIsd_GYNXUA2gU_5qIEaJAt6HASbLdJ0jKkyCq';
+            
+            showStatus('🔄 Chargement depuis NocoDB...', 'loading');
+            
+            try {
+                const response = await fetch(`${NOCODB_URL}/api/v2/tables/nouveaux_participants_lieu04/records`, {
+                    method: 'GET',
+                    headers: {
+                        'xc-token': API_TOKEN
+                    }
+                });
+                
+                if (!response.ok) {
+                    if (response.status === 404) {
+                        showStatus('⚠️ Table NocoDB non trouvée. Crée-la d\'abord.', 'error');
+                        return;
+                    }
+                    throw new Error(`Erreur ${response.status}`);
+                }
+                
+                const result = await response.json();
+                const newParticipants = result.list || [];
+                
+                if (newParticipants.length === 0) {
+                    showStatus('ℹ️ Aucun nouveau participant dans NocoDB', 'saved');
+                    return;
+                }
+                
+                // Convertir au format du tableau
+                const formattedData = newParticipants.map(p => ({
+                    participant: p.nom + ' <span class="new-badge">NEW</span>',
+                    surface: p.surface || '',
+                    budget: p.budget || '',
+                    type: p.type_terrain || '',
+                    loc: p.localisation || '',
+                    batiments: p.batiments || '',
+                    contraintes: p.contraintes || '',
+                    priorites: p.priorites || '',
+                    isNew: true,
+                    Id: p.Id
+                }));
+                
+                // Ajouter au tableau existant
+                const tbody = document.getElementById('tableBody');
+                
+                formattedData.forEach(row => {
+                    const tr = document.createElement('tr');
+                    tr.className = 'participant-new';
+                    tr.innerHTML = `
+                        <td><div class="editable participant-name" contenteditable="true" onblur="saveData()">${row.participant}</div></td>
+                        <td><div class="editable" contenteditable="true" onblur="saveData()">${row.surface}</div></td>
+                        <td><div class="editable" contenteditable="true" onblur="saveData()">${row.budget}</div></td>
+                        <td><div class="editable" contenteditable="true" onblur="saveData()">${row.type}</div></td>
+                        <td><div class="editable" contenteditable="true" onblur="saveData()">${row.loc}</div></td>
+                        <td><div class="editable" contenteditable="true" onblur="saveData()">${row.batiments}</div></td>
+                        <td><div class="editable" contenteditable="true" onblur="saveData()">${row.contraintes}</div></td>
+                        <td><div class="editable" contenteditable="true" onblur="saveData()">${row.priorites}</div></td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+                
+                saveData();
+                calculateSynthesis();
+                
+                showStatus(`✅ ${newParticipants.length} nouveau(x) participant(s) ajouté(s) !`, 'saved');
+                
+            } catch (error) {
+                console.error('Erreur NocoDB:', error);
+                showStatus('❌ Erreur connexion NocoDB. Mode offline.', 'error');
+            }
+        }
+
+        // Auto-save
+        setInterval(saveData, 30000);
+        window.addEventListener('beforeunload', saveData);
+        
+        document.getElementById('meetingSummary').addEventListener('input', () => {
+            showStatus('📝 Notes enregistrées', 'saved');
+            setTimeout(saveData, 1000);
+        });
+
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', () => {
+            const data = loadData();
+            renderTable(data);
+            console.log('✅ Tableau des critères chargé - ' + data.length + ' participants');
+        });
+    </script>
+</body>
+</html>
