@@ -238,16 +238,30 @@
     </div>
 
     <script>
-        // Charger les données du localStorage
+        // Données initiales de la réunion du 3 mai 2026
+        const initialMeetingData = [
+            { participant: "Sylvain", surface: "100+ ha", budget: "250 000€+", type: "Mixte (forêt + agricole + bâti)", loc: "Castellane / Forcalquier", batiments: "Maison + hangar/atelier", contraintes: "Cours d'eau obligatoire, pas trop isolé", priorites: "1. Eau 2. Accès 3. Surface boisée" },
+            { participant: "Marie", surface: "50-100 ha", budget: "250 000€", type: "Forêt + espaces ouverts", loc: "Sisteronais / Entrepierres", batiments: "Maison habitable", contraintes: "Budget limité, besoin d'électricité", priorites: "1. Coût/ha raisonnable 2. Forêt mature 3. Potentiel agricole" },
+            { participant: "Thomas", surface: "20-50 ha", budget: "50 000€", type: "Ferme à rénover", loc: "Niozelles / Forcalquier", batiments: "Ferme avec bâtis", contraintes: "Budget serré, besoin boulot électricien", priorites: "1. Prix accessible 2. Proche village 3. Bâti existant" },
+            { participant: "Claire", surface: "100+ ha", budget: "250 000€+", type: "Hameau abandonné", loc: "Castellane / Mariaud", batiments: "Plusieurs maisons à rénover", contraintes: "Projets collectif, pas en solo", priorites: "1. Communauté 2. Hameau/caractère 3. Accès hameau" },
+            { participant: "Lucas", surface: "50-100 ha", budget: "250 000€", type: "Mixte (forêt + agricole + bâti)", loc: "Zone Castellane", batiments: "Maison + espace commun", contraintes: "Doit permettre Fab Lab + agriculture", priorites: "1. Espace atelier 2. Terres agricoles 3. Connexion internet" },
+            { participant: "Emma", surface: "10-20 ha", budget: "25 000€", type: "Terrain constructible", loc: "Bras-d'Asses / Verdon", batiments: "Construction neuve", contraintes: "Budget très limité, financement créatif", priorites: "1. Viabilisé ou autonome possible 2. Petit prix 3. Soleil" }
+        ];
+
+        // Charger les données du localStorage ou utiliser données réunion par défaut
         function loadData() {
             const saved = localStorage.getItem('reunion6_criteres_data');
+            let data;
             
             if (!saved) {
-                showNoData();
-                return;
+                // Premier chargement : utiliser données de la réunion
+                data = initialMeetingData;
+                // Sauvegarder pour future utilisation
+                localStorage.setItem('reunion6_criteres_data', JSON.stringify(data));
+            } else {
+                data = JSON.parse(saved);
             }
             
-            const data = JSON.parse(saved);
             const validData = data.filter(row => row.surface || row.budget || row.type);
             
             if (validData.length === 0) {
@@ -284,7 +298,7 @@
                         <div class="stat-card">
                             <h3>Participants actifs</h3>
                             <div class="value">${data.length}</div>
-                            <div class="label">sur 6 participants</div>
+                            <div class="label">sur 10 max (6 réunion + ${Math.max(0, data.length - 6)} nouveaux)</div>
                         </div>
                         <div class="stat-card">
                             <h3>Surface moyenne souhaitée</h3>

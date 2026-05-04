@@ -391,9 +391,6 @@
             <button class="btn btn-secondary" onclick="exportCSV()">
                 <span>💾</span> Export CSV
             </button>
-            <button class="btn btn-secondary" onclick="exportHTML()">
-                <span>📄</span> Sauvegarder
-            </button>
             <button class="btn btn-secondary" onclick="loadFromNocoDB()" title="Charger les nouveaux participants du formulaire">
                 <span>🔄</span> Charger NocoDB
             </button>
@@ -401,6 +398,7 @@
                 <span>🏠</span> Accueil
             </a>
             <div class="status" id="saveStatus">💡 Cliquez sur une cellule pour éditer</div>
+            <div class="version-info" id="versionInfo" style="margin-left: auto; font-size: 12px; color: #6c757d;"></div>
         </div>
 
         <!-- Section Synthèse -->
@@ -463,10 +461,70 @@
     </div>
 
     <script>
-        // Données initiales avec 6 participants vides
+        // Données initiales avec 6 participants (réunion 3 mai) + 4 vides pour nouveaux
         const initialData = [
             {
-                participant: "Participant 1",
+                participant: "Sylvain",
+                surface: "100+ ha",
+                budget: "250 000€+",
+                type: "Mixte (forêt + agricole + bâti)",
+                loc: "Castellane / Forcalquier",
+                batiments: "Maison + hangar/atelier",
+                contraintes: "Cours d'eau obligatoire, pas trop isolé",
+                priorites: "1. Eau 2. Accès 3. Surface boisée"
+            },
+            {
+                participant: "Marie",
+                surface: "50-100 ha",
+                budget: "250 000€",
+                type: "Forêt + espaces ouverts",
+                loc: "Sisteronais / Entrepierres",
+                batiments: "Maison habitable",
+                contraintes: "Budget limité, besoin d'électricité",
+                priorites: "1. Coût/ha raisonnable 2. Forêt mature 3. Potentiel agricole"
+            },
+            {
+                participant: "Thomas",
+                surface: "20-50 ha",
+                budget: "50 000€",
+                type: "Ferme à rénover",
+                loc: "Niozelles / Forcalquier",
+                batiments: "Ferme avec bâtis",
+                contraintes: "Budget serré, besoin boulot électricien",
+                priorites: "1. Prix accessible 2. Proche village 3. Bâti existant"
+            },
+            {
+                participant: "Claire",
+                surface: "100+ ha",
+                budget: "250 000€+",
+                type: "Hameau abandonné",
+                loc: "Castellane / Mariaud",
+                batiments: "Plusieurs maisons à rénover",
+                contraintes: "Projets collectif, pas en solo",
+                priorites: "1. Communauté 2. Hameau/caractère 3. Accès hameau"
+            },
+            {
+                participant: "Lucas",
+                surface: "50-100 ha",
+                budget: "250 000€",
+                type: "Mixte (forêt + agricole + bâti)",
+                loc: "Zone Castellane",
+                batiments: "Maison + espace commun",
+                contraintes: "Doit permettre Fab Lab + agriculture",
+                priorites: "1. Espace atelier 2. Terres agricoles 3. Connexion internet"
+            },
+            {
+                participant: "Emma",
+                surface: "10-20 ha",
+                budget: "25 000€",
+                type: "Terrain constructible",
+                loc: "Bras-d'Asses / Verdon",
+                batiments: "Construction neuve",
+                contraintes: "Budget très limité, financement créatif",
+                priorites: "1. Viabilisé ou autonome possible 2. Petit prix 3. Soleil"
+            },
+            {
+                participant: "Participant 7",
                 surface: "",
                 budget: "",
                 type: "",
@@ -476,7 +534,7 @@
                 priorites: ""
             },
             {
-                participant: "Participant 2",
+                participant: "Participant 8",
                 surface: "",
                 budget: "",
                 type: "",
@@ -486,7 +544,7 @@
                 priorites: ""
             },
             {
-                participant: "Participant 3",
+                participant: "Participant 9",
                 surface: "",
                 budget: "",
                 type: "",
@@ -496,27 +554,7 @@
                 priorites: ""
             },
             {
-                participant: "Participant 4",
-                surface: "",
-                budget: "",
-                type: "",
-                loc: "",
-                batiments: "",
-                contraintes: "",
-                priorites: ""
-            },
-            {
-                participant: "Participant 5",
-                surface: "",
-                budget: "",
-                type: "",
-                loc: "",
-                batiments: "",
-                contraintes: "",
-                priorites: ""
-            },
-            {
-                participant: "Participant 6",
+                participant: "Participant 10",
                 surface: "",
                 budget: "",
                 type: "",
@@ -564,10 +602,46 @@
                 }
             });
             
+            // Sauvegarde principale
             localStorage.setItem('reunion6_criteres_data', JSON.stringify(rows));
             localStorage.setItem('reunion6_criteres_summary', document.getElementById('meetingSummary').value);
             
+            // Sauvegarde versionnée automatique (background backup)
+            const timestamp = new Date();
+            const versionKey = 'reunion6_backup_' + timestamp.toISOString().replace(/[:.]/g, '-');
+            const versionData = {
+                data: rows,
+                summary: document.getElementById('meetingSummary').value,
+                timestamp: timestamp.toISOString(),
+                version: versionKey
+            };
+            
+            // Garder les 20 dernières versions max
+            let versions = JSON.parse(localStorage.getItem('reunion6_versions') || '[]');
+            versions.unshift({
+                key: versionKey,
+                date: timestamp.toLocaleString('fr-FR'),
+                iso: timestamp.toISOString()
+            });
+            if (versions.length > 20) {
+                const removed = versions.pop();
+                localStorage.removeItem(removed.key);
+            }
+            localStorage.setItem('reunion6_versions', JSON.stringify(versions));
+            localStorage.setItem(versionKey, JSON.stringify(versionData));
+            
+            // Mettre à jour l'affichage de version
+            updateVersionInfo(timestamp);
+            
             showStatus('✅ Sauvegardé !', 'saved');
+        }
+        
+        function updateVersionInfo(timestamp) {
+            const versionInfo = document.getElementById('versionInfo');
+            if (versionInfo) {
+                const time = timestamp.toLocaleTimeString('fr-FR', {hour: '2-digit', minute:'2-digit', second:'2-digit'});
+                versionInfo.textContent = `v${time} · Auto-sauvegardé`;
+            }
         }
 
         function showStatus(msg, type) {
