@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TEST - Questionnaire Minimal</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; max-width: 600px; margin: 0 auto; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input, select { width: 100%; padding: 10px; font-size: 16px; }
+        button { width: 100%; padding: 15px; font-size: 18px; background: #4CAF50; color: white; border: none; cursor: pointer; }
+        button:hover { background: #45a049; }
+        #status { margin-top: 20px; padding: 15px; border-radius: 5px; display: none; }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+        .loading { background: #e3f2fd; color: #1565c0; }
+    </style>
+</head>
+<body>
+    <h1>TEST Formulaire Minimal</h1>
+    <p>Version ultra-simplifiée pour tester le webhook n8n</p>
+    
+    <form id="testForm">
+        <div class="form-group">
+            <label>Nom *</label>
+            <input type="text" id="nom" name="nom" required value="TestMinimal">
+        </div>
+        
+        <div class="form-group">
+            <label>Budget *</label>
+            <select id="budget" name="budget" required>
+                <option value="50 000€" selected>50 000€</option>
+                <option value="250 000€">250 000€</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label>Surface *</label>
+            <select id="surface" name="surface" required>
+                <option value="20-50 ha" selected>20-50 ha</option>
+                <option value="50-100 ha">50-100 ha</option>
+            </select>
+        </div>
+        
+        <button type="submit">TEST - Envoyer</button>
+    </form>
+    
+    <div id="status"></div>
+
+    <script>
+        const WEBHOOK_URL = 'https://automate.viegratuitepourtous.tech/webhook/nouveau-participant-lieu04';
+        
+        document.getElementById('testForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const statusDiv = document.getElementById('status');
+            statusDiv.className = 'loading';
+            statusDiv.style.display = 'block';
+            statusDiv.textContent = 'Envoi en cours...';
+            
+            const formData = {
+                nom: document.getElementById('nom').value,
+                budget: document.getElementById('budget').value,
+                surface: document.getElementById('surface').value,
+                type_terrain: 'Test',
+                date_inscription: new Date().toISOString(),
+                statut: 'Test'
+            };
+            
+            console.log('Données envoyées:', formData);
+            
+            try {
+                const response = await fetch(WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+                
+                console.log('Réponse status:', response.status);
+                
+                if (response.ok) {
+                    const result = await response.json();
+                    console.log('Réponse JSON:', result);
+                    
+                    statusDiv.className = 'success';
+                    statusDiv.innerHTML = '<strong>SUCCÈS !</strong><br>' + JSON.stringify(result);
+                } else {
+                    const errorText = await response.text();
+                    console.error('Erreur response:', errorText);
+                    statusDiv.className = 'error';
+                    statusDiv.innerHTML = '<strong>ERREUR ' + response.status + '</strong><br>' + errorText;
+                }
+            } catch (error) {
+                console.error('Erreur catch:', error);
+                statusDiv.className = 'error';
+                statusDiv.innerHTML = '<strong>ERREUR JAVASCRIPT</strong><br>' + error.message;
+            }
+        });
+    </script>
+</body>
+</html>
