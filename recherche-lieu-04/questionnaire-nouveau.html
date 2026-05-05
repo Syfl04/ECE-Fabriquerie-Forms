@@ -379,12 +379,11 @@
     </div>
 
     <script>
-        // Configuration NocoDB
-        const NOCODB_URL = 'https://sheets.viegratuitepourtous.tech';
-        const API_TOKEN = 'nc_pat_rKMIsd_GYNXUA2gU_5qIEaJAt6HASbLdJ0jKkyCq';
+        // Configuration Webhook n8n
+        // Le workflow n8n reçoit les données et les transfère vers NocoDB
+        const WEBHOOK_URL = 'https://automate.viegratuitepourtous.tech/webhook/nouveau-participant-lieu04';
         
-        // NOTE: La table 'nouveaux_participants_lieu04' doit être créée dans NocoDB
-        // Si elle n'existe pas, le formulaire affichera une erreur avec instructions
+        // NOTE: Le workflow n8n doit être actif avec un node "Respond to Webhook"
 
         document.getElementById('questionnaireForm').addEventListener('submit', async function(e) {
             e.preventDefault();
@@ -398,7 +397,7 @@
             
             // Message de chargement
             statusMsg.className = 'status-message loading';
-            statusMsg.textContent = '⏳ Envoi des données vers la base NocoDB...';
+            statusMsg.textContent = '⏳ Envoi des données...';
             
             // Collecter les données du formulaire
             const formData = {
@@ -417,44 +416,37 @@
             };
             
             try {
-                // Envoi vers NocoDB
-                const response = await fetch(`${NOCODB_URL}/api/v2/tables/nouveaux_participants_lieu04/records`, {
+                // Envoi vers le webhook n8n
+                const response = await fetch(WEBHOOK_URL, {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json',
-                        'xc-token': API_TOKEN
+                        'Content-Type': 'application/json'
                     },
                     body: JSON.stringify(formData)
                 });
                 
                 if (response.ok) {
+                    const result = await response.json();
+                    
                     // Succès
                     statusMsg.className = 'status-message success';
                     statusMsg.innerHTML = `
                         <strong>✅ Participation enregistrée !</strong><br>
                         Merci ${formData.nom}. Ta contribution a été intégrée au projet.<br>
-                        <a href="index.html" style="color: #155724; text-decoration: underline;">← Retour à l'espace collaboratif</a>
+                        <p style="margin-top: 10px; font-size: 13px;">Redirection vers le tableau dans 2 secondes...</p>
                     `;
                     
                     // Reset du formulaire
                     document.getElementById('questionnaireForm').reset();
                     submitBtn.textContent = 'Envoyé ✓';
                     
-                } else if (response.status === 404) {
-                    // Table n'existe pas encore
-                    statusMsg.className = 'status-message error';
-                    statusMsg.innerHTML = `
-                        <strong>⚠️ Configuration requise</strong><br>
-                        La table NocoDB n'existe pas encore. Crée-la manuellement dans NocoDB :<br>
-                        Base: default | Table: nouveaux_participants_lieu04<br>
-                        Champs: nom, email, surface, budget, type_terrain, localisation, batiments, contraintes, priorites, apport, date_inscription, statut<br>
-                        <a href="${NOCODB_URL}" target="_blank" style="color: #721c24;">Ouvrir NocoDB →</a>
-                    `;
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = 'Réessayer';
+                    // Redirection automatique vers le tableau avec paramètre refresh
+                    setTimeout(() => {
+                        window.location.href = 'Tableau-Criteres-6-Participants.html?refresh=1';
+                    }, 2000);
                     
                 } else {
-                    throw new Error(`Erreur ${response.status}`);
+                    throw new Error(`Erreur ${response.status}: ${response.statusText}`);
                 }
                 
             } catch (error) {
