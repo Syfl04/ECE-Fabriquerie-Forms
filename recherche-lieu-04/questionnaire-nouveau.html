@@ -417,11 +417,9 @@
             
             try {
                 // Envoi vers le webhook n8n
+                // Note : Pas de header Content-Type explicite pour éviter preflight CORS
                 const response = await fetch(WEBHOOK_URL, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'text/plain'
-                    },
                     body: JSON.stringify(formData)
                 });
                 
