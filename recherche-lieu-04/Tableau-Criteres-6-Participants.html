@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Dernière mise à jour: 2026-05-06 -->
     <title>Recherche Lieu 04 - Critères et Préférences (Réunion)</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -20,12 +21,13 @@
         }
 
         .container {
-            max-width: 1800px;
+            max-width: 98vw;
             margin: 0 auto;
             background: white;
             border-radius: 16px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
             overflow: hidden;
+            min-height: calc(100vh - 40px);
         }
 
         .header {
@@ -110,54 +112,9 @@
             font-weight: 500;
         }
 
-        .synthesis-section {
-            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
-            padding: 25px 30px;
-            border-bottom: 3px solid #ff6b6b;
-        }
-
-        .synthesis-section h2 {
-            color: #2d3436;
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .consensus-box {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 15px;
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        .consensus-item {
-            padding: 15px;
-            background: #f8f9fa;
-            border-radius: 8px;
-            border-left: 4px solid #11998e;
-        }
-
-        .consensus-item h4 {
-            font-size: 12px;
-            text-transform: uppercase;
-            color: #6c757d;
-            margin-bottom: 5px;
-        }
-
-        .consensus-item p {
-            font-size: 16px;
-            font-weight: 600;
-            color: #2d3436;
-        }
-
         .table-container {
             overflow-x: auto;
-            max-height: calc(100vh - 450px);
+            max-height: calc(100vh - 220px);
             overflow-y: auto;
         }
 
@@ -285,37 +242,6 @@
             border-bottom: 3px solid #ff6b6b;
         }
 
-        /* Zone de synthèse textuelle */
-        .summary-section {
-            padding: 25px 30px;
-            background: #f8f9fa;
-            border-top: 1px solid #e9ecef;
-        }
-
-        .summary-section h3 {
-            color: #2d3436;
-            margin-bottom: 15px;
-            font-size: 1.2rem;
-        }
-
-        .summary-box {
-            width: 100%;
-            min-height: 120px;
-            padding: 15px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-family: inherit;
-            font-size: 14px;
-            resize: vertical;
-            background: white;
-        }
-
-        .summary-box:focus {
-            outline: none;
-            border-color: #11998e;
-            box-shadow: 0 0 0 3px rgba(17,153,142,0.2);
-        }
-
         /* Badges */
         .badge {
             display: inline-block;
@@ -351,11 +277,8 @@
             .container {
                 box-shadow: none;
             }
-            .controls, .summary-section {
+            .controls {
                 display: none;
-            }
-            .synthesis-section {
-                page-break-after: avoid;
             }
             .editable {
                 border: none;
@@ -382,54 +305,14 @@
         </div>
 
         <div class="controls">
-            <button class="btn btn-primary" onclick="addParticipant()">
-                <span>👤</span> Ajouter un participant
-            </button>
-            <button class="btn btn-success" onclick="calculateSynthesis()">
-                <span>🧮</span> Calculer la synthèse
-            </button>
-            <button class="btn btn-secondary" onclick="exportCSV()">
-                <span>💾</span> Export CSV
-            </button>
-            <button class="btn btn-secondary" onclick="loadFromNocoDB()" title="Charger les nouveaux participants du formulaire">
-                <span>🔄</span> Charger NocoDB
-            </button>
             <a href="index.html" class="btn btn-secondary" style="text-decoration: none;">
                 <span>🏠</span> Accueil
             </a>
-            <div class="status" id="saveStatus">💡 Cliquez sur une cellule pour éditer</div>
+            <button class="btn btn-success" onclick="saveData()">
+                <span>💾</span> Sauvegarder
+            </button>
+            <div class="status" id="saveStatus">💡 Cliquez sur une cellule pour éditer, puis 💾 Sauvegarder</div>
             <div class="version-info" id="versionInfo" style="margin-left: auto; font-size: 12px; color: #6c757d;"></div>
-        </div>
-
-        <!-- Section Synthèse -->
-        <div class="synthesis-section">
-            <h2>📊 Synthèse automatique des critères</h2>
-            <div class="consensus-box" id="consensusBox">
-                <div class="consensus-item">
-                    <h4>Surface souhaitée</h4>
-                    <p id="consensusSurface">—</p>
-                </div>
-                <div class="consensus-item">
-                    <h4>Budget max</h4>
-                    <p id="consensusBudget">—</p>
-                </div>
-                <div class="consensus-item">
-                    <h4>Type de terrain</h4>
-                    <p id="consensusType">—</p>
-                </div>
-                <div class="consensus-item">
-                    <h4>Localisation privilégiée</h4>
-                    <p id="consensusLoc">—</p>
-                </div>
-                <div class="consensus-item">
-                    <h4>Bâtis souhaités</h4>
-                    <p id="consensusBatiments">—</p>
-                </div>
-                <div class="consensus-item">
-                    <h4>Contraintes communes</h4>
-                    <p id="consensusContraintes">—</p>
-                </div>
-            </div>
         </div>
 
         <!-- Tableau des participants -->
@@ -453,16 +336,20 @@
             </table>
         </div>
 
-        <!-- Zone de synthèse manuelle -->
-        <div class="summary-section">
-            <h3>📝 Synthèse et décisions de la réunion</h3>
-            <textarea class="summary-box" id="meetingSummary" placeholder="Résumez ici les décisions prises :&#10;- Critères validés par tous&#10;- Points de désaccord à arbitrer&#10;- Prochaines étapes décidées&#10;- Qui fait quoi ?&#10;&#10;Ces notes seront sauvegardées automatiquement."></textarea>
-        </div>
+
     </div>
 
     <script>
-        // Données initiales avec 6 participants (réunion 3 mai 2026) + 4 vides pour nouveaux
-        const initialData = [
+        // Configuration
+        const NOCODB_URL = 'https://sheets.viegratuitepourtous.tech';
+        const API_TOKEN = 'nc_pat_rKMIsd_GYNXUA2gU_5qIEaJAt6HASbLdJ0jKkyCq';
+        const TABLE_ID = 'mice110lgapcssc'; // Table: nouveaux_participants_lieu04
+        
+        // Webhook n8n existant (même que le formulaire questionnaire-nouveau.html)
+        const WEBHOOK_SYNC_URL = 'https://automate.viegratuitepourtous.tech/webhook/nouveau-participant-lieu04';
+        
+        // Données de secours (6 participants initiaux) en cas d'indisponibilité NocoDB
+        const fallbackData = [
             {
                 participant: "dominique",
                 surface: "5ha",
@@ -522,83 +409,71 @@
                 batiments: "ferme à retaper ou non habitat léger possible maison passive",
                 contraintes: "essence différente partie plane accessible, pas de ligne haute tension, pas d'antenne 5g, pas de terrain nu, pas éolienne, pas de route passante à proximité, facteur humain vision et valeurs partagées, personne ayant une capacité de travail sur soi",
                 priorites: "600-1000m altitude, eau, calme"
-            },
-            {
-                participant: "Participant 7",
-                surface: "",
-                budget: "",
-                type: "",
-                loc: "",
-                batiments: "",
-                contraintes: "",
-                priorites: ""
-            },
-            {
-                participant: "Participant 8",
-                surface: "",
-                budget: "",
-                type: "",
-                loc: "",
-                batiments: "",
-                contraintes: "",
-                priorites: ""
-            },
-            {
-                participant: "Participant 9",
-                surface: "",
-                budget: "",
-                type: "",
-                loc: "",
-                batiments: "",
-                contraintes: "",
-                priorites: ""
-            },
-            {
-                participant: "Participant 10",
-                surface: "",
-                budget: "",
-                type: "",
-                loc: "",
-                batiments: "",
-                contraintes: "",
-                priorites: ""
             }
         ];
 
-        // Charger les données
-        function loadData() {
-            const saved = localStorage.getItem('reunion6_criteres_data');
-            const savedSummary = localStorage.getItem('reunion6_criteres_summary');
-            const dataVersion = localStorage.getItem('reunion6_data_version');
-            
-            if (savedSummary) {
-                document.getElementById('meetingSummary').value = savedSummary;
-            }
-            
-            // Forcer la mise à jour avec données réunion si version différente ou pas de données
-            if (dataVersion !== '2026-05-04-reunion') {
-                console.log('🔄 Mise à jour : chargement des données réunion 3 mai 2026');
-                localStorage.setItem('reunion6_data_version', '2026-05-04-reunion');
-                localStorage.setItem('reunion6_criteres_data', JSON.stringify(initialData));
-                return initialData;
-            }
-            
-            if (saved) {
-                const parsed = JSON.parse(saved);
-                // Vérifier si les données sont vides (aucune surface de remplie)
-                const hasData = parsed.some(row => row.surface || row.budget || row.type);
-                if (!hasData) {
-                    console.log('🔄 Données vides détectées, chargement données réunion');
-                    localStorage.setItem('reunion6_criteres_data', JSON.stringify(initialData));
-                    return initialData;
+        // Lignes vides pour nouveaux participants
+        const emptySlots = [
+            { participant: "Nouveau 1", surface: "", budget: "", type: "", loc: "", batiments: "", contraintes: "", priorites: "" },
+            { participant: "Nouveau 2", surface: "", budget: "", type: "", loc: "", batiments: "", contraintes: "", priorites: "" },
+            { participant: "Nouveau 3", surface: "", budget: "", type: "", loc: "", batiments: "", contraintes: "", priorites: "" },
+            { participant: "Nouveau 4", surface: "", budget: "", type: "", loc: "", batiments: "", contraintes: "", priorites: "" }
+        ];
+
+        // Charger les données depuis NocoDB
+        async function loadDataFromNocoDB() {
+            try {
+                const response = await fetch(`${NOCODB_URL}/api/v2/tables/${TABLE_ID}/records`, {
+                    method: 'GET',
+                    headers: {
+                        'xc-token': API_TOKEN
+                    }
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`Erreur ${response.status}`);
                 }
-                return parsed;
+                
+                const result = await response.json();
+                
+                if (result.list && result.list.length > 0) {
+                    // Convertir les données NocoDB au format du tableau
+                    const participants = result.list.map(record => ({
+                        participant: record.nom || record.participant || '',
+                        surface: record.surface || '',
+                        budget: record.budget || '',
+                        type: record.type_terrain || record.type || '',
+                        loc: record.localisation || record.loc || '',
+                        batiments: record.batiments || '',
+                        contraintes: record.contraintes || '',
+                        priorites: record.priorites || ''
+                    }));
+                    
+                    // Ajouter des lignes vides pour permettre l'édition manuelle
+                    return [...participants, ...emptySlots];
+                }
+                
+                return [...fallbackData, ...emptySlots];
+            } catch (error) {
+                console.error('Erreur chargement NocoDB:', error);
+                // En cas d'erreur, utiliser les données de secours
+                return [...fallbackData, ...emptySlots];
             }
-            return initialData;
         }
 
-        // Sauvegarder
-        function saveData() {
+        // Charger les données (maintenant asynchrone)
+        async function loadData() {
+            // Charger depuis NocoDB
+            const data = await loadDataFromNocoDB();
+            
+            // Sauvegarder dans localStorage pour accès hors ligne
+            localStorage.setItem('reunion6_criteres_data', JSON.stringify(data));
+            
+            return data;
+        }
+
+        // Sauvegarder localement et vers NocoDB (via webhook existant)
+        async function saveData() {
             const rows = [];
             const tbody = document.getElementById('tableBody');
             const trs = tbody.querySelectorAll('tr:not(.synthesis-row)');
@@ -619,16 +494,14 @@
                 }
             });
             
-            // Sauvegarde principale
+            // Sauvegarde principale locale
             localStorage.setItem('reunion6_criteres_data', JSON.stringify(rows));
-            localStorage.setItem('reunion6_criteres_summary', document.getElementById('meetingSummary').value);
             
             // Sauvegarde versionnée automatique (background backup)
             const timestamp = new Date();
             const versionKey = 'reunion6_backup_' + timestamp.toISOString().replace(/[:.]/g, '-');
             const versionData = {
                 data: rows,
-                summary: document.getElementById('meetingSummary').value,
                 timestamp: timestamp.toISOString(),
                 version: versionKey
             };
@@ -650,7 +523,75 @@
             // Mettre à jour l'affichage de version
             updateVersionInfo(timestamp);
             
-            showStatus('✅ Sauvegardé !', 'saved');
+            showStatus('💾 Sauvegarde locale OK — Sync NocoDB...', 'loading');
+            
+            // Synchronisation vers NocoDB via webhook n8n existant (un par un)
+            // NOTE: Pour l'instant, on ne synchronise que les NOUVEAUX participants
+            // Les 6 participants initiaux ne sont pas re-synchronisés pour éviter les doublons
+            // (le workflow n8n fait des POST = création, pas des PATCH = mise à jour)
+            
+            let syncedCount = 0;
+            let errorCount = 0;
+            
+            // Liste des 6 participants initiaux (déjà dans NocoDB)
+            const participantsExistants = ['dominique', 'marjorie', 'michel', 'gilles', 'mirelle', 'sylvain'];
+            
+            for (const row of rows) {
+                const nomLower = row.participant.toLowerCase().trim();
+                
+                // Skip les lignes vides ou placeholders
+                if (!row.participant || row.participant === '' || 
+                    row.participant === '—' || row.participant.startsWith('Nouveau')) {
+                    continue;
+                }
+                
+                // Skip les 6 participants existants (déjà dans NocoDB)
+                if (participantsExistants.includes(nomLower)) {
+                    console.log('Skip (existant):', row.participant);
+                    continue;
+                }
+                
+                try {
+                    // Format EXACTEMENT comme le formulaire questionnaire-nouveau.html
+                    // pour être compatible avec le workflow n8n existant
+                    const syncData = {
+                        nom: row.participant,  // "nom" comme le formulaire (pas "participant")
+                        email: '',
+                        surface: row.surface,
+                        budget: row.budget,
+                        type_terrain: row.type,  // "type_terrain" comme le formulaire (pas "type")
+                        localisation: row.loc,  // "localisation" comme le formulaire (pas "loc")
+                        batiments: row.batiments,
+                        contraintes: row.contraintes,
+                        priorites: row.priorites,
+                        apport: '',
+                        date_inscription: timestamp.toISOString(),
+                        statut: 'Tableau-Nouveau'
+                    };
+                    
+                    await fetch(WEBHOOK_SYNC_URL, {
+                        method: 'POST',
+                        body: JSON.stringify(syncData)
+                    });
+                    
+                    syncedCount++;
+                    
+                } catch (error) {
+                    console.error('Erreur sync pour', row.participant, error);
+                    errorCount++;
+                }
+            }
+            
+            if (errorCount === 0 && syncedCount > 0) {
+                showStatus(`✅ Sauvegardé (local + ${syncedCount} nouveau(x) dans NocoDB)`, 'saved');
+            } else if (errorCount > 0) {
+                showStatus(`✅ Local OK — ⚠️ ${errorCount} erreurs NocoDB`, 'saved');
+            } else {
+                showStatus('✅ Sauvegardé localement (pas de nouveaux à synchroniser)', 'saved');
+            }
+            
+            // Reset du flag de modification
+            dataModified = false;
         }
         
         function updateVersionInfo(timestamp) {
@@ -664,15 +605,29 @@
         function showStatus(msg, type) {
             const status = document.getElementById('saveStatus');
             status.textContent = msg;
+            
             if (type === 'saved') {
                 status.style.background = '#d4edda';
                 status.style.color = '#155724';
+            } else if (type === 'loading') {
+                status.style.background = '#e3f2fd';
+                status.style.color = '#1565c0';
+            } else if (type === 'error') {
+                status.style.background = '#f8d7da';
+                status.style.color = '#721c24';
+            } else if (type === 'modified') {
+                status.style.background = '#fff3cd';
+                status.style.color = '#856404';
             }
-            setTimeout(() => {
-                status.textContent = '💡 Cliquez sur une cellule pour éditer';
-                status.style.background = '#d4edda';
-                status.style.color = '#155724';
-            }, 2000);
+        }
+        
+        // Flag pour tracker les modifications
+        let dataModified = false;
+
+        // Marquer comme modifié
+        function markModified() {
+            dataModified = true;
+            showStatus('📝 Modifications en cours...', 'modified');
         }
 
         // Rendre le tableau
@@ -683,224 +638,33 @@
             data.forEach((row, index) => {
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
-                    <td><div class="editable participant-name" contenteditable="true" onblur="saveData()">${row.participant}</div></td>
-                    <td><div class="editable" contenteditable="true" onblur="saveData()">${row.surface}</div></td>
-                    <td><div class="editable" contenteditable="true" onblur="saveData()">${row.budget}</div></td>
-                    <td><div class="editable" contenteditable="true" onblur="saveData()">${row.type}</div></td>
-                    <td><div class="editable" contenteditable="true" onblur="saveData()">${row.loc}</div></td>
-                    <td><div class="editable" contenteditable="true" onblur="saveData()">${row.batiments}</div></td>
-                    <td><div class="editable" contenteditable="true" onblur="saveData()">${row.contraintes}</div></td>
-                    <td><div class="editable" contenteditable="true" onblur="saveData()">${row.priorites}</div></td>
+                    <td><div class="editable participant-name" contenteditable="true" oninput="markModified()">${row.participant}</div></td>
+                    <td><div class="editable" contenteditable="true" oninput="markModified()">${row.surface}</div></td>
+                    <td><div class="editable" contenteditable="true" oninput="markModified()">${row.budget}</div></td>
+                    <td><div class="editable" contenteditable="true" oninput="markModified()">${row.type}</div></td>
+                    <td><div class="editable" contenteditable="true" oninput="markModified()">${row.loc}</div></td>
+                    <td><div class="editable" contenteditable="true" oninput="markModified()">${row.batiments}</div></td>
+                    <td><div class="editable" contenteditable="true" oninput="markModified()">${row.contraintes}</div></td>
+                    <td><div class="editable" contenteditable="true" oninput="markModified()">${row.priorites}</div></td>
                 `;
                 tbody.appendChild(tr);
             });
-            
-            calculateSynthesis();
         }
 
-        // Ajouter participant
-        function addParticipant() {
-            const tbody = document.getElementById('tableBody');
-            const tr = document.createElement('tr');
-            const num = tbody.querySelectorAll('tr:not(.synthesis-row)').length + 1;
-            
-            tr.innerHTML = `
-                <td><div class="editable participant-name" contenteditable="true" onblur="saveData()">Nouveau participant ${num}</div></td>
-                <td><div class="editable" contenteditable="true" onblur="saveData()">—</div></td>
-                <td><div class="editable" contenteditable="true" onblur="saveData()">—</div></td>
-                <td><div class="editable" contenteditable="true" onblur="saveData()">—</div></td>
-                <td><div class="editable" contenteditable="true" onblur="saveData()">—</div></td>
-                <td><div class="editable" contenteditable="true" onblur="saveData()">—</div></td>
-                <td><div class="editable" contenteditable="true" onblur="saveData()">—</div></td>
-                <td><div class="editable" contenteditable="true" onblur="saveData()">—</div></td>
-            `;
-            tbody.appendChild(tr);
-            tr.scrollIntoView({ behavior: 'smooth' });
-            saveData();
-        }
-
-        // Calculer synthèse automatique
-        function calculateSynthesis() {
-            const tbody = document.getElementById('tableBody');
-            const trs = tbody.querySelectorAll('tr:not(.synthesis-row)');
-            
-            let surfaces = [];
-            let budgets = [];
-            let types = {};
-            let locs = {};
-            let batiments = {};
-            let contraintes = {};
-            
-            trs.forEach(tr => {
-                const tds = tr.querySelectorAll('td');
-                if (tds.length >= 7) {
-                    // Surface
-                    const surf = tds[1].textContent.trim();
-                    if (surf && surf !== '—') surfaces.push(surf);
-                    
-                    // Budget
-                    const budg = tds[2].textContent.trim();
-                    if (budg && budg !== '—') budgets.push(budg);
-                    
-                    // Type
-                    const type = tds[3].textContent.trim();
-                    if (type && type !== '—') types[type] = (types[type] || 0) + 1;
-                    
-                    // Localisation
-                    const loc = tds[4].textContent.trim();
-                    if (loc && loc !== '—') locs[loc] = (locs[loc] || 0) + 1;
-                    
-                    // Bâtiments
-                    const bat = tds[5].textContent.trim();
-                    if (bat && bat !== '—') batiments[bat] = (batiments[bat] || 0) + 1;
-                    
-                    // Contraintes
-                    const contr = tds[6].textContent.trim();
-                    if (contr && contr !== '—') contraintes[contr] = (contraintes[contr] || 0) + 1;
-                }
-            });
-            
-            // Afficher synthèse
-            document.getElementById('consensusSurface').textContent = surfaces.length > 0 ? surfaces.join(' | ') : '—';
-            document.getElementById('consensusBudget').textContent = budgets.length > 0 ? budgets.join(' | ') : '—';
-            document.getElementById('consensusType').textContent = Object.keys(types).length > 0 ? Object.keys(types).join(' | ') : '—';
-            document.getElementById('consensusLoc').textContent = Object.keys(locs).length > 0 ? Object.keys(locs).join(' | ') : '—';
-            document.getElementById('consensusBatiments').textContent = Object.keys(batiments).length > 0 ? Object.keys(batiments).join(' | ') : '—';
-            document.getElementById('consensusContraintes').textContent = Object.keys(contraintes).length > 0 ? Object.keys(contraintes).join(' | ') : '—';
-            
-            showStatus('🧮 Synthèse recalculée', 'saved');
-        }
-
-        // Export CSV
-        function exportCSV() {
-            let csv = 'Participant;Surface min;Budget max;Type terrain;Localisation;Batiments;Contraintes;Priorites\n';
-            
-            const tbody = document.getElementById('tableBody');
-            const trs = tbody.querySelectorAll('tr:not(.synthesis-row)');
-            
-            trs.forEach(tr => {
-                const tds = tr.querySelectorAll('td');
-                if (tds.length >= 7) {
-                    const row = [];
-                    tds.forEach(td => {
-                        let text = td.textContent.trim().replace(/;/g, ',');
-                        if (text.includes(',')) text = '"' + text + '"';
-                        row.push(text);
-                    });
-                    csv += row.join(';') + '\n';
-                }
-            });
-            
-            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = 'Criteres_Reunion_Lieu04_' + new Date().toISOString().split('T')[0] + '.csv';
-            link.click();
-            
-            showStatus('✅ CSV exporté !', 'saved');
-        }
-
-        // Export HTML
-        function exportHTML() {
-            const htmlContent = document.documentElement.outerHTML;
-            const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8;' });
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = 'Criteres_Reunion_Lieu04_Sauvegarde_' + new Date().toISOString().split('T')[0] + '.html';
-            link.click();
-            
-            showStatus('✅ HTML sauvegardé !', 'saved');
-        }
-
-        // Charger depuis NocoDB (nouveaux participants)
-        async function loadFromNocoDB() {
-            const NOCODB_URL = 'https://sheets.viegratuitepourtous.tech';
-            const API_TOKEN = 'nc_pat_rKMIsd_GYNXUA2gU_5qIEaJAt6HASbLdJ0jKkyCq';
-            
-            showStatus('🔄 Chargement depuis NocoDB...', 'loading');
-            
-            try {
-                const response = await fetch(`${NOCODB_URL}/api/v2/tables/nouveaux_participants_lieu04/records`, {
-                    method: 'GET',
-                    headers: {
-                        'xc-token': API_TOKEN
-                    }
-                });
-                
-                if (!response.ok) {
-                    if (response.status === 404) {
-                        showStatus('⚠️ Table NocoDB non trouvée. Crée-la d\'abord.', 'error');
-                        return;
-                    }
-                    throw new Error(`Erreur ${response.status}`);
-                }
-                
-                const result = await response.json();
-                const newParticipants = result.list || [];
-                
-                if (newParticipants.length === 0) {
-                    showStatus('ℹ️ Aucun nouveau participant dans NocoDB', 'saved');
-                    return;
-                }
-                
-                // Convertir au format du tableau
-                const formattedData = newParticipants.map(p => ({
-                    participant: p.nom + ' <span class="new-badge">NEW</span>',
-                    surface: p.surface || '',
-                    budget: p.budget || '',
-                    type: p.type_terrain || '',
-                    loc: p.localisation || '',
-                    batiments: p.batiments || '',
-                    contraintes: p.contraintes || '',
-                    priorites: p.priorites || '',
-                    isNew: true,
-                    Id: p.Id
-                }));
-                
-                // Ajouter au tableau existant
-                const tbody = document.getElementById('tableBody');
-                
-                formattedData.forEach(row => {
-                    const tr = document.createElement('tr');
-                    tr.className = 'participant-new';
-                    tr.innerHTML = `
-                        <td><div class="editable participant-name" contenteditable="true" onblur="saveData()">${row.participant}</div></td>
-                        <td><div class="editable" contenteditable="true" onblur="saveData()">${row.surface}</div></td>
-                        <td><div class="editable" contenteditable="true" onblur="saveData()">${row.budget}</div></td>
-                        <td><div class="editable" contenteditable="true" onblur="saveData()">${row.type}</div></td>
-                        <td><div class="editable" contenteditable="true" onblur="saveData()">${row.loc}</div></td>
-                        <td><div class="editable" contenteditable="true" onblur="saveData()">${row.batiments}</div></td>
-                        <td><div class="editable" contenteditable="true" onblur="saveData()">${row.contraintes}</div></td>
-                        <td><div class="editable" contenteditable="true" onblur="saveData()">${row.priorites}</div></td>
-                    `;
-                    tbody.appendChild(tr);
-                });
-                
+        // Sauvegarde uniquement à la fermeture si modifications
+        window.addEventListener('beforeunload', function() {
+            if (dataModified) {
                 saveData();
-                calculateSynthesis();
-                
-                showStatus(`✅ ${newParticipants.length} nouveau(x) participant(s) ajouté(s) !`, 'saved');
-                
-            } catch (error) {
-                console.error('Erreur NocoDB:', error);
-                showStatus('❌ Erreur connexion NocoDB. Mode offline.', 'error');
             }
-        }
-
-        // Auto-save
-        setInterval(saveData, 30000);
-        window.addEventListener('beforeunload', saveData);
-        
-        document.getElementById('meetingSummary').addEventListener('input', () => {
-            showStatus('📝 Notes enregistrées', 'saved');
-            setTimeout(saveData, 1000);
         });
 
         // Initialisation
-        document.addEventListener('DOMContentLoaded', () => {
-            const data = loadData();
+        document.addEventListener('DOMContentLoaded', async () => {
+            showStatus('Chargement depuis NocoDB...', 'loading');
+            const data = await loadData();
             renderTable(data);
-            console.log('✅ Tableau des critères chargé - ' + data.length + ' participants');
+            showStatus('Données chargées - ' + (data.filter(r => r.surface || r.budget).length) + ' participants actifs', 'saved');
+            console.log('Tableau des critères chargé - ' + data.length + ' lignes');
         });
     </script>
 </body>
