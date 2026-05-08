@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recherche Lieu 04 — Valeurs, Écolieu & Vision</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.95;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 15px;
+            color: rgba(255,255,255,0.9);
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .back-link:hover {
+            color: white;
+        }
+
+        .content {
+            padding: 40px 30px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section:last-child {
+            margin-bottom: 0;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2d3436;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #11998e;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .definition-card {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-left: 4px solid #11998e;
+        }
+
+        .definition-card h3 {
+            font-size: 1.2rem;
+            color: #11998e;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .definition-card p {
+            font-size: 15px;
+            color: #495057;
+            line-height: 1.7;
+        }
+
+        .definition-card ul {
+            margin-top: 10px;
+            padding-left: 20px;
+        }
+
+        .definition-card li {
+            margin-bottom: 8px;
+            color: #495057;
+        }
+
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .person-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            border: 2px solid #e9ecef;
+            transition: all 0.3s;
+        }
+
+        .person-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            border-color: #11998e;
+        }
+
+        .person-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #11998e;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .value-tag {
+            display: inline-block;
+            background: #e3f2fd;
+            color: #1565c0;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            margin: 4px;
+            font-weight: 500;
+        }
+
+        .value-tag.important {
+            background: #fff3e0;
+            color: #e65100;
+        }
+
+        .value-tag.territory {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .criteria-box {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 20px;
+        }
+
+        .criteria-box h3 {
+            font-size: 1.2rem;
+            color: #e65100;
+            margin-bottom: 15px;
+        }
+
+        .criteria-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .criteria-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #ff6b6b;
+        }
+
+        .criteria-item h4 {
+            font-size: 14px;
+            color: #2d3436;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .criteria-item p {
+            font-size: 13px;
+            color: #6c757d;
+        }
+
+        .highlight-box {
+            background: #e3f2fd;
+            border-left: 4px solid #2196F3;
+            padding: 20px;
+            border-radius: 0 8px 8px 0;
+            margin: 20px 0;
+        }
+
+        .highlight-box h4 {
+            color: #1565c0;
+            margin-bottom: 10px;
+        }
+
+        .vision-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-top: 30px;
+        }
+
+        .vision-section h3 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+        }
+
+        .vision-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .vision-item {
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .footer {
+            background: #2d3436;
+            color: white;
+            padding: 25px 30px;
+            text-align: center;
+            font-size: 13px;
+        }
+
+        .footer a {
+            color: #74b9ff;
+            text-decoration: none;
+        }
+
+        @media (max-width: 600px) {
+            .header h1 {
+                font-size: 1.5rem;
+            }
+            
+            .content {
+                padding: 25px 20px;
+            }
+            
+            .values-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="index.html" class="back-link">← Retour à l'espace collaboratif</a>
+            <h1>Valeurs, Écolieu & Vision</h1>
+            <p>Ce que nous cherchons à créer ensemble — Réunion du 3 mai 2026</p>
+        </div>
+
+        <div class="content">
+            <!-- Section Définitions -->
+            <div class="section">
+                <div class="section-title">
+                    <span>📚</span> Définitions
+                </div>
+
+                <div class="definition-card">
+                    <h3>Qu'est-ce qu'un Écolieu ?</h3>
+                    <p>Un écolieu est un habitat collectif conçu selon les principes de l'écologie, de la permaculture et de la sobriété énergétique. C'est un espace où l'on vit en communauté en respectant la nature et en favorisant l'autonomie.</p>
+                    <ul>
+                        <li><strong>Autonomie :</strong> Production locale d'énergie, d'eau, de nourriture</li>
+                        <li><strong>Cohabitation :</strong> Espaces partagés et espaces privés équilibrés</li>
+                        <li><strong>Régénération :</strong> Le lieu enrichit l'écosystème plutôt que le dégrader</li>
+                        <li><strong>Gouvernance :</strong> Décisions collectives, pas de hiérarchie autoritaire</li>
+                    </ul>
+                </div>
+
+                <div class="definition-card">
+                    <h3>Fonds de Dotation vs Fondation</h3>
+                    <p><strong>Fonds de dotation :</strong> Structure juridique qui gère un patrimoine (terres, bâtiments) pour le compte d'un projet. Le foncier appartient au fonds, pas aux individus. Avantages : pérennité, transmission intergénérationnelle, protection contre la spéculation.</p>
+                    <p style="margin-top: 10px;"><strong>Fondation :</strong> Structure plus complexe reconnue d'utilité publique. Nécessite un agrément préfectoral, un conseil d'administration, des comptes annuels audités. Idéale pour les grands projets avec impact social/écologique majeur.</p>
+                    <ul>
+                        <li><strong>Critères pour créer une fondation :</strong> Capital minimum (souvent 100k€+), projet d'intérêt général, agrément de l'autorité de tutelle, durabilité démontrée</li>
+                        <li><strong>Alternative légère :</strong> Association loi 1901 + fonds de dotation dédié au foncier</li>
+                    </ul>
+                </div>
+
+                <div class="highlight-box">
+                    <h4>💡 Notre approche privilégiée</h4>
+                    <p>Un fonds de dotation dédié au foncier (terres et bâtiments), combiné à une gestion associative pour les activités quotidiennes. Cela garantit que la terre ne peut ni être vendue, ni divisée, ni transmise en héritage individuel.</p>
+                </div>
+            </div>
+
+            <!-- Section Valeurs des participants -->
+            <div class="section">
+                <div class="section-title">
+                    <span>💚</span> Les valeurs de chacun
+                </div>
+
+                <div class="values-grid">
+                    <div class="person-card">
+                        <div class="person-name">Mirelle</div>
+                        <div>
+                            <span class="value-tag">Oser s'exprimer</span>
+                            <span class="value-tag">Bienveillance</span>
+                            <span class="value-tag">Savoir écouter</span>
+                            <span class="value-tag important">Conflits constructifs</span>
+                            <span class="value-tag">Simplicité</span>
+                            <span class="value-tag">Pas de jugement</span>
+                            <span class="value-tag">Respect mutuel</span>
+                            <span class="value-tag">Partage & mise en commun</span>
+                            <span class="value-tag important">Fluidité & facilité</span>
+                            <span class="value-tag territory">Propriété non négociable</span>
+                        </div>
+                    </div>
+
+                    <div class="person-card">
+                        <div class="person-name">Dominique</div>
+                        <div>
+                            <span class="value-tag">Simplicité de valeur</span>
+                            <span class="value-tag important">Être avec des êtres humains authentiques</span>
+                            <span class="value-tag important">Plus de propriété — non négociable</span>
+                            <span class="value-tag important">Plus d'argent entre nous</span>
+                            <span class="value-tag">Lien authentique humain</span>
+                            <span class="value-tag territory">Pas de décharge</span>
+                            <span class="value-tag territory">Pas de bordel</span>
+                        </div>
+                    </div>
+
+                    <div class="person-card">
+                        <div class="person-name">Gilles</div>
+                        <div>
+                            <span class="value-tag">Être compris</span>
+                            <span class="value-tag">Les bons mots</span>
+                            <span class="value-tag important">Harmonie avec la terre</span>
+                            <span class="value-tag">Partage</span>
+                            <span class="value-tag important">Chacun chez soi, partager ses savoirs</span>
+                            <span class="value-tag important">Pas de notion d'argent entre nous</span>
+                            <span class="value-tag important">Ne plus être propriétaire seul</span>
+                            <span class="value-tag">Partager un lieu</span>
+                        </div>
+                    </div>
+
+                    <div class="person-card">
+                        <div class="person-name">Michel</div>
+                        <div>
+                            <span class="value-tag important">Pas d'hypocrisie</span>
+                            <span class="value-tag important">Pas de mensonge</span>
+                            <span class="value-tag">Sincérité</span>
+                            <span class="value-tag important">Ne plus dire de mal des absents</span>
+                            <span class="value-tag">Pas de jugement</span>
+                            <span class="value-tag">Droit à l'erreur</span>
+                            <span class="value-tag">Fructification</span>
+                            <span class="value-tag important">Rendre la terre à elle-même</span>
+                            <span class="value-tag important">Authenticité</span>
+                            <span class="value-tag territory">Autonomie céréalière</span>
+                            <span class="value-tag territory">Diversité des céréales (pas de tracteur)</span>
+                            <span class="value-tag territory">Souveraineté énergétique</span>
+                            <span class="value-tag territory">Espace de solitude</span>
+                        </div>
+                    </div>
+
+                    <div class="person-card">
+                        <div class="person-name">Marjorie</div>
+                        <div>
+                            <span class="value-tag">Territoire préservé</span>
+                            <span class="value-tag">Ne pas salir un lieu</span>
+                            <span class="value-tag territory">Pas de décharge</span>
+                            <span class="value-tag territory">Pas de bordel (non négociable)</span>
+                            <span class="value-tag territory">Autonomie céréalière</span>
+                            <span class="value-tag">Céréales diversifiées</span>
+                            <span class="value-tag territory">Souveraineté énergétique et matérielle</span>
+                            <span class="value-tag territory">Espace de solitude</span>
+                            <span class="value-tag important">Authenticité</span>
+                            <span class="value-tag">Je ne sais pas mentir</span>
+                            <span class="value-tag important">Partager en direct, sans filtre</span>
+                            <span class="value-tag">Pas de "crasse énergétique"</span>
+                        </div>
+                    </div>
+
+                    <div class="person-card">
+                        <div class="person-name">Sylvain</div>
+                        <div>
+                            <span class="value-tag important">Tendre vers l'autonomie</span>
+                            <span class="value-tag territory">Forêt nourricière</span>
+                            <span class="value-tag territory">Autonomie énergétique</span>
+                            <span class="value-tag territory">Lieux à énergie positive</span>
+                            <span class="value-tag important">Lien avec la terre, les plantes, les animaux</span>
+                            <span class="value-tag">Automatisation</span>
+                            <span class="value-tag">Conflits constructifs</span>
+                            <span class="value-tag">Reflet de soi-même</span>
+                            <span class="value-tag">Ne pas se couper du monde</span>
+                            <span class="value-tag">Possibilité d'un médiateur</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section Points communs -->
+            <div class="section">
+                <div class="section-title">
+                    <span>🎯</span> Points de convergence
+                </div>
+
+                <div class="criteria-box">
+                    <h3>✅ Ce qui rassemble tout le monde</h3>
+                    <div class="criteria-list">
+                        <div class="criteria-item">
+                            <h4>🚫 Propriété individuelle</h4>
+                            <p>Plus de propriété privée. Le foncier appartient au collectif via un fonds de dotation.</p>
+                        </div>
+                        <div class="criteria-item">
+                            <h4>💰 Pas d'argent entre nous</h4>
+                            <p>Pas d'échanges monétaires au sein du collectif. Économie du don, du troc, de la mutualisation.</p>
+                        </div>
+                        <div class="criteria-item">
+                            <h4>🗣️ Communication authentique</h4>
+                            <p>Sincérité, pas de mensonge, pas d'hypocrisie, dire les choses sans filtre mais avec bienveillance.</p>
+                        </div>
+                        <div class="criteria-item">
+                            <h4>⚖️ Pas de jugement</h4>
+                            <p>Droit à l'erreur, bienveillance, savoir écouter, conflits vus comme des opportunités.</p>
+                        </div>
+                        <div class="criteria-item">
+                            <h4>🌍 Harmonie avec la terre</h4>
+                            <p>Rendre la terre à elle-même, pas de pollution, pas de bordel, autonomie alimentaire/énergétique.</p>
+                        </div>
+                        <div class="criteria-item">
+                            <h4>🏠 Habitat participatif</h4>
+                            <p>Chacun a son espace privé + espaces partagés. Partager les savoirs, pas seulement les murs.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section Territoire -->
+            <div class="section">
+                <div class="section-title">
+                    <span>🌲</span> Critères territoriaux communs
+                </div>
+
+                <div class="definition-card" style="border-left-color: #2e7d32;">
+                    <h3 style="color: #2e7d32;">Ce que nous voulons sur le terrain</h3>
+                    <ul>
+                        <li><strong>🌾 Autonomie céréalière :</strong> Capacité à produire nos propres céréales</li>
+                        <li><strong>🚜 Pas de tracteur (diversité) :</strong> Agriculture adaptée, pas d'agriculture intensive</li>
+                        <li><strong>⚡ Souveraineté énergétique :</strong> Production locale d'énergie, matériel autonome</li>
+                        <li><strong>🚯 Pas de décharge / bordel :</strong> Territoire propre, respect de l'environnement (non négociable)</li>
+                        <li><strong>🧘 Espace de solitude :</strong> Chacun doit pouvoir se retrouver seul quand nécessaire</li>
+                        <li><strong>🌳 Forêt nourricière :</strong> Arbres fruitiers, châtaigniers, noisetiers...</li>
+                        <li><strong>✨ Lieu à énergie positive :</strong> Pas de "crasse énergétique", géobiologie favorable</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Vision synthétique -->
+            <div class="vision-section">
+                <h3>🌟 Notre vision synthétique</h3>
+                <p>Un écolieu où la terre est préservée dans un fonds de dotation, où chacun a son espace tout en partageant les savoirs et les ressources, où l'argent n'a pas sa place entre nous, où l'authenticité prime sur la politesse hypocrite, et où l'autonomie alimentaire et énergétique nous libère des systèmes extérieurs.</p>
+                
+                <div class="vision-grid">
+                    <div class="vision-item">
+                        <strong>🌱 Écologie</strong><br>
+                        Autonomie, régénération, sobriété
+                    </div>
+                    <div class="vision-item">
+                        <strong>🤝 Cohabitation</strong><br>
+                        Espace privé + partage
+                    </div>
+                    <div class="vision-item">
+                        <strong>💬 Communication</strong><br>
+                        Authentique, sans filtre
+                    </div>
+                    <div class="vision-item">
+                        <strong>⚖️ Gouvernance</strong><br>
+                        Pas de propriété privée
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>Projet Recherche Lieu 04 — ECE Fabriquerie</p>
+            <p style="margin-top: 8px; opacity: 0.7;">
+                Valeurs collectées lors de la réunion du 3 mai 2026 — 
+                <a href="index.html">Retour à l'accueil</a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>
